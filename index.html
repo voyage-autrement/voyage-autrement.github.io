@@ -531,7 +531,7 @@ nav.scrolled {
   font-family: 'Cormorant Garamond', serif;
   font-size: 64px;
   font-weight: 300;
-  color: rgba(201,169,110,0.12);
+  color: rgba(201,169,110,0.45);
   position: absolute;
   top: 16px;
   right: 20px;
@@ -1862,7 +1862,6 @@ footer {
         <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Guide PDF complet & téléchargeable</li>
         <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Sélection de restos, visites & activités</li>
         <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Conseils pratiques & bons plans</li>
-        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Mis à jour régulièrement</li>
       </ul>
       <a href="#formulaire" class="card-btn btn-outline">Choisir cette offre</a>
     </div>
@@ -1903,7 +1902,7 @@ footer {
         <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>2 verres de vin offerts (partenaires sélectionnés)</li>
         <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Réductions hôtels & expériences exclusives</li>
         <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Adresses secrètes & moments romantiques peu connus</li>
-        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Contact direct avec moi — disponible 9h à 18h</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Réservation d'un créneau de 30 min en visio ou par téléphone avec moi</li>
       </ul>
       <a href="#formulaire" class="card-btn btn-outline">Choisir cette offre</a>
     </div>
@@ -2150,7 +2149,6 @@ footer {
         <div class="avis-avatar">S</div>
         <div>
           <div class="avis-name">Sandrine 🤩</div>
-          <div class="avis-trip">Place 32 dans le car</div>
         </div>
       </div>
     </div>
@@ -2162,8 +2160,7 @@ footer {
       <div class="avis-author">
         <div class="avis-avatar">C</div>
         <div>
-          <div class="avis-name">Le groupe de Camargue</div>
-          <div class="avis-trip">Séjour en Camargue</div>
+          <div class="avis-name">Un voyageur du groupe</div>
         </div>
       </div>
     </div>
@@ -2176,7 +2173,6 @@ footer {
         <div class="avis-avatar">M</div>
         <div>
           <div class="avis-name">Michel &amp; Marie</div>
-          <div class="avis-trip">Séjour en Camargue</div>
         </div>
       </div>
     </div>
@@ -2189,7 +2185,6 @@ footer {
         <div class="avis-avatar">M</div>
         <div>
           <div class="avis-name">Monique &amp; Dédé</div>
-          <div class="avis-trip">Séjour en Camargue</div>
         </div>
       </div>
     </div>
@@ -2295,24 +2290,10 @@ footer {
       <span class="section-tag">Me retrouver</span>
       <h2 class="section-title">Restons<br><em>en contact</em></h2>
       <div class="contact-item">
-        <div class="contact-icon">📍</div>
-        <div>
-          <span class="contact-label">Adresse</span>
-          <span class="contact-value">10 Boulevard de Strasbourg<br>31000 Toulouse, France</span>
-        </div>
-      </div>
-      <div class="contact-item">
         <div class="contact-icon">✉️</div>
         <div>
           <span class="contact-label">Email</span>
           <span class="contact-value">ypdt.info@gmail.com</span>
-        </div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-icon">📞</div>
-        <div>
-          <span class="contact-label">Téléphone</span>
-          <span class="contact-value">(+1) 778 325 4204</span>
         </div>
       </div>
       <div class="contact-social">
@@ -2578,8 +2559,33 @@ const panel = {
   hint: document.getElementById('cpHint')
 };
 
+// Mots-clés (lieu emblématique) pour générer des photos d'illustration temporaires
+// → seront remplacées dès que Renaud fournit ses propres photos (champ "photos")
+const enKey = {
+  FRA:'paris', ESP:'barcelona', PRT:'lisbon', ITA:'rome', DEU:'berlin', GBR:'london',
+  IRL:'ireland', BEL:'brussels', NLD:'amsterdam', LUX:'luxembourg', CHE:'switzerland',
+  AUT:'vienna', POL:'krakow', CZE:'prague', SVK:'slovakia', HUN:'budapest', SVN:'ljubljana',
+  HRV:'croatia', BIH:'mostar', SRB:'belgrade', MNE:'montenegro', ALB:'albania', MKD:'ohrid',
+  GRC:'santorini', BGR:'sofia', ROU:'transylvania', MDA:'moldova', UKR:'kyiv', LTU:'vilnius',
+  LVA:'riga', EST:'tallinn', FIN:'helsinki', SWE:'stockholm', NOR:'norway', DNK:'copenhagen',
+  ISL:'iceland', MLT:'malta', CYP:'cyprus', MCO:'monaco', AND:'andorra', TUR:'istanbul',
+  MAR:'marrakech', EGY:'pyramids', MDG:'madagascar', MYT:'mayotte', ARE:'abudhabi',
+  CAN:'banff', USA:'newyork', MEX:'mexico', PAN:'panama', MTQ:'martinique', DOM:'puntacana',
+  BRA:'rio', PER:'machupicchu', CHL:'patagonia', ARG:'buenosaires', IND:'tajmahal',
+  LKA:'srilanka', THA:'bangkok', KHM:'angkor', VNM:'halongbay', LAO:'luangprabang',
+  IDN:'bali', BRN:'brunei', PHL:'palawan', CHN:'greatwall', JPN:'kyoto', AUS:'sydney',
+  NZL:'newzealand', FJI:'fiji'
+};
+
+// Renvoie les photos d'un pays (les vraies si fournies, sinon des photos internet d'illustration)
+function photosFor(c) {
+  if (c.photos && c.photos.length) return c.photos;
+  const key = encodeURIComponent(enKey[c.iso] || c.name);
+  return [1, 2, 3].map(n => 'https://loremflickr.com/640/430/' + key + '?lock=' + n);
+}
+
 function renderMedia(c, index = 0) {
-  const photos = c.photos || [];
+  const photos = photosFor(c);
   const hasPhotos = photos.length > 0;
   const hasVideo = !!c.video;
 
