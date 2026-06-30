@@ -2446,8 +2446,8 @@ function toggleMenu() {
 const countries = [
   // ── EUROPE ──
   { name:'France', iso:'FRA', region:'Europe', coords:[46.6,2.4] },
-  { name:'Espagne', iso:'ESP', region:'Europe', coords:[40.2,-3.7] },
-  { name:'Portugal', iso:'PRT', region:'Europe', coords:[39.6,-8.0] },
+  { name:'Espagne', iso:'ESP', region:'Europe', coords:[40.2,-3.7], photos:['assets/img/espagne-1.jpg','assets/img/espagne-2.jpg'], note:"Séville et son âme andalouse — azulejos, patios fleuris et lumière dorée sur la Plaza de España." },
+  { name:'Portugal', iso:'PRT', region:'Europe', coords:[39.6,-8.0], photos:['assets/img/portugal-1.jpg','assets/img/portugal-2.jpg'], note:"Porto, ses ruelles colorées le long du Douro et sa francesinha mythique — toute la chaleur du nord du Portugal." },
   { name:'Italie', iso:'ITA', region:'Europe', coords:[42.8,12.6] },
   { name:'Allemagne', iso:'DEU', region:'Europe', coords:[51.1,10.4] },
   { name:'Royaume-Uni', iso:'GBR', region:'Europe', coords:[53.5,-2.5] },
@@ -2507,7 +2507,7 @@ const countries = [
   // ── ASIE ──
   { name:'Inde', iso:'IND', region:'Asie', coords:[22.0,79.0] },
   { name:'Sri Lanka', iso:'LKA', region:'Asie', coords:[7.9,80.7] },
-  { name:'Thaïlande', iso:'THA', region:'Asie', coords:[15.5,101.0] },
+  { name:'Thaïlande', iso:'THA', region:'Asie', coords:[15.5,101.0], photos:['assets/img/thailande-1.jpg'], note:"Rencontre inoubliable avec les éléphants au cœur de la jungle thaïlandaise — un moment suspendu, hors du temps." },
   { name:'Cambodge', iso:'KHM', region:'Asie', coords:[12.5,104.9] },
   { name:'Vietnam', iso:'VNM', region:'Asie', coords:[16.0,107.8] },
   { name:'Laos', iso:'LAO', region:'Asie', coords:[19.5,102.5] },
@@ -2559,29 +2559,9 @@ const panel = {
   hint: document.getElementById('cpHint')
 };
 
-// Mots-clés (lieu emblématique) pour générer des photos d'illustration temporaires
-// → seront remplacées dès que Renaud fournit ses propres photos (champ "photos")
-const enKey = {
-  FRA:'paris', ESP:'barcelona', PRT:'lisbon', ITA:'rome', DEU:'berlin', GBR:'london',
-  IRL:'ireland', BEL:'brussels', NLD:'amsterdam', LUX:'luxembourg', CHE:'switzerland',
-  AUT:'vienna', POL:'krakow', CZE:'prague', SVK:'slovakia', HUN:'budapest', SVN:'ljubljana',
-  HRV:'croatia', BIH:'mostar', SRB:'belgrade', MNE:'montenegro', ALB:'albania', MKD:'ohrid',
-  GRC:'santorini', BGR:'sofia', ROU:'transylvania', MDA:'moldova', UKR:'kyiv', LTU:'vilnius',
-  LVA:'riga', EST:'tallinn', FIN:'helsinki', SWE:'stockholm', NOR:'norway', DNK:'copenhagen',
-  ISL:'iceland', MLT:'malta', CYP:'cyprus', MCO:'monaco', AND:'andorra', TUR:'istanbul',
-  MAR:'marrakech', EGY:'pyramids', MDG:'madagascar', MYT:'mayotte', ARE:'abudhabi',
-  CAN:'banff', USA:'newyork', MEX:'mexico', PAN:'panama', MTQ:'martinique', DOM:'puntacana',
-  BRA:'rio', PER:'machupicchu', CHL:'patagonia', ARG:'buenosaires', IND:'tajmahal',
-  LKA:'srilanka', THA:'bangkok', KHM:'angkor', VNM:'halongbay', LAO:'luangprabang',
-  IDN:'bali', BRN:'brunei', PHL:'palawan', CHN:'greatwall', JPN:'kyoto', AUS:'sydney',
-  NZL:'newzealand', FJI:'fiji'
-};
-
-// Renvoie les photos d'un pays (les vraies si fournies, sinon des photos internet d'illustration)
+// Renvoie les photos d'un pays (uniquement les vraies photos fournies par Renaud)
 function photosFor(c) {
-  if (c.photos && c.photos.length) return c.photos;
-  const key = encodeURIComponent(enKey[c.iso] || c.name);
-  return [1, 2, 3].map(n => 'https://loremflickr.com/640/430/' + key + '?lock=' + n);
+  return (c.photos && c.photos.length) ? c.photos : [];
 }
 
 function renderMedia(c, index = 0) {
