@@ -2446,7 +2446,7 @@ function toggleMenu() {
 const countries = [
   // ── EUROPE ──
   { name:'France', iso:'FRA', region:'Europe', coords:[46.6,2.4] },
-  { name:'Espagne', iso:'ESP', region:'Europe', coords:[40.2,-3.7], photos:['assets/img/espagne-1.jpg','assets/img/espagne-2.jpg'], note:"Séville et son âme andalouse — azulejos, patios fleuris et lumière dorée sur la Plaza de España." },
+  { name:'Espagne', iso:'ESP', region:'Europe', coords:[40.2,-3.7], photos:['assets/img/espagne-1.jpg','assets/img/espagne-2.jpg','assets/img/espagne-3.jpg'], note:"Séville et son âme andalouse — azulejos, patios fleuris et lumière dorée sur la Plaza de España." },
   { name:'Portugal', iso:'PRT', region:'Europe', coords:[39.6,-8.0], photos:['assets/img/portugal-1.jpg','assets/img/portugal-2.jpg'], note:"Porto, ses ruelles colorées le long du Douro et sa francesinha mythique — toute la chaleur du nord du Portugal." },
   { name:'Italie', iso:'ITA', region:'Europe', coords:[42.8,12.6] },
   { name:'Allemagne', iso:'DEU', region:'Europe', coords:[51.1,10.4] },
@@ -2455,7 +2455,7 @@ const countries = [
   { name:'Belgique', iso:'BEL', region:'Europe', coords:[50.6,4.6] },
   { name:'Pays-Bas', iso:'NLD', region:'Europe', coords:[52.2,5.5] },
   { name:'Luxembourg', iso:'LUX', region:'Europe', coords:[49.8,6.1] },
-  { name:'Suisse', iso:'CHE', region:'Europe', coords:[46.8,8.2] },
+  { name:'Suisse', iso:'CHE', region:'Europe', coords:[46.8,8.2], photos:['assets/img/suisse-1.jpg'], note:"Sommets enneigés, lacs cristallins et villages de carte postale — la Suisse, à couper le souffle en toute saison." },
   { name:'Autriche', iso:'AUT', region:'Europe', coords:[47.6,14.2] },
   { name:'Pologne', iso:'POL', region:'Europe', coords:[52.0,19.4] },
   { name:'République tchèque', iso:'CZE', region:'Europe', coords:[49.8,15.5] },
@@ -2481,7 +2481,7 @@ const countries = [
   { name:'Norvège', iso:'NOR', region:'Europe', coords:[61.5,8.5] },
   { name:'Danemark', iso:'DNK', region:'Europe', coords:[56.0,9.5] },
   { name:'Islande', iso:'ISL', region:'Europe', coords:[64.9,-18.5] },
-  { name:'Malte', iso:'MLT', region:'Europe', coords:[35.9,14.4] },
+  { name:'Malte', iso:'MLT', region:'Europe', coords:[35.9,14.4], photos:['assets/img/malte-1.jpg'], note:"Balade en bateau le long des criques turquoise de Malte — pierre dorée, mer cristalline et soleil méditerranéen." },
   { name:'Chypre', iso:'CYP', region:'Europe', coords:[35.0,33.2] },
   { name:'Monaco', iso:'MCO', region:'Europe', coords:[43.73,7.42] },
   { name:'Andorre', iso:'AND', region:'Europe', coords:[42.5,1.5] },
@@ -2513,7 +2513,7 @@ const countries = [
   { name:'Laos', iso:'LAO', region:'Asie', coords:[19.5,102.5] },
   { name:'Indonésie', iso:'IDN', region:'Asie', coords:[-2.5,118.0] },
   { name:'Brunei', iso:'BRN', region:'Asie', coords:[4.5,114.7] },
-  { name:'Philippines', iso:'PHL', region:'Asie', coords:[12.8,122.0] },
+  { name:'Philippines', iso:'PHL', region:'Asie', coords:[12.8,122.0], photos:['assets/img/philippines-1.jpg'], note:"Spéléo et aventure au cœur des Philippines — grottes, rivières souterraines et nature sauvage à l'état brut." },
   { name:'Chine', iso:'CHN', region:'Asie', coords:[35.0,104.0] },
   { name:'Japon', iso:'JPN', region:'Asie', coords:[37.5,138.5] },
   // ── OCÉANIE ──
@@ -2559,52 +2559,106 @@ const panel = {
   hint: document.getElementById('cpHint')
 };
 
-// Renvoie les photos d'un pays (uniquement les vraies photos fournies par Renaud)
-function photosFor(c) {
-  return (c.photos && c.photos.length) ? c.photos : [];
+// Pour les pays sans photo de Renaud : lieu emblématique → photo libre (Wikimedia, sans filigrane)
+const wikiTopic = {
+  FRA:'Tour Eiffel', ITA:'Colisée', DEU:'Porte de Brandebourg', GBR:'Tower Bridge',
+  IRL:'Falaises de Moher', BEL:'Grand-Place', NLD:'Amsterdam', LUX:'Luxembourg (ville)',
+  AUT:'Château de Schönbrunn', POL:'Cracovie', CZE:'Pont Charles', SVK:'Bratislava',
+  HUN:'Parlement hongrois', SVN:'Lac de Bled', HRV:'Dubrovnik', BIH:'Stari Most',
+  SRB:'Belgrade', MNE:'Kotor', ALB:'Berat', MKD:"Lac d'Ohrid", GRC:'Santorin',
+  BGR:'Cathédrale Saint-Alexandre-Nevski de Sofia', ROU:'Château de Bran', MDA:'Chișinău',
+  UKR:'Kiev', LTU:'Vilnius', LVA:'Riga', EST:'Tallinn', FIN:'Helsinki', SWE:'Stockholm',
+  NOR:'Geirangerfjord', DNK:'Nyhavn', ISL:'Gullfoss', CYP:'Paphos', MCO:'Monte-Carlo',
+  AND:'Andorre-la-Vieille', TUR:'Sainte-Sophie', MAR:'Jemaa el-Fna', EGY:'Pyramides de Gizeh',
+  MDG:'Allée des baobabs', MYT:'Mayotte', ARE:'Grande Mosquée Cheikh Zayed', CAN:'Lac Moraine',
+  USA:'Statue de la Liberté', MEX:'Chichen Itza', PAN:'Canal de Panama', MTQ:'Montagne Pelée',
+  DOM:'Punta Cana', BRA:'Christ Rédempteur (Rio de Janeiro)', PER:'Machu Picchu',
+  CHL:'Parc national Torres del Paine', ARG:'Glacier Perito Moreno', IND:'Taj Mahal',
+  LKA:'Sigîriya', KHM:'Angkor Vat', VNM:"Baie d'Along", LAO:'Luang Prabang', IDN:'Borobudur',
+  BRN:'Bandar Seri Begawan', CHN:'Grande Muraille', JPN:'Mont Fuji', AUS:'Opéra de Sydney',
+  NZL:'Milford Sound', FJI:'Fidji'
+};
+
+function realPhotos(c) {
+  if (c.photos && c.photos.length) return c.photos;
+  return c._wiki ? [c._wiki] : [];
 }
 
 function renderMedia(c, index = 0) {
-  const photos = photosFor(c);
+  const photos = realPhotos(c);
   const hasPhotos = photos.length > 0;
   const hasVideo = !!c.video;
 
   if (!hasPhotos && !hasVideo) {
+    const loading = c._wikiLoading;
     panel.media.innerHTML =
-      '<div class="cp-media-placeholder"><span class="cp-emoji">📸</span>' +
-      '<p>Photos &amp; vidéo à venir pour <b style="color:var(--gold)">' + c.name + '</b>.</p></div>';
+      '<div class="cp-media-placeholder"><span class="cp-emoji">' + (loading ? '🌍' : '📸') + '</span>' +
+      '<p>' + (loading
+        ? 'Chargement des photos…'
+        : 'Photos &amp; vidéo à venir pour <b style="color:var(--gold)">' + c.name + '</b>.') +
+      '</p></div>';
     panel.gallery.innerHTML = '';
     return;
   }
 
-  // Affichage principal : photo sélectionnée, sinon vidéo
   if (hasPhotos) {
     panel.media.innerHTML = '<img src="' + photos[index] + '" alt="' + c.name + '">';
   } else if (hasVideo) {
     panel.media.innerHTML = '<iframe src="' + c.video + '" allowfullscreen></iframe>';
   }
 
-  // Galerie de vignettes (photos + une vignette "vidéo" si présente)
+  // Vignettes seulement s'il y a plusieurs photos (ou une vidéo)
   let thumbs = '';
-  photos.forEach((p, i) => {
-    thumbs += '<img class="cp-thumb' + (i === index ? ' active' : '') +
-      '" src="' + p + '" alt="' + c.name + ' ' + (i + 1) + '" onclick="selectThumb(\'' +
-      encodeURIComponent(c.name) + '\',' + i + ')">';
-  });
+  if (photos.length > 1) {
+    photos.forEach((p, i) => {
+      thumbs += '<img class="cp-thumb' + (i === index ? ' active' : '') +
+        '" src="' + p + '" alt="' + c.name + ' ' + (i + 1) + '" onclick="selectThumb(\'' +
+        encodeURIComponent(c.name) + '\',' + i + ')">';
+    });
+  }
   if (hasVideo) {
-    thumbs += '<div class="cp-thumb active-video" style="display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--gold)" onclick="playVideo(\'' +
+    thumbs += '<div class="cp-thumb" style="display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--gold)" onclick="playVideo(\'' +
       encodeURIComponent(c.name) + '\')">▶</div>';
   }
   panel.gallery.innerHTML = thumbs;
 }
 
+let currentIso = null;
+
 function selectCountry(c) {
+  currentIso = c.iso;
   panel.region.textContent = c.region;
   panel.name.innerHTML = c.name;
   panel.text.textContent = c.note || regionBlurb[c.region] || '';
   panel.hint.style.display = 'none';
-  renderMedia(c, 0);
+
+  // Pas de vraie photo ni vidéo → on tente une photo libre Wikimedia
+  if (!(c.photos && c.photos.length) && !c.video && !c._wiki && wikiTopic[c.iso]) {
+    c._wikiLoading = true;
+    renderMedia(c, 0);
+    loadWikiPhoto(c);
+  } else {
+    renderMedia(c, 0);
+  }
   panel.media.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Récupère une image libre (Wikimedia Commons) via l'API Wikipédia — sans filigrane
+function loadWikiPhoto(c) {
+  const url = 'https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*' +
+    '&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=900&titles=' +
+    encodeURIComponent(wikiTopic[c.iso]);
+  fetch(url)
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(d => {
+      c._wikiLoading = false;
+      const pages = d && d.query && d.query.pages;
+      const page = pages && Object.values(pages)[0];
+      const src = page && page.thumbnail && page.thumbnail.source;
+      if (src) c._wiki = src;
+      if (currentIso === c.iso) renderMedia(c, 0);
+    })
+    .catch(() => { c._wikiLoading = false; if (currentIso === c.iso) renderMedia(c, 0); });
 }
 
 // Helpers galerie (retrouvent le pays par nom)
