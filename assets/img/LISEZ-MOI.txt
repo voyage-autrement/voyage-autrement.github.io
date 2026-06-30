@@ -1,0 +1,26 @@
+📸 AJOUTER DES PHOTOS / VIDÉOS À LA CARTE INTERACTIVE
+=====================================================
+
+1. Déposez vos photos dans ce dossier (assets/img/).
+   Exemple : japon-1.jpg, japon-2.jpg, bresil-1.jpg ...
+   Conseil : format paysage, environ 1200 px de large, < 400 Ko par image.
+
+2. Ouvrez index.html et trouvez la liste « const countries = [ ... ] »
+   (vers le bas du fichier, dans la section CARTE INTERACTIVE).
+
+3. Sur la ligne du pays voulu, ajoutez les champs photos / video / note :
+
+   { name:'Japon', region:'Asie', coords:[37.5,138.5],
+     photos:['assets/img/japon-1.jpg','assets/img/japon-2.jpg'],
+     video:'https://www.youtube.com/embed/XXXXXXXXXXX',
+     note:'Entre temples millénaires et néons de Tokyo, un dépaysement total.' },
+
+   • photos : une ou plusieurs images (galerie de vignettes automatique)
+   • video  : lien « Intégrer » YouTube/Vimeo (facultatif) — un bouton ▶ apparaît
+   • note   : petite phrase qui donne envie de partir (facultatif)
+
+4. Enregistrez. Au clic sur le pays, le panneau de droite affiche
+   automatiquement les photos, la vidéo et le texte.
+
+Astuce vidéo YouTube : sur la vidéo → Partager → Intégrer →
+copiez l'URL qui ressemble à https://www.youtube.com/embed/XXXXXXXXXXX

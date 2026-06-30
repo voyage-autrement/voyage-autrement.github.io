@@ -1,0 +1,2657 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voyager Autrement · Guides de voyage composés sur mesure</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+:root {
+  --cream: #FAF7F2;
+  --warm-white: #FDF9F4;
+  --sand: #E8DDD0;
+  --terra: #C4956A;
+  --terra-dark: #A0744A;
+  --forest: #2D4A3E;
+  --forest-light: #3D6154;
+  --ink: #1A1A18;
+  --muted: #7A7570;
+  --gold: #C9A96E;
+  --gold-light: #E8D5A8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  transition: all 0.4s ease;
+}
+
+nav.scrolled {
+  background: rgba(45,74,62,0.97);
+  backdrop-filter: blur(12px);
+  padding: 14px 48px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--cream);
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--gold); font-style: italic; }
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(250,247,242,0.75);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+.nav-cta {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--forest) !important;
+  background: var(--gold);
+  padding: 10px 22px;
+  transition: background 0.25s !important;
+}
+
+.nav-cta:hover { background: var(--terra) !important; color: white !important; }
+
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.nav-burger span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--cream);
+  transition: all 0.3s;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+  background: var(--forest);
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 64px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--forest) 0%, transparent 40%);
+  z-index: 1;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  filter: saturate(0.8);
+}
+
+/* Unsplash placeholder via CSS gradient */
+.hero-img-placeholder {
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(160deg, rgba(45,74,62,0.3) 0%, transparent 50%),
+    linear-gradient(to bottom, #1a3028 0%, #2d5a3d 30%, #4a7c5a 60%, #6b9e7a 80%, #8cbf9a 100%);
+  position: relative;
+}
+
+.hero-img-placeholder::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(45,74,62,0.6), transparent);
+}
+
+.hero-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 0.3s;
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 5.5vw, 86px);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--cream);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 0.5s;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+}
+
+.hero-sub {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(250,247,242,0.6);
+  line-height: 1.8;
+  max-width: 400px;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 0.7s;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 0.9s;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: var(--forest);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 15px 32px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover { background: var(--terra); color: white; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--cream);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 15px 32px;
+  text-decoration: none;
+  border: 1px solid rgba(250,247,242,0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(250,247,242,0.1);
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 1.1s;
+}
+
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--gold);
+  display: block;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(250,247,242,0.45);
+  margin-top: 6px;
+  display: block;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 64px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 1.3s;
+  z-index: 2;
+}
+
+.scroll-line-h {
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.scroll-text {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(250,247,242,0.4);
+}
+
+/* ─── DESTINATIONS TICKER ─── */
+.ticker {
+  background: var(--gold);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-inner {
+  display: inline-flex;
+  gap: 0;
+  animation: ticker 25s linear infinite;
+}
+
+.ticker-item {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--forest);
+  padding: 0 32px;
+}
+
+.ticker-dot {
+  color: var(--forest);
+  opacity: 0.4;
+}
+
+/* ─── ABOUT ─── */
+.about {
+  padding: 120px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-left: 64px;
+  padding-right: 64px;
+  align-items: center;
+}
+
+.about-img-wrap {
+  position: relative;
+  padding-right: 64px;
+}
+
+.about-img-frame {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: linear-gradient(145deg, var(--forest) 0%, var(--forest-light) 60%, var(--terra-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-img-frame::before {
+  content: 'R';
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 280px;
+  font-weight: 300;
+  color: rgba(201,169,110,0.08);
+  line-height: 1;
+}
+
+.about-img-frame::after {
+  content: '';
+  position: absolute;
+  inset: 24px;
+  border: 1px solid rgba(201,169,110,0.2);
+}
+
+.about-img-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-initials {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 96px;
+  font-weight: 300;
+  color: rgba(201,169,110,0.5);
+  font-style: italic;
+}
+
+.about-tag-photo {
+  position: absolute;
+  bottom: -20px;
+  right: 40px;
+  background: var(--gold);
+  padding: 14px 20px;
+}
+
+.about-tag-photo p {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--forest);
+  line-height: 1.4;
+}
+
+.about-deco-line {
+  position: absolute;
+  top: 40px;
+  left: -20px;
+  width: 1px;
+  height: 120px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+}
+
+.about-content { padding-left: 32px; }
+
+.section-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--terra);
+  display: block;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 4vw, 58px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--forest);
+  margin-bottom: 28px;
+}
+
+.section-title em { font-style: italic; color: var(--terra); }
+
+.about-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.about-text strong { color: var(--ink); font-weight: 500; }
+
+.about-signature {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--sand);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.sig-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-style: italic;
+  color: var(--forest);
+}
+
+.sig-role {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ─── SERVICES ─── */
+.services {
+  background: var(--forest);
+  padding: 100px 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(201,169,110,0.08) 0%, transparent 60%);
+}
+
+.services-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 64px;
+}
+
+.services-header .section-tag { color: var(--gold); }
+.services-header .section-title { color: var(--cream); margin-bottom: 0; }
+.services-header .section-title em { color: var(--gold); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.service-item {
+  background: rgba(250,247,242,0.04);
+  border: 1px solid rgba(250,247,242,0.08);
+  padding: 40px 32px;
+  transition: all 0.35s ease;
+  cursor: default;
+}
+
+.service-item:hover {
+  background: rgba(201,169,110,0.1);
+  border-color: rgba(201,169,110,0.3);
+  transform: translateY(-4px);
+}
+
+.service-icon {
+  font-size: 32px;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.service-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 300;
+  color: rgba(201,169,110,0.12);
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  line-height: 1;
+}
+
+.service-item { position: relative; }
+
+.service-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.service-desc {
+  font-size: 13px;
+  color: rgba(250,247,242,0.5);
+  line-height: 1.7;
+}
+
+/* ─── OFFERS ─── */
+.offers {
+  padding: 120px 64px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.offers-header { text-align: center; margin-bottom: 72px; }
+.offers-header .section-desc {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 500px;
+  margin: 16px auto 0;
+  line-height: 1.7;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.card {
+  background: var(--warm-white);
+  border: 1px solid var(--sand);
+  padding: 40px 32px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 32px 80px rgba(45,74,62,0.12);
+}
+
+.card.featured {
+  background: var(--forest);
+  border-color: var(--forest);
+  transform: scale(1.04);
+}
+
+.card.featured:hover {
+  transform: scale(1.04) translateY(-8px);
+  box-shadow: 0 32px 80px rgba(45,74,62,0.3);
+}
+
+.card-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--forest);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 5px 18px;
+  white-space: nowrap;
+}
+
+.card-tier {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--terra);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.card.featured .card-tier { color: var(--gold); }
+
+.card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: var(--forest);
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+
+.card.featured .card-name { color: var(--cream); }
+
+.card-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+  min-height: 42px;
+}
+
+.card.featured .card-tagline { color: rgba(250,247,242,0.55); }
+
+.card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--sand);
+}
+
+.card.featured .card-price { border-bottom-color: rgba(250,247,242,0.12); }
+
+.price-currency {
+  font-size: 20px;
+  color: var(--muted);
+  align-self: flex-start;
+  margin-top: 12px;
+}
+
+.card.featured .price-currency { color: rgba(250,247,242,0.4); }
+
+.price-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 60px;
+  font-weight: 300;
+  color: var(--forest);
+  line-height: 1;
+}
+
+.card.featured .price-amount { color: var(--gold); }
+
+.price-note {
+  font-size: 12px;
+  color: var(--muted);
+  align-self: flex-end;
+  margin-bottom: 8px;
+}
+
+.card.featured .price-note { color: rgba(250,247,242,0.35); }
+
+.features {
+  list-style: none;
+  margin-bottom: 32px;
+}
+
+.features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--ink);
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(232,221,208,0.5);
+  line-height: 1.5;
+}
+
+.card.featured .features li {
+  color: rgba(250,247,242,0.82);
+  border-bottom-color: rgba(250,247,242,0.08);
+}
+
+.features li:last-child { border-bottom: none; }
+
+.chk {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.card-btn {
+  display: block;
+  width: 100%;
+  padding: 15px 24px;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--forest);
+  color: var(--forest);
+}
+.btn-outline:hover { background: var(--forest); color: var(--cream); }
+
+.btn-solid {
+  background: var(--gold);
+  color: var(--forest);
+}
+.btn-solid:hover { background: var(--terra); color: white; }
+
+.pricing-note {
+  background: var(--sand);
+  border-left: 3px solid var(--terra);
+  padding: 20px 28px;
+  margin-top: 48px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.pricing-note strong { color: var(--forest); }
+
+/* ─── TESTIMONIAL ─── */
+.testimonial {
+  background: var(--ink);
+  padding: 100px 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 300px;
+  color: rgba(201,169,110,0.06);
+  line-height: 1;
+  font-style: italic;
+}
+
+.testimonial-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  max-width: 800px;
+  margin: 0 auto 32px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.testimonial-author {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ─── FORM ─── */
+.form-section {
+  background: var(--forest);
+  padding: 120px 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(196,149,106,0.1) 0%, transparent 60%);
+}
+
+.form-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.form-section .section-tag { color: var(--gold); }
+.form-section .section-title { color: var(--cream); }
+.form-section .section-title em { color: var(--gold); }
+.form-section .section-desc { font-size: 15px; color: rgba(250,247,242,0.5); margin-top: 12px; line-height: 1.7; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group.full { grid-column: 1 / -1; }
+
+.form-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.form-input, .form-select, .form-textarea {
+  background: rgba(250,247,242,0.06);
+  border: 1px solid rgba(250,247,242,0.12);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color 0.3s, background 0.3s;
+  -webkit-appearance: none;
+}
+
+.form-input::placeholder, .form-textarea::placeholder { color: rgba(250,247,242,0.25); }
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--gold);
+  background: rgba(250,247,242,0.09);
+}
+
+.form-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A96E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.form-select option { background: var(--forest); color: var(--cream); }
+.form-textarea { resize: vertical; min-height: 100px; }
+
+.radio-group { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: rgba(250,247,242,0.7);
+  padding: 11px 14px;
+  border: 1px solid rgba(250,247,242,0.08);
+  transition: all 0.2s;
+}
+
+.radio-item:hover { border-color: rgba(201,169,110,0.4); color: var(--gold); }
+
+.radio-item input[type="radio"] {
+  width: 16px; height: 16px;
+  appearance: none;
+  border: 1px solid rgba(250,247,242,0.3);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.radio-item input[type="radio"]:checked { border-color: var(--gold); }
+.radio-item input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.check-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: rgba(250,247,242,0.7);
+  transition: color 0.2s;
+}
+
+.check-item:hover { color: var(--gold); }
+
+.check-item input[type="checkbox"] {
+  width: 16px; height: 16px;
+  appearance: none;
+  border: 1px solid rgba(250,247,242,0.25);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.check-item input[type="checkbox"]:checked {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.check-item input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px; top: 1px;
+  width: 5px; height: 9px;
+  border: 1.5px solid var(--forest);
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+.submit-row { display: flex; justify-content: flex-end; margin-top: 32px; }
+
+.submit-btn {
+  background: var(--gold);
+  color: var(--forest);
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 17px 44px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.submit-btn:hover { background: var(--terra); color: white; }
+
+.success-msg { display: none; text-align: center; padding: 64px 24px; }
+.success-msg.visible { display: block; }
+.success-icon { font-size: 56px; margin-bottom: 20px; }
+.success-msg h3 { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: var(--gold); margin-bottom: 12px; }
+.success-msg p { color: rgba(250,247,242,0.55); font-size: 15px; }
+
+/* ─── CONTACT ─── */
+.contact {
+  padding: 100px 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.contact-info .section-title { margin-bottom: 32px; }
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.contact-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--terra);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.contact-value {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.contact-social { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--sand); }
+
+.social-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.social-links { display: flex; gap: 12px; }
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 16px;
+  transition: all 0.25s;
+}
+
+.social-link:hover { background: var(--forest); border-color: var(--forest); color: var(--cream); }
+
+.contact-map {
+  background: var(--sand);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-map::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 40%, var(--terra-dark) 100%);
+  opacity: 0.85;
+}
+
+.map-content {
+  position: relative;
+  text-align: center;
+}
+
+.map-pin { font-size: 48px; display: block; margin-bottom: 16px; }
+
+.map-city {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--cream);
+  font-style: italic;
+}
+
+.map-country {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 8px;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--ink);
+  padding: 48px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(250,247,242,0.06);
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--cream);
+  letter-spacing: 1px;
+}
+
+.footer-logo span { color: var(--gold); font-style: italic; }
+
+.footer-copy {
+  font-size: 11px;
+  color: rgba(250,247,242,0.3);
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.footer-links a {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(250,247,242,0.35);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--gold); }
+
+/* ─── FAQ ─── */
+.faq-section {
+  padding: 100px 64px;
+  background: var(--warm-white);
+  border-top: 1px solid var(--sand);
+}
+
+.faq-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.faq-header { text-align: center; margin-bottom: 56px; }
+
+.faq-item {
+  border-bottom: 1px solid var(--sand);
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 24px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--forest);
+  text-align: left;
+  gap: 16px;
+  transition: color 0.2s;
+}
+
+.faq-question:hover { color: var(--terra); }
+
+.faq-icon {
+  font-size: 22px;
+  color: var(--gold);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.faq-answer-inner {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  padding-bottom: 24px;
+}
+
+.faq-answer-inner strong { color: var(--forest); }
+
+.faq-item.open .faq-answer { max-height: 400px; }
+
+.faq-highlight {
+  background: var(--sand);
+  border-left: 3px solid var(--terra);
+  padding: 14px 18px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--forest);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .faq-section { padding: 80px 28px; }
+}
+
+/* ─── ACCOMPAGNEMENT ─── */
+.accompagnement {
+  background: var(--forest);
+  padding: 120px 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.accompagnement::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 80% at 10% 50%, rgba(201,169,110,0.1) 0%, transparent 60%);
+}
+
+.accomp-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+}
+
+.accomp-content .section-tag { color: var(--gold); }
+.accomp-content .section-title { color: var(--cream); margin-bottom: 28px; }
+.accomp-content .section-title em { color: var(--gold); }
+
+.accomp-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: rgba(250,247,242,0.6);
+  margin-bottom: 20px;
+}
+
+.accomp-text strong { color: var(--cream); }
+
+.accomp-features {
+  list-style: none;
+  margin: 32px 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accomp-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  font-size: 14px;
+  color: rgba(250,247,242,0.75);
+  line-height: 1.5;
+}
+
+.accomp-features li .af-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(201,169,110,0.15);
+  border: 1px solid rgba(201,169,110,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.accomp-visual {
+  position: relative;
+}
+
+.accomp-card {
+  background: rgba(250,247,242,0.04);
+  border: 1px solid rgba(201,169,110,0.2);
+  padding: 48px 40px;
+  text-align: center;
+  position: relative;
+}
+
+.accomp-card::before {
+  content: '✦';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--forest);
+  padding: 0 12px;
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.accomp-price-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 16px;
+}
+
+.accomp-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.accomp-price-sub {
+  font-size: 13px;
+  color: rgba(250,247,242,0.4);
+  margin-bottom: 32px;
+}
+
+.accomp-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+  margin-bottom: 36px;
+}
+
+.accomp-step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  color: rgba(250,247,242,0.65);
+  padding: 12px 16px;
+  background: rgba(250,247,242,0.03);
+  border-left: 2px solid rgba(201,169,110,0.3);
+}
+
+.accomp-step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--gold);
+  flex-shrink: 0;
+  width: 24px;
+}
+
+@media (max-width: 900px) {
+  .accompagnement { padding: 80px 28px; }
+  .accomp-inner { grid-template-columns: 1fr; gap: 48px; }
+}
+
+/* ─── MES VOYAGES / CARTE ─── */
+.voyages {
+  padding: 120px 64px;
+  background: var(--warm-white);
+  border-top: 1px solid var(--sand);
+  position: relative;
+}
+
+.voyages-header { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+.voyages-header .section-desc {
+  font-size: 15px;
+  color: var(--muted);
+  margin-top: 16px;
+  line-height: 1.7;
+}
+
+.voyages-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+.voyages-stats .vs-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 300;
+  color: var(--terra);
+  display: block;
+  line-height: 1;
+}
+.voyages-stats .vs-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 6px;
+  display: block;
+}
+
+.voyages-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 28px;
+  max-width: 1300px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+#worldmap {
+  height: 560px;
+  width: 100%;
+  border: 1px solid var(--sand);
+  background: #aadaff;
+  z-index: 1;
+}
+
+/* Leaflet overrides to match brand */
+.leaflet-container { font-family: 'DM Sans', sans-serif; background: #dbeafe; }
+.leaflet-popup-content-wrapper {
+  border-radius: 0;
+  background: var(--forest);
+  color: var(--cream);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+.leaflet-popup-content { margin: 14px 18px; }
+.leaflet-popup-tip { background: var(--forest); }
+.leaflet-popup-content b {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--gold);
+}
+.lp-link {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 8px;
+  border-bottom: 1px solid var(--gold);
+}
+.country-dot {
+  background: var(--terra);
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(196,149,106,0.4);
+}
+
+.country-panel {
+  background: var(--forest);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 560px;
+}
+.cp-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(145deg, var(--forest-light) 0%, var(--terra-dark) 100%);
+  overflow: hidden;
+}
+.cp-media img, .cp-media iframe, .cp-media video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border: none;
+  display: block;
+}
+.cp-media-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 24px;
+}
+.cp-media-placeholder .cp-emoji { font-size: 44px; }
+.cp-media-placeholder p {
+  font-size: 12px;
+  color: rgba(250,247,242,0.6);
+  letter-spacing: 1px;
+  line-height: 1.6;
+  max-width: 240px;
+}
+.cp-gallery {
+  display: flex;
+  gap: 8px;
+  padding: 12px 24px 0;
+  flex-wrap: wrap;
+}
+.cp-thumb {
+  width: 56px; height: 44px;
+  object-fit: cover;
+  cursor: pointer;
+  opacity: 0.6;
+  border: 1px solid rgba(201,169,110,0.3);
+  transition: opacity 0.2s;
+}
+.cp-thumb:hover, .cp-thumb.active { opacity: 1; }
+.cp-body { padding: 28px 28px 32px; flex: 1; }
+.cp-region {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 10px;
+}
+.cp-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+.cp-name em { font-style: italic; color: var(--gold); }
+.cp-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(250,247,242,0.65);
+}
+.cp-hint {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(250,247,242,0.1);
+  font-size: 12px;
+  color: rgba(250,247,242,0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ─── AVIS CLIENTS ─── */
+.avis {
+  padding: 120px 64px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.avis-header { text-align: center; margin-bottom: 64px; }
+.avis-header .section-desc {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 16px auto 0;
+  line-height: 1.7;
+}
+.avis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.avis-card {
+  background: var(--warm-white);
+  border: 1px solid var(--sand);
+  padding: 36px 34px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.avis-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 60px rgba(45,74,62,0.1);
+}
+.avis-quote-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px;
+  line-height: 0.6;
+  color: var(--gold);
+  opacity: 0.45;
+  display: block;
+  height: 30px;
+}
+.avis-stars { color: var(--gold); font-size: 15px; letter-spacing: 3px; margin: 14px 0 18px; }
+.avis-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink);
+  font-style: italic;
+  margin-bottom: 24px;
+}
+.avis-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sand);
+}
+.avis-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.avis-name { font-size: 14px; font-weight: 600; color: var(--forest); }
+.avis-trip {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-top: 3px;
+}
+
+@media (max-width: 900px) {
+  .voyages { padding: 80px 24px; }
+  .voyages-layout { grid-template-columns: 1fr; }
+  #worldmap { height: 380px; }
+  .country-panel { min-height: auto; }
+  .voyages-stats { gap: 28px; }
+  .avis { padding: 80px 24px; }
+  .avis-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 18px 24px; }
+  nav.scrolled { padding: 12px 24px; }
+  .nav-links, .nav-cta { display: none; }
+  .nav-burger { display: flex; }
+
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .hero-left { padding: 100px 28px 60px; }
+
+  .about { grid-template-columns: 1fr; padding: 80px 28px; }
+  .about-img-wrap { display: none; }
+  .about-content { padding-left: 0; }
+
+  .services { padding: 80px 28px; }
+  .services-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .services-grid { grid-template-columns: 1fr; }
+
+  .offers { padding: 80px 28px; }
+  .cards { grid-template-columns: 1fr; }
+  .card.featured { transform: none; }
+  .card.featured:hover { transform: translateY(-8px); }
+
+  .form-section { padding: 80px 28px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .check-group { grid-template-columns: 1fr; }
+
+  .contact { grid-template-columns: 1fr; padding: 80px 28px; gap: 48px; }
+  .contact-map { display: none; }
+
+  .testimonial { padding: 80px 28px; }
+
+  footer { flex-direction: column; gap: 20px; text-align: center; padding: 40px 28px; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+  .scroll-indicator { left: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Voyager <span>Autrement</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Mon histoire</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#offres">Mes offres</a></li>
+    <li><a href="#carte">Mes voyages</a></li>
+    <li><a href="#accompagnement">Accompagnement</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#formulaire" class="nav-cta">Commencer</a></li>
+  </ul>
+  <div class="nav-burger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Guides Voyage · Expériences Authentiques</p>
+    <h1>Voyager<br><em>Autrement.</em></h1>
+    <p class="hero-sub">Des guides composés sur mesure pour explorer le monde en profondeur — les vraies adresses, les vraies émotions, loin des sentiers battus.</p>
+    <div class="hero-actions">
+      <a href="#offres" class="btn-primary">Découvrir les offres</a>
+      <a href="#about" class="btn-ghost">Mon histoire</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">50+</span>
+        <span class="stat-label">Destinations</span>
+      </div>
+      <div>
+        <span class="stat-num">200+</span>
+        <span class="stat-label">Voyageurs</span>
+      </div>
+      <div>
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Sur mesure</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-placeholder"></div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line-h"></div>
+    <span class="scroll-text">Découvrir</span>
+  </div>
+</section>
+
+<!-- ─── TICKER ─── -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">Lac de Côme</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Kyoto</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Lisbonne</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Marrakech</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Santorini</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Buenos Aires</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Bali</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">New York</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Dubrovnik</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Séville</span><span class="ticker-dot">·</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">Lac de Côme</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Kyoto</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Lisbonne</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Marrakech</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Santorini</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Buenos Aires</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Bali</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">New York</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Dubrovnik</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Séville</span><span class="ticker-dot">·</span>
+  </div>
+</div>
+
+<!-- ─── ABOUT ─── -->
+<section class="about" id="about">
+  <div class="about-img-wrap reveal">
+    <div class="about-deco-line"></div>
+    <div class="about-img-frame">
+      <div class="about-img-inner">
+        <span class="about-initials">RL</span>
+      </div>
+    </div>
+    <div class="about-tag-photo">
+      <p>Fondateur<br>Voyager Autrement</p>
+    </div>
+  </div>
+  <div class="about-content reveal">
+    <span class="section-tag">Mon histoire</span>
+    <h2 class="section-title">Né d'une passion,<br><em>guidé par l'envie.</em></h2>
+    <p class="about-text">Je suis <strong>Renaud Lauret</strong>, fondateur de Voyager Autrement. J'ai toujours voyagé depuis tout petit. Je me souviens encore de ces trains traversant la France jusqu'en Bretagne, de l'île de la Réunion, et de cette adrénaline du matin quand on prenait les bagages.</p>
+    <p class="about-text">Ce que je ressentais alors — cette <strong>excitation pure, sans la charge de l'organisation</strong> — c'est exactement ce que je veux vous offrir. Des guides qui vous permettent de ne vivre que la magie du voyage, sans vous perdre dans des centaines de sites à comparer.</p>
+    <p class="about-text">Voyager Autrement, c'est une invitation à explorer le monde <strong>différemment, authentiquement</strong>, avec les bonnes adresses et les vrais moments. À découvrir des <strong>lieux inoubliables</strong> que vous n'auriez jamais trouvés seul — grâce à mes guides ou à mon accompagnement.</p>
+    <div class="about-signature">
+      <div>
+        <div class="sig-name">Renaud Lauret</div>
+        <div class="sig-role">Fondateur · Concepteur de voyages · Toulouse</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-header reveal">
+      <div>
+        <span class="section-tag">Ce que je propose</span>
+        <h2 class="section-title">Une approche<br><em>différente</em></h2>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-item reveal">
+        <span class="service-num">01</span>
+        <span class="service-icon">📖</span>
+        <h3 class="service-name">Guides PDF composés sur mesure</h3>
+        <p class="service-desc">Des guides complets, téléchargeables, construits à partir d'expériences réelles. Restos, visites, bons plans — tout y est, sans le superflu.</p>
+      </div>
+      <div class="service-item reveal">
+        <span class="service-num">02</span>
+        <span class="service-icon">📱</span>
+        <h3 class="service-name">Pages numériques dédiées</h3>
+        <p class="service-desc">Une page web personnalisée à votre voyage. Accessible sur mobile, partageable avec votre groupe, organisée par onglets interactifs.</p>
+      </div>
+      <div class="service-item reveal">
+        <span class="service-num">03</span>
+        <span class="service-icon">✨</span>
+        <h3 class="service-name">Expériences exclusives</h3>
+        <p class="service-desc">Adresses secrètes, réductions partenaires, verres offerts, moments romantiques peu connus. L'art de voyager autrement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── OFFERS ─── -->
+<section class="offers" id="offres">
+  <div class="offers-header reveal">
+    <span class="section-tag">Mes offres</span>
+    <h2 class="section-title">Choisissez votre<br><em>expérience</em></h2>
+    <p class="section-desc">Trois niveaux conçus pour s'adapter à chaque voyageur, de l'essentiel au premium.</p>
+  </div>
+
+  <div class="cards reveal">
+
+    <!-- CARD 1 -->
+    <div class="card">
+      <span class="card-tier">Essentiel</span>
+      <h3 class="card-name">Le Guide</h3>
+      <p class="card-tagline">Tout le nécessaire pour préparer votre voyage, au format PDF.</p>
+      <div class="card-price">
+        <span class="price-currency">€</span>
+        <span class="price-amount">100</span>
+        <span class="price-note">/ destination</span>
+      </div>
+      <ul class="features">
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Guide PDF complet & téléchargeable</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Sélection de restos, visites & activités</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Conseils pratiques & bons plans</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Mis à jour régulièrement</li>
+      </ul>
+      <a href="#formulaire" class="card-btn btn-outline">Choisir cette offre</a>
+    </div>
+
+    <!-- CARD 2 FEATURED -->
+    <div class="card featured">
+      <div class="card-badge">⭐ Le plus populaire</div>
+      <span class="card-tier">Expérience</span>
+      <h3 class="card-name">Le Passeport</h3>
+      <p class="card-tagline">PDF + une page numérique personnalisée, dédiée à votre voyage.</p>
+      <div class="card-price">
+        <span class="price-currency">€</span>
+        <span class="price-amount">200</span>
+        <span class="price-note">/ destination</span>
+      </div>
+      <ul class="features">
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C9A96E" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/></svg>Tout l'Essentiel inclus</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C9A96E" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/></svg>Page d'accueil personnalisée à votre voyage</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C9A96E" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/></svg>Onglets interactifs : Restos · Visites · Activités</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C9A96E" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/></svg>Accessible sur mobile, partageable avec le groupe</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C9A96E" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/></svg>Accès pendant toute la durée du séjour</li>
+      </ul>
+      <a href="#formulaire" class="card-btn btn-solid">Choisir cette offre</a>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="card">
+      <span class="card-tier">Premium</span>
+      <h3 class="card-name">L'Exclusif</h3>
+      <p class="card-tagline">L'expérience complète, avec offres partenaires & adresses secrètes.</p>
+      <div class="card-price">
+        <span class="price-currency">€</span>
+        <span class="price-amount">400</span>
+        <span class="price-note">/ destination</span>
+      </div>
+      <ul class="features">
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Tout Le Guide + Le Passeport inclus</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>2 verres de vin offerts (partenaires sélectionnés)</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Réductions hôtels & expériences exclusives</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Adresses secrètes & moments romantiques peu connus</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Contact direct avec moi — disponible 9h à 18h</li>
+      </ul>
+      <a href="#formulaire" class="card-btn btn-outline">Choisir cette offre</a>
+    </div>
+
+  </div>
+
+  <div class="pricing-note reveal">
+    ⏳ <strong>Voyage sur mesure :</strong> Chaque guide est construit spécifiquement pour vous — je contacte personnellement chaque prestataire pour garantir la meilleure expérience. Prévoyez <strong>minimum 3 semaines à l'avance</strong> pour profiter de toutes les prestations. Une demande urgente (moins d'une semaine) reste possible, mais certaines options exclusives ne pourront pas être garanties.
+  </div>
+</section>
+
+<!-- ─── TESTIMONIAL ─── -->
+<div class="testimonial">
+  <p class="testimonial-quote reveal">"Grâce au guide, j'ai découvert des endroits que je n'aurais jamais trouvés seule. Le Lac de Côme comme je l'avais toujours imaginé."</p>
+  <span class="testimonial-author reveal">— Sophie M. · Lac de Côme, Italie</span>
+</div>
+
+<!-- ─── FORM ─── -->
+<section class="form-section" id="formulaire">
+  <div class="form-inner">
+    <div class="reveal">
+      <span class="section-tag">Votre voyage</span>
+      <h2 class="section-title">Parlez-moi de<br><em>votre projet</em></h2>
+      <p class="section-desc">Quelques questions pour vous proposer le guide le plus adapté à votre aventure.</p>
+    </div>
+
+    <div id="formContainer">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Prénom & Nom</label>
+          <input type="text" class="form-input" placeholder="Marie Dupont" id="fname">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="marie@email.com" id="femail">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Destination</label>
+          <input type="text" class="form-input" placeholder="Ex : Lac de Côme, Italie" id="fdestination">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date de départ</label>
+          <input type="date" class="form-input" id="fdate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Durée du séjour</label>
+          <select class="form-select" id="fduree">
+            <option value="" disabled selected>Choisir...</option>
+            <option>1 à 3 jours</option>
+            <option>4 à 7 jours</option>
+            <option>1 à 2 semaines</option>
+            <option>Plus de 2 semaines</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nombre de voyageurs</label>
+          <select class="form-select" id="fpersonnes">
+            <option value="" disabled selected>Choisir...</option>
+            <option>1 personne</option>
+            <option>2 personnes</option>
+            <option>3 à 5 personnes</option>
+            <option>6 personnes et plus</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Type de voyage</label>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="ftype" value="famille"> 👨‍👩‍👧 En famille</label>
+            <label class="radio-item"><input type="radio" name="ftype" value="amis"> 👫 Entre amis</label>
+            <label class="radio-item"><input type="radio" name="ftype" value="couple"> 💑 En couple / romantique</label>
+            <label class="radio-item"><input type="radio" name="ftype" value="solo"> 🧳 Solo</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Style de voyage préféré</label>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="fstyle" value="detente"> 🌿 Détente & farniente</label>
+            <label class="radio-item"><input type="radio" name="fstyle" value="culture"> 🏛️ Visites culturelles & patrimoine</label>
+            <label class="radio-item"><input type="radio" name="fstyle" value="immersion"> 🫶 Immersion locale & authenticité</label>
+            <label class="radio-item"><input type="radio" name="fstyle" value="aventure"> 🥾 Aventure & plein air</label>
+            <label class="radio-item"><input type="radio" name="fstyle" value="mixte"> ✨ Un mélange de tout !</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Ce que vous aimez faire en voyage</label>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" value="gastronomie"> 🍽️ Gastronomie locale</label>
+            <label class="check-item"><input type="checkbox" value="rando"> 🥾 Randonnées / nature</label>
+            <label class="check-item"><input type="checkbox" value="nautique"> ⛵ Activités nautiques</label>
+            <label class="check-item"><input type="checkbox" value="shopping"> 🛍️ Shopping & marchés</label>
+            <label class="check-item"><input type="checkbox" value="musees"> 🎨 Musées & galeries</label>
+            <label class="check-item"><input type="checkbox" value="spa"> 💆 Spa & bien-être</label>
+            <label class="check-item"><input type="checkbox" value="photo"> 📸 Photographie</label>
+            <label class="check-item"><input type="checkbox" value="nightlife"> 🎶 Vie nocturne</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Offre souhaitée</label>
+          <select class="form-select" id="foffre">
+            <option value="" disabled selected>Choisir une offre...</option>
+            <option>Le Guide – PDF (100€)</option>
+            <option>Le Passeport – PDF & page numérique (200€)</option>
+            <option>L'Exclusif – Premium complet (400€)</option>
+            <option>Voyage en accompagnement – Sur devis</option>
+            <option>Je ne sais pas encore, conseille-moi !</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Envies particulières ou questions ?</label>
+          <textarea class="form-textarea" placeholder="Dites-moi tout ce qui pourrait m'aider à personnaliser votre guide..." id="fmessage"></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Comment m'avez-vous connu ?</label>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="fsource" value="instagram"> 📸 Instagram</label>
+            <label class="radio-item"><input type="radio" name="fsource" value="facebook"> 📘 Facebook</label>
+            <label class="radio-item"><input type="radio" name="fsource" value="bouche"> 🗣️ Bouche à oreille / recommandation</label>
+            <label class="radio-item"><input type="radio" name="fsource" value="google"> 🔍 Recherche Google</label>
+            <label class="radio-item"><input type="radio" name="fsource" value="autre"> ✨ Autre</label>
+          </div>
+        </div>
+      </div>
+      <div class="submit-row">
+        <button class="submit-btn" onclick="handleSubmit()">
+          Envoyer ma demande
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">✉️</div>
+      <h3>Message envoyé !</h3>
+      <p>Merci pour votre confiance. Je vous reviens très vite avec votre guide personnalisé.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ACCOMPAGNEMENT ─── -->
+<section class="accompagnement" id="accompagnement">
+  <div class="accomp-inner">
+    <div class="accomp-content reveal">
+      <span class="section-tag">Nouveau</span>
+      <h2 class="section-title">Votre voyage<br><em>en accompagnement</em></h2>
+      <p class="accomp-text">Vous rêvez d'un voyage parfait, sans avoir à vous soucier d'une seule chose ? C'est exactement ce que je propose avec l'<strong>accompagnement personnalisé</strong> — une formule rare où je m'occupe de tout, de A à Z, pendant toute la durée de votre séjour.</p>
+      <p class="accomp-text">Je suis votre <strong>organisateur de voyage dédié</strong> : trajets, réservations, timing, imprévus, bonnes surprises… Vous n'avez qu'une seule mission — <strong>profiter</strong>.</p>
+      <ul class="accomp-features">
+        <li>
+          <span class="af-icon">🗓️</span>
+          <div>Organisation complète du séjour avant le départ — programme heure par heure, réservations confirmées, accès exclusifs négociés.</div>
+        </li>
+        <li>
+          <span class="af-icon">📍</span>
+          <div>Coordination de tous les trajets : transferts, transports locaux, logistique entre chaque étape.</div>
+        </li>
+        <li>
+          <span class="af-icon">📞</span>
+          <div>Contact direct avec moi disponible <strong>9h à 18h</strong> tout au long de votre voyage — je réponds, j'anticipe, je gère.</div>
+        </li>
+        <li>
+          <span class="af-icon">✨</span>
+          <div>Vérification de chaque réservation, gestion des imprévus, et ajustements en temps réel si nécessaire.</div>
+        </li>
+        <li>
+          <span class="af-icon">🎁</span>
+          <div>Surprises et attentions personnalisées intégrées au parcours — parce que les meilleurs voyages ont toujours une part d'inattendu.</div>
+        </li>
+      </ul>
+      <a href="#formulaire" class="btn-primary" style="display:inline-flex;">Me contacter pour un devis</a>
+    </div>
+
+    <div class="accomp-visual reveal">
+      <div class="accomp-card">
+        <span class="accomp-price-label">Tarification sur mesure</span>
+        <div class="accomp-price">Sur devis</div>
+        <div class="accomp-price-sub">Selon la destination, la durée & le groupe</div>
+        <div class="accomp-steps">
+          <div class="accomp-step">
+            <span class="accomp-step-num">1</span>
+            <span>Vous m'envoyez votre projet & vos envies</span>
+          </div>
+          <div class="accomp-step">
+            <span class="accomp-step-num">2</span>
+            <span>Je construis un programme complet & personnalisé</span>
+          </div>
+          <div class="accomp-step">
+            <span class="accomp-step-num">3</span>
+            <span>Je coordonne tout — avant et pendant le voyage</span>
+          </div>
+          <div class="accomp-step">
+            <span class="accomp-step-num">4</span>
+            <span>Vous vivez une expérience inoubliable, sans effort</span>
+          </div>
+        </div>
+        <a href="#formulaire" class="card-btn btn-solid" style="display:block;text-align:center;">Demander un accompagnement</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MES VOYAGES / CARTE INTERACTIVE ─── -->
+<section class="voyages" id="carte">
+  <div class="voyages-header reveal">
+    <span class="section-tag">Carnet de voyages</span>
+    <h2 class="section-title">Les pays que <em>j'ai explorés</em></h2>
+    <p class="section-desc">Chaque destination de cette carte, je l'ai vécue de l'intérieur. Cliquez sur un point pour découvrir le pays en images — et laissez-vous donner l'envie de partir.</p>
+    <div class="voyages-stats">
+      <div><span class="vs-num" id="statPays">0</span><span class="vs-label">Pays visités</span></div>
+      <div><span class="vs-num">5</span><span class="vs-label">Continents</span></div>
+      <div><span class="vs-num">∞</span><span class="vs-label">Souvenirs</span></div>
+    </div>
+  </div>
+  <div class="voyages-layout reveal">
+    <div id="worldmap"></div>
+    <aside class="country-panel" id="countryPanel">
+      <div class="cp-media" id="cpMedia">
+        <div class="cp-media-placeholder">
+          <span class="cp-emoji">🌍</span>
+          <p>Sélectionnez un pays sur la carte pour découvrir ses photos et sa vidéo.</p>
+        </div>
+      </div>
+      <div class="cp-gallery" id="cpGallery"></div>
+      <div class="cp-body">
+        <span class="cp-region" id="cpRegion">Partout dans le monde</span>
+        <h3 class="cp-name" id="cpName">Mon <em>tour du monde</em></h3>
+        <p class="cp-text" id="cpText">De l'Europe à l'Océanie, en passant par l'Amérique latine, l'Afrique et l'Asie — voici les terres qui ont façonné ma vision du voyage. Choisissez-en une pour en savoir plus.</p>
+        <div class="cp-hint" id="cpHint">👆 Cliquez sur un point doré de la carte</div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ─── AVIS CLIENTS ─── -->
+<section class="avis" id="avis">
+  <div class="avis-header reveal">
+    <span class="section-tag">Ils ont voyagé avec moi</span>
+    <h2 class="section-title">Ce que disent<br><em>mes voyageurs</em></h2>
+    <p class="section-desc">Des mots reçus après le voyage — les plus belles récompenses d'un guide.</p>
+  </div>
+  <div class="avis-grid">
+
+    <div class="avis-card reveal">
+      <span class="avis-quote-mark">"</span>
+      <div class="avis-stars">★★★★★</div>
+      <p class="avis-text">Coucou Renaud ! Merci pour ce merveilleux séjour, tu es un super guide, très attentionné, à l'écoute, toujours prêt à rendre service ! Tu as toujours été disponible, c'est vraiment sympa. Prends soin de toi, reste comme tu es, toujours le sourire et la bonne humeur. Bonne continuation !</p>
+      <div class="avis-author">
+        <div class="avis-avatar">S</div>
+        <div>
+          <div class="avis-name">Sandrine 🤩</div>
+          <div class="avis-trip">Place 32 dans le car</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="avis-card reveal">
+      <span class="avis-quote-mark">"</span>
+      <div class="avis-stars">★★★★★</div>
+      <p class="avis-text">Nous garderons un très bon souvenir de ce séjour en Camargue. De beaux sites visités, des journées et soirées très animées. Un grand merci à Soula et Renaud pour leur grand professionnalisme. La bonne humeur était au rendez-vous. Ola…</p>
+      <div class="avis-author">
+        <div class="avis-avatar">C</div>
+        <div>
+          <div class="avis-name">Le groupe de Camargue</div>
+          <div class="avis-trip">Séjour en Camargue</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="avis-card reveal">
+      <span class="avis-quote-mark">"</span>
+      <div class="avis-stars">★★★★★</div>
+      <p class="avis-text">Merci encore Renaud. Nous avons beaucoup apprécié ce voyage en ta compagnie. Nous ne pourrons pas oublier un tel accompagnateur, en espérant te croiser à nouveau lors d'un autre voyage.</p>
+      <div class="avis-author">
+        <div class="avis-avatar">M</div>
+        <div>
+          <div class="avis-name">Michel &amp; Marie</div>
+          <div class="avis-trip">Séjour en Camargue</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="avis-card reveal">
+      <span class="avis-quote-mark">"</span>
+      <div class="avis-stars">★★★★★</div>
+      <p class="avis-text">On gardera un bon souvenir de ce voyage en Camargue, avec un guide, Renaud, très dynamique et à l'écoute de tous, et un chauffeur très bien. Un bon groupe ! Merci à toi Serge de nous avoir fait participer au voyage. À une prochaine fois.</p>
+      <div class="avis-author">
+        <div class="avis-avatar">M</div>
+        <div>
+          <div class="avis-name">Monique &amp; Dédé</div>
+          <div class="avis-trip">Séjour en Camargue</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div class="faq-header reveal">
+      <span class="section-tag">Questions fréquentes</span>
+      <h2 class="section-title">Tout ce que vous<br><em>souhaitez savoir</em></h2>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Combien de temps faut-il pour recevoir mon guide ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Chaque guide est construit entièrement sur mesure — je contacte personnellement chaque prestataire, vérifie les disponibilités et négocie des conditions exclusives pour vous. Ce travail de fond prend du temps, et c'est ce qui fait toute la différence avec un guide générique.
+          <div class="faq-highlight">
+            ⏳ <strong>Délai recommandé : minimum 3 semaines avant votre départ.</strong> C'est le temps nécessaire pour vous offrir une expérience complète et irréprochable.
+          </div>
+          <br>
+          Une demande urgente à <strong>moins d'une semaine</strong> du départ reste possible, mais certaines prestations exclusives (réservations partenaires, offres spéciales, accès privilégiés) ne pourront pas être garanties — je vous préciserai lesquelles selon votre destination au moment de votre demande.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Est-ce que le guide est vraiment personnalisé ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Absolument. Je ne travaille avec aucun template générique. Chaque guide est pensé en fonction de <strong>votre profil</strong> : votre style de voyage, vos envies, votre groupe, vos dates. Deux clients qui partent à Séville ne reçoivent jamais le même guide.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Comment se passe le paiement ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Après réception de votre demande, je vous recontacte sous <strong>2 à 3 jours ouvrés</strong> pour confirmer les détails et vous envoyer un lien de paiement sécurisé. Votre guide est ensuite livré dans les délais convenus.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Quelles destinations sont disponibles ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Je couvre plus de 50 destinations en Europe et dans le monde — des capitales comme Lisbonne, Séville ou Kyoto, aux destinations plus confidentielles. Si votre destination n'est pas dans la liste, <strong>contactez-moi quand même</strong> : je peux souvent m'adapter.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Que comprend exactement l'offre L'Exclusif ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          L'Exclusif inclut tout ce qui est dans Le Guide et Le Passeport, plus : des <strong>verres offerts</strong> chez des adresses partenaires sélectionnées, des <strong>réductions négociées</strong> sur certains hôtels et expériences, des <strong>adresses secrètes</strong> que vous ne trouverez nulle part en ligne, et des <strong>astuces insider</strong> transmises par mes contacts locaux. C'est l'offre pour ceux qui veulent vivre le voyage différemment, vraiment.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Mes guides PDF sont-ils protégés ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Oui. Chaque guide est <strong>nominatif et entièrement personnalisé</strong> : il porte votre nom, votre destination et vos dates, et il est conçu pour <em>votre</em> voyage uniquement — il n'a donc aucune valeur pour quelqu'un d'autre.
+          <div class="faq-highlight">
+            🔒 <strong>Protection à plusieurs niveaux :</strong> filigrane discret au nom du voyageur sur chaque page, identifiant unique permettant de tracer toute copie, et fichier livré verrouillé (copie, impression et modification restreintes). Le partage du guide reste sous votre seule responsabilité.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="contact">
+    <div class="contact-info reveal">
+      <span class="section-tag">Me retrouver</span>
+      <h2 class="section-title">Restons<br><em>en contact</em></h2>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <span class="contact-label">Adresse</span>
+          <span class="contact-value">10 Boulevard de Strasbourg<br>31000 Toulouse, France</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <span class="contact-label">Email</span>
+          <span class="contact-value">ypdt.info@gmail.com</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <span class="contact-label">Téléphone</span>
+          <span class="contact-value">(+1) 778 325 4204</span>
+        </div>
+      </div>
+      <div class="contact-social">
+        <span class="social-label">Suivre l'aventure</span>
+        <div class="social-links">
+          <a href="https://www.facebook.com/ypdtVoyage" target="_blank" class="social-link">f</a>
+          <a href="https://www.instagram.com/ypdt.voyageparfait/" target="_blank" class="social-link">ig</a>
+          <a href="https://twitter.com/YpdtVoyage" target="_blank" class="social-link">tw</a>
+        </div>
+      </div>
+    </div>
+    <div class="contact-map reveal">
+      <div class="map-content">
+        <span class="map-pin">📍</span>
+        <div class="map-city">Toulouse</div>
+        <div class="map-country">France · Depuis 2017</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">Voyager <span>Autrement</span></div>
+  <span class="footer-copy">© 2026 · Renaud Lauret · Tous droits réservés</span>
+  <ul class="footer-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#offres">Offres</a></li>
+    <li><a href="#formulaire">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+// NAV scroll effect
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// FAQ accordion
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Form submit via Formspree
+async function handleSubmit() {
+  const name = document.getElementById('fname').value.trim();
+  const email = document.getElementById('femail').value.trim();
+  if (!name || !email) {
+    alert('Merci de renseigner au minimum votre prénom et votre email 😊');
+    return;
+  }
+
+  // Récupérer toutes les valeurs
+  const destination = document.getElementById('fdestination').value;
+  const date = document.getElementById('fdate').value;
+  const duree = document.getElementById('fduree').value;
+  const personnes = document.getElementById('fpersonnes').value;
+  const offre = document.getElementById('foffre').value;
+  const message = document.getElementById('fmessage').value;
+  const typeVoyage = document.querySelector('input[name="ftype"]:checked')?.value || '';
+  const styleVoyage = document.querySelector('input[name="fstyle"]:checked')?.value || '';
+  const activites = [...document.querySelectorAll('input[type=checkbox]:checked')].map(c => c.value).join(', ');
+  const source = document.querySelector('input[name="fsource"]:checked')?.value || '';
+
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = 'Envoi en cours...';
+  btn.disabled = true;
+
+  try {
+    const response = await fetch('https://formspree.io/f/voyagerautrement', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        Nom: name,
+        Email: email,
+        Destination: destination,
+        'Date de départ': date,
+        Durée: duree,
+        Voyageurs: personnes,
+        'Type de voyage': typeVoyage,
+        'Style de voyage': styleVoyage,
+        Activités: activites,
+        Offre: offre,
+        'Comment connu': source,
+        Message: message
+      })
+    });
+
+    if (response.ok) {
+      document.getElementById('formContainer').style.display = 'none';
+      document.getElementById('successMsg').classList.add('visible');
+    } else {
+      throw new Error('Erreur serveur');
+    }
+  } catch (err) {
+    alert('Une erreur est survenue. Merci de m\'écrire directement à voyagerautrement@gmail.com 😊');
+    btn.textContent = 'Envoyer ma demande';
+    btn.disabled = false;
+  }
+}
+
+// Mobile menu toggle (basic)
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  if (links) {
+    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  }
+}
+</script>
+
+<!-- ─── CARTE INTERACTIVE (Leaflet) ─── -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+/* ════════════════════════════════════════════════════════════════
+   COMMENT AJOUTER VOS PHOTOS / VIDÉOS À UN PAYS
+   ─────────────────────────────────────────────────────────────────
+   1. Déposez vos images dans le dossier  assets/img/
+   2. Sur la ligne du pays concerné, complétez :
+        photos: ['assets/img/japon-1.jpg', 'assets/img/japon-2.jpg'],
+        video : 'https://www.youtube.com/embed/VOTRE_ID'   // (lien "intégrer")
+        note  : 'Votre petite phrase qui donne envie de partir.'
+   3. Sauvegardez : le panneau de droite affichera automatiquement
+      la galerie et la vidéo au clic sur le pays.
+   ════════════════════════════════════════════════════════════════ */
+
+const countries = [
+  // ── EUROPE ──
+  { name:'France', region:'Europe', coords:[46.6,2.4] },
+  { name:'Espagne', region:'Europe', coords:[40.2,-3.7] },
+  { name:'Portugal', region:'Europe', coords:[39.6,-8.0] },
+  { name:'Italie', region:'Europe', coords:[42.8,12.6] },
+  { name:'Allemagne', region:'Europe', coords:[51.1,10.4] },
+  { name:'Royaume-Uni', region:'Europe', coords:[53.5,-2.5] },
+  { name:'Irlande', region:'Europe', coords:[53.2,-8.0] },
+  { name:'Belgique', region:'Europe', coords:[50.6,4.6] },
+  { name:'Pays-Bas', region:'Europe', coords:[52.2,5.5] },
+  { name:'Luxembourg', region:'Europe', coords:[49.8,6.1] },
+  { name:'Suisse', region:'Europe', coords:[46.8,8.2] },
+  { name:'Autriche', region:'Europe', coords:[47.6,14.2] },
+  { name:'Pologne', region:'Europe', coords:[52.0,19.4] },
+  { name:'République tchèque', region:'Europe', coords:[49.8,15.5] },
+  { name:'Slovaquie', region:'Europe', coords:[48.7,19.7] },
+  { name:'Hongrie', region:'Europe', coords:[47.1,19.4] },
+  { name:'Slovénie', region:'Europe', coords:[46.1,14.8] },
+  { name:'Croatie', region:'Europe', coords:[45.1,15.5] },
+  { name:'Bosnie-Herzégovine', region:'Europe', coords:[44.0,17.8] },
+  { name:'Serbie', region:'Europe', coords:[44.0,21.0] },
+  { name:'Monténégro', region:'Europe', coords:[42.7,19.3] },
+  { name:'Albanie', region:'Europe', coords:[41.0,20.1] },
+  { name:'Macédoine du Nord', region:'Europe', coords:[41.6,21.7] },
+  { name:'Grèce', region:'Europe', coords:[39.0,22.5] },
+  { name:'Bulgarie', region:'Europe', coords:[42.7,25.3] },
+  { name:'Roumanie', region:'Europe', coords:[45.9,24.9] },
+  { name:'Moldavie', region:'Europe', coords:[47.2,28.5] },
+  { name:'Ukraine', region:'Europe', coords:[49.0,31.5] },
+  { name:'Lituanie', region:'Europe', coords:[55.3,23.9] },
+  { name:'Lettonie', region:'Europe', coords:[56.9,24.6] },
+  { name:'Estonie', region:'Europe', coords:[58.7,25.5] },
+  { name:'Finlande', region:'Europe', coords:[62.5,25.7] },
+  { name:'Suède', region:'Europe', coords:[62.0,15.0] },
+  { name:'Norvège', region:'Europe', coords:[61.5,8.5] },
+  { name:'Danemark', region:'Europe', coords:[56.0,9.5] },
+  { name:'Islande', region:'Europe', coords:[64.9,-18.5] },
+  { name:'Malte', region:'Europe', coords:[35.9,14.4] },
+  { name:'Chypre', region:'Europe', coords:[35.0,33.2] },
+  { name:'Monaco', region:'Europe', coords:[43.73,7.42] },
+  { name:'Andorre', region:'Europe', coords:[42.5,1.5] },
+  // ── AFRIQUE & OCÉAN INDIEN ──
+  { name:'Maroc', region:'Afrique', coords:[31.8,-7.1] },
+  { name:'Égypte', region:'Afrique', coords:[26.8,30.8] },
+  { name:'Madagascar', region:'Afrique', coords:[-19.0,46.7] },
+  { name:'Mayotte', region:'Océan Indien', coords:[-12.8,45.2] },
+  // ── AMÉRIQUES ──
+  { name:'Canada', region:'Amériques', coords:[56.0,-100.0] },
+  { name:'Mexique', region:'Amériques', coords:[23.0,-102.0] },
+  { name:'Panama', region:'Amériques', coords:[8.5,-80.0] },
+  { name:'Martinique', region:'Caraïbes', coords:[14.6,-61.0] },
+  { name:'République dominicaine', region:'Caraïbes', coords:[18.7,-70.2] },
+  { name:'Brésil', region:'Amériques', coords:[-12.0,-52.0] },
+  { name:'Pérou', region:'Amériques', coords:[-9.5,-75.0] },
+  { name:'Chili', region:'Amériques', coords:[-35.0,-71.0] },
+  { name:'Argentine', region:'Amériques', coords:[-38.0,-63.0] },
+  // ── ASIE ──
+  { name:'Thaïlande', region:'Asie', coords:[15.5,101.0] },
+  { name:'Vietnam', region:'Asie', coords:[16.0,107.8] },
+  { name:'Laos', region:'Asie', coords:[19.5,102.5] },
+  { name:'Philippines', region:'Asie', coords:[12.8,122.0] },
+  { name:'Chine', region:'Asie', coords:[35.0,104.0] },
+  { name:'Japon', region:'Asie', coords:[37.5,138.5] },
+  // ── OCÉANIE ──
+  { name:'Australie', region:'Océanie', coords:[-25.0,134.0] },
+  { name:'Nouvelle-Zélande', region:'Océanie', coords:[-41.5,173.0] },
+  { name:'Fidji', region:'Océanie', coords:[-17.8,178.0] }
+];
+
+// Phrase d'ambiance par défaut selon la région (si aucune "note" n'est définie)
+const regionBlurb = {
+  'Europe': "Des villages perchés aux grandes capitales, l'Europe se découvre à chaque détour. Un terrain de jeu infini, riche d'histoire et de saveurs.",
+  'Afrique': "Couleurs intenses, accueil chaleureux et paysages à couper le souffle — une terre qui marque profondément ceux qui la traversent.",
+  'Océan Indien': "Lagons turquoise et nature préservée : une parenthèse hors du temps, entre douceur de vivre et authenticité.",
+  'Amériques': "Des grands espaces aux villes vibrantes, un continent de contrastes où l'aventure se vit en grand.",
+  'Caraïbes': "Plages de carte postale, rythmes ensoleillés et art de vivre créole — l'évasion à l'état pur.",
+  'Asie': "Temples, marchés parfumés et hospitalité légendaire : un dépaysement total à chaque pas.",
+  'Océanie': "Au bout du monde, des paysages grandioses et une nature reine — l'impression de tout recommencer."
+};
+
+// Initialisation de la carte
+const map = L.map('worldmap', {
+  scrollWheelZoom: false,
+  worldCopyJump: true,
+  minZoom: 2
+}).setView([25, 15], 2);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap &copy; CARTO',
+  maxZoom: 18
+}).addTo(map);
+
+// Active le zoom molette seulement après un clic (UX)
+map.on('click', () => map.scrollWheelZoom.enable());
+
+const panel = {
+  media: document.getElementById('cpMedia'),
+  gallery: document.getElementById('cpGallery'),
+  region: document.getElementById('cpRegion'),
+  name: document.getElementById('cpName'),
+  text: document.getElementById('cpText'),
+  hint: document.getElementById('cpHint')
+};
+
+function renderMedia(c, index = 0) {
+  const photos = c.photos || [];
+  const hasPhotos = photos.length > 0;
+  const hasVideo = !!c.video;
+
+  if (!hasPhotos && !hasVideo) {
+    panel.media.innerHTML =
+      '<div class="cp-media-placeholder"><span class="cp-emoji">📸</span>' +
+      '<p>Photos &amp; vidéo à venir pour <b style="color:var(--gold)">' + c.name + '</b>.</p></div>';
+    panel.gallery.innerHTML = '';
+    return;
+  }
+
+  // Affichage principal : photo sélectionnée, sinon vidéo
+  if (hasPhotos) {
+    panel.media.innerHTML = '<img src="' + photos[index] + '" alt="' + c.name + '">';
+  } else if (hasVideo) {
+    panel.media.innerHTML = '<iframe src="' + c.video + '" allowfullscreen></iframe>';
+  }
+
+  // Galerie de vignettes (photos + une vignette "vidéo" si présente)
+  let thumbs = '';
+  photos.forEach((p, i) => {
+    thumbs += '<img class="cp-thumb' + (i === index ? ' active' : '') +
+      '" src="' + p + '" alt="' + c.name + ' ' + (i + 1) + '" onclick="selectThumb(\'' +
+      encodeURIComponent(c.name) + '\',' + i + ')">';
+  });
+  if (hasVideo) {
+    thumbs += '<div class="cp-thumb active-video" style="display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--gold)" onclick="playVideo(\'' +
+      encodeURIComponent(c.name) + '\')">▶</div>';
+  }
+  panel.gallery.innerHTML = thumbs;
+}
+
+function selectCountry(c) {
+  panel.region.textContent = c.region;
+  panel.name.innerHTML = c.name;
+  panel.text.textContent = c.note || regionBlurb[c.region] || '';
+  panel.hint.style.display = 'none';
+  renderMedia(c, 0);
+  panel.media.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Helpers galerie (retrouvent le pays par nom)
+function findCountry(encName){ const n = decodeURIComponent(encName); return countries.find(c => c.name === n); }
+function selectThumb(encName, i){ const c = findCountry(encName); if (c) renderMedia(c, i); }
+function playVideo(encName){
+  const c = findCountry(encName);
+  if (c && c.video) {
+    panel.media.innerHTML = '<iframe src="' + c.video + '" allowfullscreen></iframe>';
+    document.querySelectorAll('.cp-thumb').forEach(t => t.classList.remove('active'));
+  }
+}
+
+// Place les marqueurs
+countries.forEach(c => {
+  const marker = L.circleMarker(c.coords, {
+    radius: 6,
+    fillColor: '#C4956A',
+    color: '#FAF7F2',
+    weight: 1.5,
+    opacity: 1,
+    fillOpacity: 0.9
+  }).addTo(map);
+
+  marker.bindTooltip(c.name, { direction: 'top', offset: [0, -6], className: 'country-tip' });
+  marker.on('mouseover', function(){ this.setStyle({ radius: 9, fillColor: '#C9A96E' }); });
+  marker.on('mouseout',  function(){ this.setStyle({ radius: 6, fillColor: '#C4956A' }); });
+  marker.on('click', () => selectCountry(c));
+});
+
+// Compteur de pays (stat)
+document.getElementById('statPays').textContent = countries.length + '+';
+
+// Corrige l'affichage de la carte (taille) une fois la section visible
+window.addEventListener('load', () => setTimeout(() => map.invalidateSize(), 300));
+const mapObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) map.invalidateSize(); });
+}, { threshold: 0.1 });
+mapObserver.observe(document.getElementById('worldmap'));
+</script>
+</body>
+</html>
