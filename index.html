@@ -1729,8 +1729,8 @@ footer {
     </div>
     <div class="hero-stats">
       <div>
-        <span class="stat-num">50+</span>
-        <span class="stat-label">Destinations</span>
+        <span class="stat-num">70+</span>
+        <span class="stat-label">Pays visités</span>
       </div>
       <div>
         <span class="stat-num">200+</span>
@@ -1915,11 +1915,6 @@ footer {
   </div>
 </section>
 
-<!-- ─── TESTIMONIAL ─── -->
-<div class="testimonial">
-  <p class="testimonial-quote reveal">"Grâce au guide, j'ai découvert des endroits que je n'aurais jamais trouvés seule. Le Lac de Côme comme je l'avais toujours imaginé."</p>
-  <span class="testimonial-author reveal">— Sophie M. · Lac de Côme, Italie</span>
-</div>
 
 <!-- ─── FORM ─── -->
 <section class="form-section" id="formulaire">
@@ -2469,72 +2464,81 @@ function toggleMenu() {
 
 const countries = [
   // ── EUROPE ──
-  { name:'France', region:'Europe', coords:[46.6,2.4] },
-  { name:'Espagne', region:'Europe', coords:[40.2,-3.7] },
-  { name:'Portugal', region:'Europe', coords:[39.6,-8.0] },
-  { name:'Italie', region:'Europe', coords:[42.8,12.6] },
-  { name:'Allemagne', region:'Europe', coords:[51.1,10.4] },
-  { name:'Royaume-Uni', region:'Europe', coords:[53.5,-2.5] },
-  { name:'Irlande', region:'Europe', coords:[53.2,-8.0] },
-  { name:'Belgique', region:'Europe', coords:[50.6,4.6] },
-  { name:'Pays-Bas', region:'Europe', coords:[52.2,5.5] },
-  { name:'Luxembourg', region:'Europe', coords:[49.8,6.1] },
-  { name:'Suisse', region:'Europe', coords:[46.8,8.2] },
-  { name:'Autriche', region:'Europe', coords:[47.6,14.2] },
-  { name:'Pologne', region:'Europe', coords:[52.0,19.4] },
-  { name:'République tchèque', region:'Europe', coords:[49.8,15.5] },
-  { name:'Slovaquie', region:'Europe', coords:[48.7,19.7] },
-  { name:'Hongrie', region:'Europe', coords:[47.1,19.4] },
-  { name:'Slovénie', region:'Europe', coords:[46.1,14.8] },
-  { name:'Croatie', region:'Europe', coords:[45.1,15.5] },
-  { name:'Bosnie-Herzégovine', region:'Europe', coords:[44.0,17.8] },
-  { name:'Serbie', region:'Europe', coords:[44.0,21.0] },
-  { name:'Monténégro', region:'Europe', coords:[42.7,19.3] },
-  { name:'Albanie', region:'Europe', coords:[41.0,20.1] },
-  { name:'Macédoine du Nord', region:'Europe', coords:[41.6,21.7] },
-  { name:'Grèce', region:'Europe', coords:[39.0,22.5] },
-  { name:'Bulgarie', region:'Europe', coords:[42.7,25.3] },
-  { name:'Roumanie', region:'Europe', coords:[45.9,24.9] },
-  { name:'Moldavie', region:'Europe', coords:[47.2,28.5] },
-  { name:'Ukraine', region:'Europe', coords:[49.0,31.5] },
-  { name:'Lituanie', region:'Europe', coords:[55.3,23.9] },
-  { name:'Lettonie', region:'Europe', coords:[56.9,24.6] },
-  { name:'Estonie', region:'Europe', coords:[58.7,25.5] },
-  { name:'Finlande', region:'Europe', coords:[62.5,25.7] },
-  { name:'Suède', region:'Europe', coords:[62.0,15.0] },
-  { name:'Norvège', region:'Europe', coords:[61.5,8.5] },
-  { name:'Danemark', region:'Europe', coords:[56.0,9.5] },
-  { name:'Islande', region:'Europe', coords:[64.9,-18.5] },
-  { name:'Malte', region:'Europe', coords:[35.9,14.4] },
-  { name:'Chypre', region:'Europe', coords:[35.0,33.2] },
-  { name:'Monaco', region:'Europe', coords:[43.73,7.42] },
-  { name:'Andorre', region:'Europe', coords:[42.5,1.5] },
+  { name:'France', iso:'FRA', region:'Europe', coords:[46.6,2.4] },
+  { name:'Espagne', iso:'ESP', region:'Europe', coords:[40.2,-3.7] },
+  { name:'Portugal', iso:'PRT', region:'Europe', coords:[39.6,-8.0] },
+  { name:'Italie', iso:'ITA', region:'Europe', coords:[42.8,12.6] },
+  { name:'Allemagne', iso:'DEU', region:'Europe', coords:[51.1,10.4] },
+  { name:'Royaume-Uni', iso:'GBR', region:'Europe', coords:[53.5,-2.5] },
+  { name:'Irlande', iso:'IRL', region:'Europe', coords:[53.2,-8.0] },
+  { name:'Belgique', iso:'BEL', region:'Europe', coords:[50.6,4.6] },
+  { name:'Pays-Bas', iso:'NLD', region:'Europe', coords:[52.2,5.5] },
+  { name:'Luxembourg', iso:'LUX', region:'Europe', coords:[49.8,6.1] },
+  { name:'Suisse', iso:'CHE', region:'Europe', coords:[46.8,8.2] },
+  { name:'Autriche', iso:'AUT', region:'Europe', coords:[47.6,14.2] },
+  { name:'Pologne', iso:'POL', region:'Europe', coords:[52.0,19.4] },
+  { name:'République tchèque', iso:'CZE', region:'Europe', coords:[49.8,15.5] },
+  { name:'Slovaquie', iso:'SVK', region:'Europe', coords:[48.7,19.7] },
+  { name:'Hongrie', iso:'HUN', region:'Europe', coords:[47.1,19.4] },
+  { name:'Slovénie', iso:'SVN', region:'Europe', coords:[46.1,14.8] },
+  { name:'Croatie', iso:'HRV', region:'Europe', coords:[45.1,15.5] },
+  { name:'Bosnie-Herzégovine', iso:'BIH', region:'Europe', coords:[44.0,17.8] },
+  { name:'Serbie', iso:'SRB', region:'Europe', coords:[44.0,21.0] },
+  { name:'Monténégro', iso:'MNE', region:'Europe', coords:[42.7,19.3] },
+  { name:'Albanie', iso:'ALB', region:'Europe', coords:[41.0,20.1] },
+  { name:'Macédoine du Nord', iso:'MKD', region:'Europe', coords:[41.6,21.7] },
+  { name:'Grèce', iso:'GRC', region:'Europe', coords:[39.0,22.5], note:"Des Cyclades à Corfou, l'archipel grec déroule ses villages blancs et ses eaux turquoise — la Méditerranée dans toute sa splendeur." },
+  { name:'Bulgarie', iso:'BGR', region:'Europe', coords:[42.7,25.3] },
+  { name:'Roumanie', iso:'ROU', region:'Europe', coords:[45.9,24.9] },
+  { name:'Moldavie', iso:'MDA', region:'Europe', coords:[47.2,28.5] },
+  { name:'Ukraine', iso:'UKR', region:'Europe', coords:[49.0,31.5] },
+  { name:'Lituanie', iso:'LTU', region:'Europe', coords:[55.3,23.9] },
+  { name:'Lettonie', iso:'LVA', region:'Europe', coords:[56.9,24.6] },
+  { name:'Estonie', iso:'EST', region:'Europe', coords:[58.7,25.5] },
+  { name:'Finlande', iso:'FIN', region:'Europe', coords:[62.5,25.7] },
+  { name:'Suède', iso:'SWE', region:'Europe', coords:[62.0,15.0] },
+  { name:'Norvège', iso:'NOR', region:'Europe', coords:[61.5,8.5] },
+  { name:'Danemark', iso:'DNK', region:'Europe', coords:[56.0,9.5] },
+  { name:'Islande', iso:'ISL', region:'Europe', coords:[64.9,-18.5] },
+  { name:'Malte', iso:'MLT', region:'Europe', coords:[35.9,14.4] },
+  { name:'Chypre', iso:'CYP', region:'Europe', coords:[35.0,33.2] },
+  { name:'Monaco', iso:'MCO', region:'Europe', coords:[43.73,7.42] },
+  { name:'Andorre', iso:'AND', region:'Europe', coords:[42.5,1.5] },
+  { name:'Turquie', iso:'TUR', region:'Eurasie', coords:[39.0,35.0] },
   // ── AFRIQUE & OCÉAN INDIEN ──
-  { name:'Maroc', region:'Afrique', coords:[31.8,-7.1] },
-  { name:'Égypte', region:'Afrique', coords:[26.8,30.8] },
-  { name:'Madagascar', region:'Afrique', coords:[-19.0,46.7] },
-  { name:'Mayotte', region:'Océan Indien', coords:[-12.8,45.2] },
-  // ── AMÉRIQUES ──
-  { name:'Canada', region:'Amériques', coords:[56.0,-100.0] },
-  { name:'Mexique', region:'Amériques', coords:[23.0,-102.0] },
-  { name:'Panama', region:'Amériques', coords:[8.5,-80.0] },
-  { name:'Martinique', region:'Caraïbes', coords:[14.6,-61.0] },
-  { name:'République dominicaine', region:'Caraïbes', coords:[18.7,-70.2] },
-  { name:'Brésil', region:'Amériques', coords:[-12.0,-52.0] },
-  { name:'Pérou', region:'Amériques', coords:[-9.5,-75.0] },
-  { name:'Chili', region:'Amériques', coords:[-35.0,-71.0] },
-  { name:'Argentine', region:'Amériques', coords:[-38.0,-63.0] },
+  { name:'Maroc', iso:'MAR', region:'Afrique', coords:[31.8,-7.1] },
+  { name:'Égypte', iso:'EGY', region:'Afrique', coords:[26.8,30.8] },
+  { name:'Madagascar', iso:'MDG', region:'Afrique', coords:[-19.0,46.7] },
+  { name:'Mayotte', iso:'MYT', region:'Océan Indien', coords:[-12.8,45.2] },
+  // ── MOYEN-ORIENT ──
+  { name:'Émirats Arabes Unis', iso:'ARE', region:'Moyen-Orient', coords:[24.3,54.0], note:"Abu Dhabi : gratte-ciels vertigineux, désert doré et luxe à l'état pur, entre tradition et ultra-modernité." },
+  // ── AMÉRIQUES & CARAÏBES ──
+  { name:'Canada', iso:'CAN', region:'Amériques', coords:[56.0,-100.0] },
+  { name:'États-Unis', iso:'USA', region:'Amériques', coords:[39.0,-98.0], note:"De l'effervescence de New York aux routes de Californie et à Los Angeles — la démesure américaine grandeur nature." },
+  { name:'Mexique', iso:'MEX', region:'Amériques', coords:[23.0,-102.0] },
+  { name:'Panama', iso:'PAN', region:'Amériques', coords:[8.5,-80.0] },
+  { name:'Martinique', iso:'MTQ', region:'Caraïbes', coords:[14.6,-61.0] },
+  { name:'République dominicaine', iso:'DOM', region:'Caraïbes', coords:[18.7,-70.2] },
+  { name:'Brésil', iso:'BRA', region:'Amériques', coords:[-12.0,-52.0] },
+  { name:'Pérou', iso:'PER', region:'Amériques', coords:[-9.5,-75.0] },
+  { name:'Chili', iso:'CHL', region:'Amériques', coords:[-35.0,-71.0] },
+  { name:'Argentine', iso:'ARG', region:'Amériques', coords:[-38.0,-63.0] },
   // ── ASIE ──
-  { name:'Thaïlande', region:'Asie', coords:[15.5,101.0] },
-  { name:'Vietnam', region:'Asie', coords:[16.0,107.8] },
-  { name:'Laos', region:'Asie', coords:[19.5,102.5] },
-  { name:'Philippines', region:'Asie', coords:[12.8,122.0] },
-  { name:'Chine', region:'Asie', coords:[35.0,104.0] },
-  { name:'Japon', region:'Asie', coords:[37.5,138.5] },
+  { name:'Inde', iso:'IND', region:'Asie', coords:[22.0,79.0] },
+  { name:'Sri Lanka', iso:'LKA', region:'Asie', coords:[7.9,80.7] },
+  { name:'Thaïlande', iso:'THA', region:'Asie', coords:[15.5,101.0] },
+  { name:'Cambodge', iso:'KHM', region:'Asie', coords:[12.5,104.9] },
+  { name:'Vietnam', iso:'VNM', region:'Asie', coords:[16.0,107.8] },
+  { name:'Laos', iso:'LAO', region:'Asie', coords:[19.5,102.5] },
+  { name:'Indonésie', iso:'IDN', region:'Asie', coords:[-2.5,118.0] },
+  { name:'Brunei', iso:'BRN', region:'Asie', coords:[4.5,114.7] },
+  { name:'Philippines', iso:'PHL', region:'Asie', coords:[12.8,122.0] },
+  { name:'Chine', iso:'CHN', region:'Asie', coords:[35.0,104.0] },
+  { name:'Japon', iso:'JPN', region:'Asie', coords:[37.5,138.5] },
   // ── OCÉANIE ──
-  { name:'Australie', region:'Océanie', coords:[-25.0,134.0] },
-  { name:'Nouvelle-Zélande', region:'Océanie', coords:[-41.5,173.0] },
-  { name:'Fidji', region:'Océanie', coords:[-17.8,178.0] }
+  { name:'Australie', iso:'AUS', region:'Océanie', coords:[-25.0,134.0] },
+  { name:'Nouvelle-Zélande', iso:'NZL', region:'Océanie', coords:[-41.5,173.0] },
+  { name:'Fidji', iso:'FJI', region:'Océanie', coords:[-17.8,178.0] }
 ];
 
 // Phrase d'ambiance par défaut selon la région (si aucune "note" n'est définie)
@@ -2545,7 +2549,9 @@ const regionBlurb = {
   'Amériques': "Des grands espaces aux villes vibrantes, un continent de contrastes où l'aventure se vit en grand.",
   'Caraïbes': "Plages de carte postale, rythmes ensoleillés et art de vivre créole — l'évasion à l'état pur.",
   'Asie': "Temples, marchés parfumés et hospitalité légendaire : un dépaysement total à chaque pas.",
-  'Océanie': "Au bout du monde, des paysages grandioses et une nature reine — l'impression de tout recommencer."
+  'Océanie': "Au bout du monde, des paysages grandioses et une nature reine — l'impression de tout recommencer.",
+  'Moyen-Orient': "Démesure architecturale, dunes à perte de vue et hospitalité raffinée — un saisissant contraste entre tradition et modernité.",
+  'Eurasie': "À cheval entre deux continents, un carrefour de civilisations où l'Orient et l'Occident se rencontrent."
 };
 
 // Initialisation de la carte
@@ -2626,25 +2632,49 @@ function playVideo(encName){
   }
 }
 
-// Place les marqueurs
-countries.forEach(c => {
-  const marker = L.circleMarker(c.coords, {
-    radius: 6,
-    fillColor: '#C4956A',
-    color: '#FAF7F2',
-    weight: 1.5,
-    opacity: 1,
-    fillOpacity: 0.9
+// ── Pays visités : remplissage des surfaces (au lieu de simples points) ──
+const visited = {};
+countries.forEach(c => { if (c.iso) visited[c.iso] = c; });
+
+const baseStyle  = { fillColor:'#C4956A', weight:1,   color:'#FDF9F4', fillOpacity:0.78 };
+const hoverStyle = { fillColor:'#C9A96E', weight:1.5, color:'#FFFFFF', fillOpacity:0.94 };
+
+// Repli : petit point pour les territoires trop petits pour avoir une frontière dessinée
+function addFallbackMarker(c) {
+  const m = L.circleMarker(c.coords, {
+    radius: 7, fillColor:'#C4956A', color:'#FDF9F4', weight:1.5, opacity:1, fillOpacity:0.95
   }).addTo(map);
+  m.bindTooltip(c.name, { direction:'top', offset:[0,-6] });
+  m.on('mouseover', function(){ this.setStyle({ radius:10, fillColor:'#C9A96E' }); });
+  m.on('mouseout',  function(){ this.setStyle({ radius:7,  fillColor:'#C4956A' }); });
+  m.on('click', () => selectCountry(c));
+}
 
-  marker.bindTooltip(c.name, { direction: 'top', offset: [0, -6], className: 'country-tip' });
-  marker.on('mouseover', function(){ this.setStyle({ radius: 9, fillColor: '#C9A96E' }); });
-  marker.on('mouseout',  function(){ this.setStyle({ radius: 6, fillColor: '#C4956A' }); });
-  marker.on('click', () => selectCountry(c));
-});
+// Charge les frontières mondiales et colorie les pays visités
+fetch('https://cdn.jsdelivr.net/gh/johan/world.geo.json@master/countries.geo.json')
+  .then(r => r.json())
+  .then(geo => {
+    const rendered = {};
+    L.geoJSON(geo, {
+      filter: f => !!visited[f.id],
+      style: () => baseStyle,
+      onEachFeature: (f, layer) => {
+        const c = visited[f.id];
+        if (!c) return;
+        rendered[f.id] = true;
+        layer.bindTooltip(c.name, { sticky:true, direction:'top' });
+        layer.on('mouseover', () => layer.setStyle(hoverStyle));
+        layer.on('mouseout',  () => layer.setStyle(baseStyle));
+        layer.on('click', () => selectCountry(c));
+      }
+    }).addTo(map);
+    // Marqueur de repli pour les pays/territoires absents du fichier de frontières
+    countries.forEach(c => { if (c.iso && !rendered[c.iso]) addFallbackMarker(c); });
+  })
+  .catch(() => countries.forEach(addFallbackMarker)); // si le chargement échoue : points classiques
 
-// Compteur de pays (stat)
-document.getElementById('statPays').textContent = countries.length + '+';
+// Compteur de pays (nombre exact)
+document.getElementById('statPays').textContent = countries.length;
 
 // Corrige l'affichage de la carte (taille) une fois la section visible
 window.addEventListener('load', () => setTimeout(() => map.invalidateSize(), 300));
