@@ -1582,12 +1582,13 @@ footer {
 .exp-reel-mask::after { right: 0; background: linear-gradient(to left, var(--warm-white), transparent); }
 .exp-reel { display: flex; gap: 14px; width: max-content; animation: reel 45s linear infinite; }
 .exp-reel:hover { animation-play-state: paused; }
-.exp-reel img {
+.exp-reel img, .exp-reel video {
   height: 240px; width: 330px; object-fit: cover;
   border: 1px solid var(--sand); flex: 0 0 auto;
+  background: var(--forest);
 }
 @keyframes reel { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@media (max-width: 600px) { .exp-reel img { height: 180px; width: 250px; } }
+@media (max-width: 600px) { .exp-reel img, .exp-reel video { height: 180px; width: 250px; } }
 
 /* ─── AVIS CLIENTS ─── */
 .avis {
@@ -1745,7 +1746,7 @@ footer {
     <li><a href="#services">Services &amp; Offres</a></li>
     <li><a href="#accompagnement">Accompagnement</a></li>
     <li><a href="#carte">Mes voyages</a></li>
-    <li><a href="#avis">Avis &amp; Contact</a></li>
+    <li><a href="#avis">On en parle ?</a></li>
     <li><a href="#formulaire" class="nav-cta">Commencer</a></li>
   </ul>
   <div class="nav-burger" onclick="toggleMenu()">
@@ -1780,12 +1781,12 @@ footer {
   </div>
   <div class="hero-right">
     <div class="hero-carousel" id="heroCarousel">
-      <img src="assets/img/exp-1.jpg" class="active" alt="Expérience de voyage">
-      <img src="assets/img/exp-2.jpg" alt="Expérience de voyage">
-      <img src="assets/img/exp-3.jpg" alt="Expérience de voyage">
-      <img src="assets/img/exp-5.jpg" alt="Expérience de voyage">
-      <img src="assets/img/exp-6.jpg" alt="Expérience de voyage">
-      <img src="assets/img/exp-8.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hero-1.jpg" class="active" alt="Expérience de voyage">
+      <img src="assets/img/hero-2.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hero-3.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hero-4.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hero-5.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hero-6.jpg" alt="Expérience de voyage">
     </div>
   </div>
   <div class="scroll-indicator">
@@ -2516,14 +2517,22 @@ async function handleSubmit() {
   }, 4000);
 })();
 
-// Défilé "Mes expériences" — photos mélangées au hasard
+// Défilé "Mes expériences" — photos & vidéos (muettes) mélangées au hasard
 (function(){
   const reel = document.getElementById('expReel');
   if (!reel) return;
-  const pics = ['exp-1','exp-2','exp-3','exp-4','exp-5','exp-6','exp-7','exp-8'];
-  for (let i = pics.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [pics[i],pics[j]] = [pics[j],pics[i]]; }
-  const seq = [...pics, ...pics]; // doublé pour une boucle fluide
-  reel.innerHTML = seq.map(p => '<img src="assets/img/'+p+'.jpg" alt="Expérience de voyage" loading="lazy">').join('');
+  const media = [
+    {t:'i',s:'exp-1'},{t:'i',s:'exp-2'},{t:'i',s:'exp-3'},{t:'i',s:'exp-4'},
+    {t:'i',s:'exp-5'},{t:'i',s:'exp-6'},{t:'i',s:'exp-7'},{t:'i',s:'exp-8'},
+    {t:'v',s:'exp-vid-1'},{t:'v',s:'exp-vid-2'}
+  ];
+  for (let i = media.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [media[i],media[j]] = [media[j],media[i]]; }
+  const seq = [...media, ...media]; // doublé pour une boucle fluide
+  reel.innerHTML = seq.map(m => m.t === 'v'
+    ? '<video src="assets/img/'+m.s+'.mp4" muted autoplay loop playsinline preload="metadata"></video>'
+    : '<img src="assets/img/'+m.s+'.jpg" alt="Expérience de voyage" loading="lazy">'
+  ).join('');
+  reel.querySelectorAll('video').forEach(v => { v.muted = true; const p = v.play(); if (p) p.catch(()=>{}); });
 })();
 
 // Mobile menu toggle (basic)
