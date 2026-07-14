@@ -2386,41 +2386,67 @@ async function handleSubmit() {
   btn.textContent = 'Envoi en cours...';
   btn.disabled = true;
 
-  try {
-    // Envoi vers ypdt.info@gmail.com via FormSubmit (aucun compte requis)
-    const response = await fetch('https://formsubmit.co/ajax/ypdt.info@gmail.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        _subject: 'Nouvelle demande — Voyager Autrement',
-        _replyto: email,
-        _template: 'table',
-        Nom: name,
-        Email: email,
-        Destination: destination,
-        'Date de départ': date,
-        Durée: duree,
-        Voyageurs: personnes,
-        'Type de voyage': typeVoyage,
-        'Style de voyage': styleVoyage,
-        Activités: activites,
-        Offre: offre,
-        'Comment connu': source,
-        Message: message
-      })
-    });
+  const payload = {
+    Nom: name, Email: email, Destination: destination, 'Date de départ': date,
+    Durée: duree, Voyageurs: personnes, 'Type de voyage': typeVoyage,
+    'Style de voyage': styleVoyage, Activités: activites, Offre: offre,
+    'Comment connu': source, Message: message
+  };
 
-    if (response.ok) {
-      document.getElementById('formContainer').style.display = 'none';
-      document.getElementById('successMsg').classList.add('visible');
-    } else {
-      throw new Error('Erreur serveur');
-    }
-  } catch (err) {
-    alert('Une erreur est survenue. Merci de m\'écrire directement à ypdt.info@gmail.com 😊');
-    btn.textContent = 'Envoyer ma demande';
-    btn.disabled = false;
+  // ─── ENVOI 100% AUTOMATIQUE (facultatif) ───
+  // Pour que le formulaire s'envoie tout seul (sans ouvrir la messagerie),
+  // crée une clé gratuite sur https://web3forms.com avec l'adresse ypdt.info@gmail.com
+  // puis colle-la entre les guillemets ci-dessous. Sinon, la messagerie s'ouvre (voir plus bas).
+  const WEB3FORMS_KEY = '';
+
+  if (WEB3FORMS_KEY) {
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: 'Nouvelle demande — Voyager Autrement',
+          from_name: 'Site Voyager Autrement',
+          replyto: email,
+          ...payload
+        })
+      });
+      if (response.ok) {
+        document.getElementById('formContainer').style.display = 'none';
+        document.getElementById('successMsg').classList.add('visible');
+        return;
+      }
+    } catch (e) { /* en cas d'échec on bascule sur la messagerie ci-dessous */ }
   }
+
+  // ─── SOLUTION PAR DÉFAUT (fonctionne toujours) : ouverture de la messagerie vers YPDT ───
+  const corps = [
+    'Nom : ' + name,
+    'Email : ' + email,
+    'Destination : ' + destination,
+    'Date de départ : ' + date,
+    'Durée : ' + duree,
+    'Voyageurs : ' + personnes,
+    'Type de voyage : ' + typeVoyage,
+    'Style de voyage : ' + styleVoyage,
+    'Activités : ' + activites,
+    'Offre : ' + offre,
+    'Comment m\'avez-vous connu : ' + source,
+    '',
+    'Message :',
+    message
+  ].join('\n');
+  window.location.href = 'mailto:ypdt.info@gmail.com?subject=' +
+    encodeURIComponent('Nouvelle demande — Voyager Autrement') +
+    '&body=' + encodeURIComponent(corps);
+
+  const sm = document.getElementById('successMsg');
+  const h = sm.querySelector('h3'); const p = sm.querySelector('p');
+  if (h) h.textContent = 'Dernière étape !';
+  if (p) p.textContent = "Votre messagerie vient de s'ouvrir avec votre demande pré-remplie — appuyez sur « Envoyer » et je reçois tout. 😊";
+  document.getElementById('formContainer').style.display = 'none';
+  sm.classList.add('visible');
 }
 
 // Mobile menu toggle (basic)
