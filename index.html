@@ -2437,14 +2437,16 @@ async function handleSubmit() {
     'Message :',
     message
   ].join('\n');
-  window.location.href = 'mailto:ypdt.info@gmail.com?subject=' +
+  const mailtoUrl = 'mailto:ypdt.info@gmail.com?subject=' +
     encodeURIComponent('Nouvelle demande — Voyager Autrement') +
     '&body=' + encodeURIComponent(corps);
 
   const sm = document.getElementById('successMsg');
-  const h = sm.querySelector('h3'); const p = sm.querySelector('p');
-  if (h) h.textContent = 'Dernière étape !';
-  if (p) p.textContent = "Votre messagerie vient de s'ouvrir avec votre demande pré-remplie — appuyez sur « Envoyer » et je reçois tout. 😊";
+  sm.innerHTML =
+    '<div class="success-icon">✉️</div>' +
+    '<h3>Dernière étape !</h3>' +
+    '<p>Votre demande est prête. Appuyez sur le bouton ci-dessous : votre messagerie s\'ouvrira, pré-remplie — il ne restera qu\'à appuyer sur « Envoyer ».</p>' +
+    '<a href="' + mailtoUrl + '" class="btn-primary" style="display:inline-flex;margin-top:24px">✉️ Envoyer ma demande</a>';
   document.getElementById('formContainer').style.display = 'none';
   sm.classList.add('visible');
 }
