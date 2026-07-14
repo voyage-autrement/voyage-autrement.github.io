@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Pouilles à deux · Voyager Autrement</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF7F2; --warm:#FDF9F4; --sand:#E8DDD0; --terra:#C4956A; --terra-d:#A0744A;
+  --forest:#2D4A3E; --forest-l:#3D6154; --ink:#1A1A18; --muted:#7A7570; --gold:#C9A96E;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+a{color:inherit;}
+
+/* HERO */
+.hero{background:var(--forest);color:var(--cream);padding:64px 24px 40px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 0%,rgba(201,169,110,0.14),transparent 60%);}
+.hero-inner{position:relative;max-width:900px;margin:0 auto;}
+.badge{display:inline-block;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest);background:var(--gold);padding:6px 16px;margin-bottom:24px;}
+.logo{font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:1px;margin-bottom:28px;opacity:.9;}
+.logo span{color:var(--gold);font-style:italic;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(40px,7vw,72px);line-height:1.05;margin-bottom:18px;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero-meta{font-size:14px;letter-spacing:1px;color:rgba(250,247,242,.7);line-height:1.9;}
+.hero-meta b{color:var(--gold);font-weight:500;}
+.hero-quote{margin-top:28px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:rgba(250,247,242,.85);max-width:640px;margin-left:auto;margin-right:auto;line-height:1.6;}
+
+/* TABS */
+.tabs{position:sticky;top:0;z-index:50;background:var(--forest);border-top:1px solid rgba(250,247,242,.12);display:flex;overflow-x:auto;gap:4px;padding:0 12px;-webkit-overflow-scrolling:touch;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:0 0 auto;background:none;border:none;color:rgba(250,247,242,.6);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:16px 14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.2s;}
+.tab:hover{color:var(--gold);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* SECTIONS */
+main{max-width:900px;margin:0 auto;padding:48px 20px 80px;}
+.panel{display:none;animation:fade .4s ease;}
+.panel.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.sec-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--terra);display:block;margin-bottom:12px;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,5vw,46px);color:var(--forest);line-height:1.1;margin-bottom:10px;}
+.sec-title em{font-style:italic;color:var(--terra);}
+.sec-intro{color:var(--muted);font-size:15px;line-height:1.8;margin-bottom:36px;max-width:640px;}
+
+/* DAY CARDS */
+.day{background:var(--warm);border:1px solid var(--sand);border-left:3px solid var(--gold);padding:26px 26px 22px;margin-bottom:18px;position:relative;}
+.day-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+.day-num{font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--terra);}
+.day-date{font-size:12px;color:var(--muted);letter-spacing:1px;}
+.day-title{font-family:'Cormorant Garamond',serif;font-size:27px;color:var(--forest);line-height:1.15;margin-bottom:14px;}
+.pace{display:inline-block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-left:8px;vertical-align:middle;}
+.pace.intense{background:#f3e3d3;color:var(--terra-d);}
+.pace.calme{background:#dfe9e2;color:var(--forest-l);}
+.day ul{list-style:none;}
+.day li{position:relative;padding:6px 0 6px 24px;font-size:14.5px;line-height:1.6;color:var(--ink);border-bottom:1px solid rgba(232,221,208,.5);}
+.day li:last-child{border-bottom:none;}
+.day li::before{content:'';position:absolute;left:4px;top:14px;width:6px;height:6px;border-radius:50%;background:var(--terra);}
+.day li.secret::before{background:var(--forest);}
+.day li.romance::before{content:'🌹';left:0;top:6px;width:auto;height:auto;background:none;font-size:13px;}
+.tagword{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--terra);font-weight:600;}
+
+/* GENERIC CARDS/LISTS */
+.card{background:var(--warm);border:1px solid var(--sand);padding:28px;margin-bottom:18px;}
+.card h3{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--forest);margin-bottom:8px;}
+.card p{color:var(--muted);font-size:14.5px;line-height:1.8;}
+.list{list-style:none;}
+.list li{padding:12px 0 12px 26px;border-bottom:1px solid var(--sand);position:relative;font-size:14.5px;line-height:1.6;}
+.list li:last-child{border-bottom:none;}
+.list li::before{content:'✦';position:absolute;left:0;top:12px;color:var(--gold);font-size:12px;}
+.list b{color:var(--forest);}
+
+/* ROMANCE HIGHLIGHT */
+.romance-hero{background:var(--forest);color:var(--cream);padding:40px 30px;position:relative;overflow:hidden;margin-bottom:24px;}
+.romance-hero::before{content:'✦';position:absolute;top:-10px;right:20px;font-size:120px;color:rgba(201,169,110,.1);}
+.romance-hero h3{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:32px;color:var(--gold);margin-bottom:14px;}
+.romance-hero p{color:rgba(250,247,242,.75);font-size:15px;line-height:1.85;}
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;}
+.feat div{background:rgba(250,247,242,.05);border:1px solid rgba(201,169,110,.25);padding:16px;font-size:13.5px;line-height:1.5;color:rgba(250,247,242,.85);}
+.feat span{display:block;font-size:22px;margin-bottom:6px;}
+
+/* BUDGET TABLE */
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--warm);border:1px solid var(--sand);}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--sand);}
+th{background:var(--forest);color:var(--cream);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;}
+td:last-child,th:last-child{text-align:right;white-space:nowrap;}
+tr:last-child td{border-bottom:none;}
+.total{font-weight:600;color:var(--forest);background:var(--sand);}
+.total td{font-size:16px;}
+.note{background:var(--sand);border-left:3px solid var(--terra);padding:16px 20px;font-size:13.5px;color:var(--muted);line-height:1.7;margin-top:20px;}
+.note b{color:var(--forest);}
+
+/* CTA */
+.dl{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--forest);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:15px 28px;text-decoration:none;margin-top:8px;transition:.25s;}
+.dl:hover{background:var(--terra);color:#fff;}
+
+footer{background:var(--ink);color:rgba(250,247,242,.5);text-align:center;padding:34px 20px;font-size:12px;line-height:1.8;}
+footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:15px;}
+
+@media(max-width:600px){.feat{grid-template-columns:1fr;}main{padding:36px 16px 64px;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="logo">Voyager <span>Autrement</span></div>
+    <span class="badge">✦ L'Exclusif · Voyage sur mesure</span>
+    <h1>Les Pouilles<br><em>à deux</em></h1>
+    <p class="hero-meta">Préparé pour <b>Leandro</b> &nbsp;·&nbsp; 12 → 21 septembre 2026 &nbsp;·&nbsp; 10 jours &nbsp;·&nbsp; 2 voyageurs</p>
+    <p class="hero-quote">« Des lieux secrets et insolites, une parenthèse romantique inoubliable, sans oublier les incontournables — voici votre Pouilles, façonnée rien que pour vous deux. »</p>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="prog">Programme</button>
+  <button class="tab" data-tab="romance">Parenthèse romantique</button>
+  <button class="tab" data-tab="adresses">Bonnes adresses</button>
+  <button class="tab" data-tab="voir">Incontournables</button>
+  <button class="tab" data-tab="budget">Budget</button>
+  <button class="tab" data-tab="infos">Infos pratiques</button>
+</nav>
+
+<main>
+
+  <!-- PROGRAMME -->
+  <section class="panel active" id="prog">
+    <span class="sec-tag">Jour après jour</span>
+    <h2 class="sec-title">Votre <em>itinéraire</em></h2>
+    <p class="sec-intro">Un savant équilibre entre <b>journées intenses</b> (découvertes, routes, villes) et <b>journées douces</b> (détente, mer, farniente à deux). Les 🌹 marquent les moments romantiques, et les points foncés vos <b>adresses secrètes</b>.</p>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 1</span><span class="day-date">Sam. 12 sept.</span></div>
+      <h3 class="day-title">Bari, premières saveurs <span class="pace calme">Douce</span></h3>
+      <ul>
+        <li>Arrivée à Bari, prise de la voiture de location & installation</li>
+        <li>Flânerie dans <b>Bari Vecchia</b> : les mammas qui roulent les orecchiette à la main, Via dell'Arco Basso</li>
+        <li>Basilique San Nicola & ruelles blanches</li>
+        <li class="secret">Apéritif au coucher du soleil sur le port des pêcheurs <span class="tagword">· adresse locale</span></li>
+        <li>Dîner de poisson cru & focaccia barese</li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 2</span><span class="day-date">Dim. 13 sept.</span></div>
+      <h3 class="day-title">Polignano a Mare & Monopoli <span class="pace intense">Intense</span></h3>
+      <ul>
+        <li><b>Polignano a Mare</b> : la crique mythique de Lama Monachile, les terrasses suspendues</li>
+        <li class="secret">Baignade & grotte marine accessible à la nage <span class="tagword">· insolite</span></li>
+        <li>Café sur le balcon suspendu au-dessus de la mer</li>
+        <li><b>Monopoli</b> : port de pêche, Cala Porta Vecchia</li>
+        <li>Verre en soirée dans un bar à vin du centre historique</li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 3</span><span class="day-date">Lun. 14 sept.</span></div>
+      <h3 class="day-title">La Vallée d'Itria & ses trulli <span class="pace intense">Intense</span></h3>
+      <ul>
+        <li><b>Alberobello</b> (UNESCO) tôt le matin, avant les cars : la forêt de trulli</li>
+        <li><b>Locorotondo</b>, l'un des plus beaux villages d'Italie</li>
+        <li><b>Cisternino</b> : apéritif & « fornello pronto » (viande grillée à la boucherie)</li>
+        <li class="romance">Nuit dans un <b>trullo</b> restauré, rien qu'à vous <span class="tagword">· séjour insolite</span></li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 4</span><span class="day-date">Mar. 15 sept.</span></div>
+      <h3 class="day-title">Ostuni & oliveraies millénaires <span class="pace calme">Douce</span></h3>
+      <ul>
+        <li><b>Ostuni</b>, la Ville Blanche, labyrinthe de ruelles chaulées</li>
+        <li>Balade parmi les <b>oliviers millénaires</b> (Parco degli Ulivi Secolari)</li>
+        <li class="secret">Déjeuner dégustation dans une <b>masseria</b> : huile d'olive, burrata, stracciatella <span class="tagword">· partenaire</span></li>
+        <li>Après-midi libre, détente</li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 5</span><span class="day-date">Mer. 16 sept.</span></div>
+      <h3 class="day-title">Lecce la baroque & vie nocturne <span class="pace intense">Intense</span></h3>
+      <ul>
+        <li>Route vers le Salento</li>
+        <li><b>Lecce</b> : Piazza del Duomo, Basilique Santa Croce, amphithéâtre romain</li>
+        <li class="secret">Atelier de <b>papier mâché</b>, artisanat typiquement leccese <span class="tagword">· insolite</span></li>
+        <li>Pause pasticciotto (la pâtisserie du Salento)</li>
+        <li>Soirée : bars des piazzette, spritz & ambiance <span class="tagword">· vie nocturne</span></li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 6</span><span class="day-date">Jeu. 17 sept.</span></div>
+      <h3 class="day-title">Otranto & plages secrètes <span class="pace calme">Douce</span></h3>
+      <ul>
+        <li><b>Otranto</b> : cathédrale à la mosaïque médiévale, château aragonais, vieille ville</li>
+        <li class="secret"><b>Baia dei Turchi</b> : eaux turquoise, pinède, plage sauvage <span class="tagword">· secret</span></li>
+        <li class="secret"><b>Cava di Bauxite</b> : ancien site minier aux reflets rouges & verts, spot photo unique <span class="tagword">· insolite</span></li>
+        <li>Coucher de soleil sur la côte adriatique</li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 7</span><span class="day-date">Ven. 18 sept.</span></div>
+      <h3 class="day-title">✦ Début de la parenthèse romantique <span class="pace calme">Douce</span></h3>
+      <ul>
+        <li class="romance">Installation à l'<b>hôtel en bord de crique</b> — chambre avec <b>jacuzzi privatif</b> & accès <b>spa</b></li>
+        <li class="romance">Après-midi <b>spa en duo</b> : hammam & massage à quatre mains</li>
+        <li class="romance">Apéritif privé face au coucher de soleil sur la falaise</li>
+        <li>Soirée cocooning, rien que vous deux</li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 8</span><span class="day-date">Sam. 19 sept.</span></div>
+      <h3 class="day-title">✦ Croisière & dîner romantique <span class="pace intense">Le grand jour</span></h3>
+      <ul>
+        <li class="romance"><b>Croisière privée d'une journée en bateau</b> : grottes marines, criques secrètes, baignades en eaux cristallines, déjeuner à bord</li>
+        <li>Retour en fin d'après-midi, temps libre & repos</li>
+        <li class="romance"><b>Dîner romantique face à la mer</b> : menu dégustation, bougies, table dressée pour deux — la surprise du séjour 🌹</li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 9</span><span class="day-date">Dim. 20 sept.</span></div>
+      <h3 class="day-title">✦ Détente & Finibus Terrae <span class="pace calme">Douce</span></h3>
+      <ul>
+        <li class="romance">Grasse matinée, jacuzzi & petit-déjeuner tardif</li>
+        <li><b>Santa Maria di Leuca</b> : la pointe des Pouilles, là où l'Adriatique rencontre l'Ionienne — phare & villas Belle Époque</li>
+        <li>Balade tranquille, gelato artisanal, farniente</li>
+      </ul>
+    </article>
+
+    <article class="day">
+      <div class="day-head"><span class="day-num">Jour 10</span><span class="day-date">Lun. 21 sept.</span></div>
+      <h3 class="day-title">Gallipoli & retour <span class="pace calme">Douce</span></h3>
+      <ul>
+        <li><b>Gallipoli</b> : centre historique sur son îlot, château, marché aux poissons</li>
+        <li class="secret">Dernière baignade côté ionien à <b>Punta della Suina</b> <span class="tagword">· crique</span></li>
+        <li>Route retour vers Bari, restitution de la voiture & départ</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- ROMANCE -->
+  <section class="panel" id="romance">
+    <span class="sec-tag">Le cœur de votre séjour</span>
+    <h2 class="sec-title">La parenthèse <em>romantique</em></h2>
+    <p class="sec-intro">Trois jours pensés comme une surprise, dans un écrin les pieds dans l'eau. C'est ici que se concentre le raffinement de la formule L'Exclusif.</p>
+
+    <div class="romance-hero">
+      <h3>Votre nid en bord de crique</h3>
+      <p>Un hôtel intimiste de charme sur la côte du Salento, chambre avec <b>jacuzzi privatif</b> et vue mer, <b>spa</b> et hammam à disposition. Le lieu parfait pour se retrouver, loin de tout.</p>
+      <div class="feat">
+        <div><span>🛁</span> Jacuzzi privatif dans la chambre</div>
+        <div><span>💆</span> Spa & massage en duo</div>
+        <div><span>🌅</span> Coucher de soleil sur la falaise</div>
+        <div><span>🌹</span> Dîner romantique aux chandelles</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚤 La croisière privée</h3>
+      <p>Une journée entière en mer rien que pour vous : cabotage le long des falaises, entrée dans les <b>grottes marines</b>, arrêts baignade dans des criques inaccessibles depuis la terre, et déjeuner à bord. Masque & tuba fournis pour explorer les fonds turquoise.</p>
+    </div>
+
+    <div class="card">
+      <h3>🌹 Le dîner surprise</h3>
+      <p>Le clou de la parenthèse : une table dressée <b>face à la mer</b>, menu dégustation de produits locaux et vin des Pouilles (Primitivo, Negroamaro), dans une ambiance aux chandelles. Organisé et confirmé à l'avance pour que la surprise soit parfaite.</p>
+    </div>
+
+    <div class="note">🤍 <b>Discrétion garantie :</b> tous les détails de la surprise (dîner, attentions, timing) sont coordonnés avec vous en amont — votre moitié n'aura qu'à se laisser porter.</div>
+  </section>
+
+  <!-- ADRESSES -->
+  <section class="panel" id="adresses">
+    <span class="sec-tag">Où manger & boire</span>
+    <h2 class="sec-title">Bonnes <em>adresses</em></h2>
+    <p class="sec-intro">La gastronomie des Pouilles est une fête. Voici les incontournables du terroir à savourer — les adresses précises (trattorias, masserie, caves) sont réservées et confirmées personnellement avant votre départ.</p>
+    <ul class="list">
+      <li><b>Orecchiette alle cime di rapa</b> — les pâtes emblématiques, faites main, à goûter à Bari</li>
+      <li><b>Focaccia barese</b> — tomates cerises & olives, au petit-déjeuner comme les locaux</li>
+      <li><b>Burrata & stracciatella d'Andria</b> — la fraîcheur crémeuse, dans une masseria</li>
+      <li><b>Fornello pronto de Cisternino</b> — la viande grillée à la boucherie, expérience typique</li>
+      <li><b>Poisson cru & crudo di mare</b> — sur les ports de Bari, Monopoli et Gallipoli</li>
+      <li><b>Pasticciotto leccese</b> — la pâtisserie crème pâtissière du Salento</li>
+      <li><b>Pucce & rustici</b> — le street-food salentin, parfait entre deux visites</li>
+      <li><b>Vins des Pouilles</b> — Primitivo di Manduria, Negroamaro, Salice Salentino</li>
+      <li><b>Gelato artisanal & caffè leccese</b> — glacé, avec lait d'amande</li>
+    </ul>
+  </section>
+
+  <!-- VOIR -->
+  <section class="panel" id="voir">
+    <span class="sec-tag">À ne pas manquer</span>
+    <h2 class="sec-title">Les <em>incontournables</em></h2>
+    <p class="sec-intro">Les grands classiques des Pouilles, intégrés à votre itinéraire — et sublimés par quelques détours secrets.</p>
+    <ul class="list">
+      <li><b>Alberobello</b> — la cité des trulli, classée à l'UNESCO</li>
+      <li><b>Polignano a Mare</b> — la crique de Lama Monachile, carte postale des Pouilles</li>
+      <li><b>Ostuni</b> — la Ville Blanche perchée sur sa colline</li>
+      <li><b>Lecce</b> — « la Florence du Sud », joyau du baroque</li>
+      <li><b>Otranto</b> — la ville la plus à l'est d'Italie, sa mosaïque médiévale</li>
+      <li><b>Santa Maria di Leuca</b> — la pointe du « talon », rencontre de deux mers</li>
+      <li><b>Gallipoli</b> — la vieille ville insulaire & ses plages</li>
+      <li><b>La Vallée d'Itria</b> — Locorotondo, Cisternino, Martina Franca</li>
+    </ul>
+    <div class="note">🔒 <b>Vos pépites secrètes</b> (incluses dans L'Exclusif) : la Cava di Bauxite d'Otranto, Baia dei Turchi, la grotte à la nage de Polignano, une masseria confidentielle et des criques hors des sentiers battus.</div>
+  </section>
+
+  <!-- BUDGET -->
+  <section class="panel" id="budget">
+    <span class="sec-tag">Estimation</span>
+    <h2 class="sec-title">Votre <em>budget</em></h2>
+    <p class="sec-intro">Estimation pour <b>2 personnes sur 10 jours</b>, hors billets d'avion. La priorité est mise sur la parenthèse romantique ; le reste du séjour privilégie des adresses de charme au bon rapport qualité-prix.</p>
+    <table>
+      <tr><th>Poste</th><th>Détail</th><th>Estimation</th></tr>
+      <tr><td>Voiture de location</td><td>10 jours, catégorie compacte</td><td>350 €</td></tr>
+      <tr><td>Carburant · péages · parkings</td><td>—</td><td>130 €</td></tr>
+      <tr><td>Hébergements de charme</td><td>5 nuits (B&B, trullo, masseria)</td><td>400 €</td></tr>
+      <tr><td>Hôtel romantique spa & jacuzzi</td><td>2 nuits · ~215 €/nuit</td><td>430 €</td></tr>
+      <tr><td>Hébergements Salento</td><td>2 nuits</td><td>170 €</td></tr>
+      <tr><td>Croisière privée en bateau</td><td>1 journée, 2 pers.</td><td>150 €</td></tr>
+      <tr><td>Dîner romantique</td><td>menu dégustation + vin</td><td>110 €</td></tr>
+      <tr><td>Repas & cafés</td><td>trattorias & street-food</td><td>200 €</td></tr>
+      <tr><td>Activités & entrées</td><td>dégustations, musées…</td><td>60 €</td></tr>
+      <tr class="total"><td colspan="2">TOTAL ESTIMÉ (hors vols)</td><td>2 000 €</td></tr>
+    </table>
+    <div class="note"><b>Bon à savoir :</b> les vols vers Bari ou Brindisi ne sont pas inclus (comptez ~120–250 €/pers. selon la période). En réservant tôt, on optimise fortement l'hébergement et la croisière. Le budget peut être réajusté selon vos priorités.</div>
+  </section>
+
+  <!-- INFOS -->
+  <section class="panel" id="infos">
+    <span class="sec-tag">Préparer le départ</span>
+    <h2 class="sec-title">Infos <em>pratiques</em></h2>
+    <div class="card">
+      <h3>📍 Y aller & se déplacer</h3>
+      <p>Aéroports : <b>Bari</b> (nord) ou <b>Brindisi</b> (sud, plus proche du Salento). La <b>voiture est indispensable</b> pour l'itinéraire. Routes faciles, distances courtes.</p>
+    </div>
+    <div class="card">
+      <h3>🌤️ En septembre</h3>
+      <p>Le mois idéal : mer encore chaude (~24 °C), 25–28 °C en journée, foule estivale retombée. Prévoyez maillot, bonnes chaussures pour les ruelles pavées, une petite laine pour les soirées.</p>
+    </div>
+    <div class="card">
+      <h3>💡 Astuces</h3>
+      <p>Réservez la croisière et l'hôtel romantique tôt. Goûtez le vin au domaine. Levez-vous tôt pour Alberobello & Polignano (lumière + tranquillité). Cash utile dans les petits villages.</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <h3>📄 Votre guide PDF</h3>
+      <p style="margin-bottom:18px;">Retrouvez tout ce programme dans votre guide détaillé et personnalisé, à emporter partout.</p>
+      <a class="dl" href="../Guide-Pouilles-Leandro.pdf" download>⬇ Télécharger le guide PDF</a>
+    </div>
+    <div class="card" style="text-align:center;">
+      <h3>Une question ?</h3>
+      <p>Je reste disponible pour ajuster chaque détail.<br>✉️ <b>ypdt.info@gmail.com</b></p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <b>Voyager Autrement</b><br>
+  Voyage sur mesure conçu pour Leandro · Les Pouilles · Septembre 2026<br>
+  © 2026 · Renaud Lauret · Tous droits réservés
+</footer>
+
+<script>
+const tabs=document.querySelectorAll('.tab');
+const panels=document.querySelectorAll('.panel');
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  tabs.forEach(x=>x.classList.remove('active'));
+  panels.forEach(p=>p.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById(t.dataset.tab).classList.add('active');
+  window.scrollTo({top:document.querySelector('main').offsetTop-60,behavior:'smooth'});
+}));
+</script>
+</body>
+</html>
