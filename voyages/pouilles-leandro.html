@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Les Pouilles à deux · Voyager Autrement</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
 :root{
   --cream:#FAF7F2; --warm:#FDF9F4; --sand:#E8DDD0; --terra:#C4956A; --terra-d:#A0744A;
@@ -99,7 +100,25 @@ tr:last-child td{border-bottom:none;}
 footer{background:var(--ink);color:rgba(250,247,242,.5);text-align:center;padding:34px 20px;font-size:12px;line-height:1.8;}
 footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:15px;}
 
-@media(max-width:600px){.feat{grid-template-columns:1fr;}main{padding:36px 16px 64px;}}
+/* KM vers l'étape suivante */
+.nextkm{margin-top:16px;padding-top:12px;border-top:1px dashed var(--sand);font-size:13px;letter-spacing:.3px;color:var(--terra-d);font-weight:500;display:flex;align-items:center;gap:8px;}
+.nextkm b{color:var(--forest);}
+.nextkm .arr{color:var(--gold);}
+
+/* CARTE DU VOYAGE */
+#tripmap{height:520px;width:100%;border:1px solid var(--sand);background:#dbeafe;z-index:1;}
+.leaflet-container{font-family:'DM Sans',sans-serif;}
+.leaflet-popup-content-wrapper{border-radius:0;}
+.pop b{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--forest);display:block;margin-bottom:2px;}
+.pop small{color:var(--muted);font-size:11px;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:10px;}
+.pop-btns{display:flex;gap:8px;}
+.pop-btns a{flex:1;text-align:center;font-size:11px;font-weight:600;letter-spacing:.5px;text-decoration:none;padding:9px 8px;border-radius:4px;}
+.pop-btns .gm{background:#1a73e8;color:#fff;}
+.pop-btns .wz{background:#33ccff;color:#062a3a;}
+.map-note{background:var(--sand);border-left:3px solid var(--terra);padding:14px 18px;font-size:13px;color:var(--muted);line-height:1.7;margin-top:18px;}
+.map-note b{color:var(--forest);}
+
+@media(max-width:600px){.feat{grid-template-columns:1fr;}main{padding:36px 16px 64px;}#tripmap{height:420px;}}
 </style>
 </head>
 <body>
@@ -116,6 +135,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
 
 <nav class="tabs" id="tabs">
   <button class="tab active" data-tab="prog">Programme</button>
+  <button class="tab" data-tab="carte">Carte</button>
   <button class="tab" data-tab="romance">Parenthèse romantique</button>
   <button class="tab" data-tab="adresses">Bonnes adresses</button>
   <button class="tab" data-tab="voir">Incontournables</button>
@@ -141,6 +161,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li class="secret">Apéritif au coucher du soleil sur le port des pêcheurs <span class="tagword">· adresse locale</span></li>
         <li>Dîner de poisson cru & focaccia barese</li>
       </ul>
+      <div class="nextkm">🚗 <b>~40 km</b> <span class="arr">→</span> vers Polignano a Mare</div>
     </article>
 
     <article class="day">
@@ -153,6 +174,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li><b>Monopoli</b> : port de pêche, Cala Porta Vecchia</li>
         <li>Verre en soirée dans un bar à vin du centre historique</li>
       </ul>
+      <div class="nextkm">🚗 <b>~30 km</b> <span class="arr">→</span> vers Alberobello (Vallée d'Itria)</div>
     </article>
 
     <article class="day">
@@ -164,6 +186,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li><b>Cisternino</b> : apéritif & « fornello pronto » (viande grillée à la boucherie)</li>
         <li class="romance">Nuit dans un <b>trullo</b> restauré, rien qu'à vous <span class="tagword">· séjour insolite</span></li>
       </ul>
+      <div class="nextkm">🚗 <b>~40 km</b> <span class="arr">→</span> vers Ostuni</div>
     </article>
 
     <article class="day">
@@ -175,6 +198,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li class="secret">Déjeuner dégustation dans une <b>masseria</b> : huile d'olive, burrata, stracciatella <span class="tagword">· partenaire</span></li>
         <li>Après-midi libre, détente</li>
       </ul>
+      <div class="nextkm">🚗 <b>~90 km</b> <span class="arr">→</span> vers Lecce (le Salento)</div>
     </article>
 
     <article class="day">
@@ -187,6 +211,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li>Pause pasticciotto (la pâtisserie du Salento)</li>
         <li>Soirée : bars des piazzette, spritz & ambiance <span class="tagword">· vie nocturne</span></li>
       </ul>
+      <div class="nextkm">🚗 <b>~45 km</b> <span class="arr">→</span> vers Otranto</div>
     </article>
 
     <article class="day">
@@ -198,6 +223,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li class="secret"><b>Cava di Bauxite</b> : ancien site minier aux reflets rouges & verts, spot photo unique <span class="tagword">· insolite</span></li>
         <li>Coucher de soleil sur la côte adriatique</li>
       </ul>
+      <div class="nextkm">🚗 <b>~20 km</b> <span class="arr">→</span> vers l'hôtel en bord de crique (Santa Cesarea)</div>
     </article>
 
     <article class="day">
@@ -209,6 +235,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li class="romance">Apéritif privé face au coucher de soleil sur la falaise</li>
         <li>Soirée cocooning, rien que vous deux</li>
       </ul>
+      <div class="nextkm">⚓ <b>~5 km</b> <span class="arr">→</span> croisière au départ du port voisin</div>
     </article>
 
     <article class="day">
@@ -219,6 +246,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li>Retour en fin d'après-midi, temps libre & repos</li>
         <li class="romance"><b>Dîner romantique face à la mer</b> : menu dégustation, bougies, table dressée pour deux — la surprise du séjour 🌹</li>
       </ul>
+      <div class="nextkm">🚗 <b>~30 km</b> <span class="arr">→</span> vers Santa Maria di Leuca</div>
     </article>
 
     <article class="day">
@@ -229,6 +257,7 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li><b>Santa Maria di Leuca</b> : la pointe des Pouilles, là où l'Adriatique rencontre l'Ionienne — phare & villas Belle Époque</li>
         <li>Balade tranquille, gelato artisanal, farniente</li>
       </ul>
+      <div class="nextkm">🚗 <b>~50 km</b> <span class="arr">→</span> vers Gallipoli</div>
     </article>
 
     <article class="day">
@@ -239,7 +268,17 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
         <li class="secret">Dernière baignade côté ionien à <b>Punta della Suina</b> <span class="tagword">· crique</span></li>
         <li>Route retour vers Bari, restitution de la voiture & départ</li>
       </ul>
+      <div class="nextkm">🏁 <b>~190 km</b> <span class="arr">→</span> retour vers Bari (aéroport)</div>
     </article>
+  </section>
+
+  <!-- CARTE -->
+  <section class="panel" id="carte">
+    <span class="sec-tag">Repérez-vous</span>
+    <h2 class="sec-title">La <em>carte</em> du voyage</h2>
+    <p class="sec-intro">Tous vos lieux d'étape, reliés dans l'ordre du séjour. <b>Touchez un point</b> pour lancer l'itinéraire dans <b>Google Maps</b> ou <b>Waze</b> depuis votre position.</p>
+    <div id="tripmap"></div>
+    <div class="map-note">🧭 <b>Astuce :</b> touchez un lieu sur la carte, puis choisissez « Google Maps » ou « Waze » — la navigation démarre directement depuis là où vous êtes.</div>
   </section>
 
   <!-- ROMANCE -->
@@ -364,7 +403,9 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
   © 2026 · Renaud Lauret · Tous droits réservés
 </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
+/* ─── Onglets ─── */
 const tabs=document.querySelectorAll('.tab');
 const panels=document.querySelectorAll('.panel');
 tabs.forEach(t=>t.addEventListener('click',()=>{
@@ -373,7 +414,53 @@ tabs.forEach(t=>t.addEventListener('click',()=>{
   t.classList.add('active');
   document.getElementById(t.dataset.tab).classList.add('active');
   window.scrollTo({top:document.querySelector('main').offsetTop-60,behavior:'smooth'});
+  if(t.dataset.tab==='carte' && window._tripmap){ setTimeout(()=>window._tripmap.invalidateSize(),120); }
 }));
+
+/* ─── Carte du voyage ─── */
+// Étapes du séjour (ordre chronologique). Pour un nouveau voyage : adaptez ce tableau.
+const stops=[
+  {n:'Bari',s:'Jour 1 · Arrivée',c:[41.1258,16.8664]},
+  {n:'Polignano a Mare',s:'Jour 2',c:[40.9962,17.2211]},
+  {n:'Monopoli',s:'Jour 2',c:[40.9510,17.3010]},
+  {n:'Alberobello',s:'Jour 3 · Trulli',c:[40.7826,17.2372]},
+  {n:'Locorotondo',s:'Jour 3',c:[40.7546,17.3266]},
+  {n:'Cisternino',s:'Jour 3',c:[40.7420,17.4230]},
+  {n:'Ostuni',s:'Jour 4 · Ville Blanche',c:[40.7305,17.5773]},
+  {n:'Lecce',s:'Jour 5 · Baroque',c:[40.3515,18.1750]},
+  {n:'Otranto',s:'Jour 6',c:[40.1462,18.4909]},
+  {n:'Baia dei Turchi',s:'Jour 6 · Plage secrète',c:[40.1720,18.4460]},
+  {n:'Cava di Bauxite',s:'Jour 6 · Spot photo',c:[40.1540,18.4770]},
+  {n:'Hôtel bord de crique — Santa Cesarea',s:'Jours 7 à 9 · Séjour romantique',c:[40.0389,18.4600]},
+  {n:'Santa Maria di Leuca',s:'Jour 9 · Les deux mers',c:[39.7975,18.3597]},
+  {n:'Gallipoli',s:'Jour 10',c:[40.0559,17.9925]}
+];
+
+const map=L.map('tripmap',{scrollWheelZoom:false}).setView([40.5,17.9],8);
+map.on('click',()=>map.scrollWheelZoom.enable());
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+  {attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:18}).addTo(map);
+
+// Tracé de l'itinéraire (route principale, dans l'ordre)
+const routeIso=[0,1,3,6,7,8,11,12,13,0];
+L.polyline(routeIso.map(i=>stops[i].c),{color:'#C9A96E',weight:2.5,opacity:.7,dashArray:'6,8'}).addTo(map);
+
+const bounds=[];
+stops.forEach(st=>{
+  const [lat,lng]=st.c; bounds.push(st.c);
+  const gm='https://www.google.com/maps/search/?api=1&query='+lat+','+lng;
+  const wz='https://waze.com/ul?ll='+lat+','+lng+'&navigate=yes';
+  const html='<div class="pop"><b>'+st.n+'</b><small>'+st.s+'</small><div class="pop-btns">'+
+    '<a class="gm" target="_blank" rel="noopener" href="'+gm+'">Google Maps</a>'+
+    '<a class="wz" target="_blank" rel="noopener" href="'+wz+'">Waze</a></div></div>';
+  const m=L.circleMarker(st.c,{radius:7,fillColor:'#C4956A',color:'#FDF9F4',weight:2,opacity:1,fillOpacity:.95}).addTo(map);
+  m.bindPopup(html);
+  m.bindTooltip(st.n,{direction:'top',offset:[0,-6]});
+  m.on('mouseover',function(){this.setStyle({radius:10,fillColor:'#C9A96E'});});
+  m.on('mouseout',function(){this.setStyle({radius:7,fillColor:'#C4956A'});});
+});
+map.fitBounds(bounds,{padding:[30,30]});
+window._tripmap=map;
 </script>
 </body>
 </html>
