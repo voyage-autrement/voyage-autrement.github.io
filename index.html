@@ -148,6 +148,18 @@ nav.scrolled {
   filter: saturate(0.8);
 }
 
+/* Carrousel de photos du hero */
+.hero-carousel { position: absolute; inset: 0; }
+.hero-carousel img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  filter: saturate(0.92);
+}
+.hero-carousel img.active { opacity: 0.8; }
+
 /* Unsplash placeholder via CSS gradient */
 .hero-img-placeholder {
   width: 100%;
@@ -1550,6 +1562,33 @@ footer {
   gap: 8px;
 }
 
+/* ─── MES EXPÉRIENCES (défilé de photos) ─── */
+.exp-block { margin-top: 64px; }
+.exp-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(28px, 4vw, 44px);
+  color: var(--forest);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.exp-title em { font-style: italic; color: var(--terra); }
+.exp-sub { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 30px; }
+.exp-reel-mask { overflow: hidden; position: relative; }
+.exp-reel-mask::before, .exp-reel-mask::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 70px; z-index: 2; pointer-events: none;
+}
+.exp-reel-mask::before { left: 0; background: linear-gradient(to right, var(--warm-white), transparent); }
+.exp-reel-mask::after { right: 0; background: linear-gradient(to left, var(--warm-white), transparent); }
+.exp-reel { display: flex; gap: 14px; width: max-content; animation: reel 45s linear infinite; }
+.exp-reel:hover { animation-play-state: paused; }
+.exp-reel img {
+  height: 240px; width: 330px; object-fit: cover;
+  border: 1px solid var(--sand); flex: 0 0 auto;
+}
+@keyframes reel { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (max-width: 600px) { .exp-reel img { height: 180px; width: 250px; } }
+
 /* ─── AVIS CLIENTS ─── */
 .avis {
   padding: 120px 64px;
@@ -1703,13 +1742,10 @@ footer {
   <a href="#" class="nav-logo">Voyager <span>Autrement</span></a>
   <ul class="nav-links">
     <li><a href="#about">Mon histoire</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#offres">Mes offres</a></li>
-    <li><a href="#carte">Mes voyages</a></li>
+    <li><a href="#services">Services &amp; Offres</a></li>
     <li><a href="#accompagnement">Accompagnement</a></li>
-    <li><a href="#avis">Avis</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#carte">Mes voyages</a></li>
+    <li><a href="#avis">Avis &amp; Contact</a></li>
     <li><a href="#formulaire" class="nav-cta">Commencer</a></li>
   </ul>
   <div class="nav-burger" onclick="toggleMenu()">
@@ -1743,7 +1779,14 @@ footer {
     </div>
   </div>
   <div class="hero-right">
-    <div class="hero-img-placeholder"></div>
+    <div class="hero-carousel" id="heroCarousel">
+      <img src="assets/img/exp-1.jpg" class="active" alt="Expérience de voyage">
+      <img src="assets/img/exp-2.jpg" alt="Expérience de voyage">
+      <img src="assets/img/exp-3.jpg" alt="Expérience de voyage">
+      <img src="assets/img/exp-5.jpg" alt="Expérience de voyage">
+      <img src="assets/img/exp-6.jpg" alt="Expérience de voyage">
+      <img src="assets/img/exp-8.jpg" alt="Expérience de voyage">
+    </div>
   </div>
   <div class="scroll-indicator">
     <div class="scroll-line-h"></div>
@@ -1992,6 +2035,8 @@ footer {
             <label class="check-item"><input type="checkbox" value="spa"> 💆 Spa & bien-être</label>
             <label class="check-item"><input type="checkbox" value="photo"> 📸 Photographie</label>
             <label class="check-item"><input type="checkbox" value="nightlife"> 🎶 Vie nocturne</label>
+            <label class="check-item"><input type="checkbox" value="culture"> 🏛️ Sorties culturelles</label>
+            <label class="check-item"><input type="checkbox" value="local"> 🫶 Vivre comme un local</label>
           </div>
         </div>
         <div class="form-group full">
@@ -2129,6 +2174,14 @@ footer {
         <div class="cp-hint" id="cpHint">👆 Cliquez sur un point doré de la carte</div>
       </div>
     </aside>
+  </div>
+
+  <div class="exp-block reveal">
+    <h3 class="exp-title">Mes <em>expériences</em> en images</h3>
+    <p class="exp-sub">Des instants vécus aux quatre coins du monde — ils défilent au hasard.</p>
+    <div class="exp-reel-mask">
+      <div class="exp-reel" id="expReel"></div>
+    </div>
   </div>
 </section>
 
@@ -2450,6 +2503,28 @@ async function handleSubmit() {
   document.getElementById('formContainer').style.display = 'none';
   sm.classList.add('visible');
 }
+
+// Carrousel de photos du hero
+(function(){
+  const imgs = [...document.querySelectorAll('#heroCarousel img')];
+  if (imgs.length < 2) return;
+  let i = 0;
+  setInterval(() => {
+    imgs[i].classList.remove('active');
+    i = (i + 1) % imgs.length;
+    imgs[i].classList.add('active');
+  }, 4000);
+})();
+
+// Défilé "Mes expériences" — photos mélangées au hasard
+(function(){
+  const reel = document.getElementById('expReel');
+  if (!reel) return;
+  const pics = ['exp-1','exp-2','exp-3','exp-4','exp-5','exp-6','exp-7','exp-8'];
+  for (let i = pics.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [pics[i],pics[j]] = [pics[j],pics[i]]; }
+  const seq = [...pics, ...pics]; // doublé pour une boucle fluide
+  reel.innerHTML = seq.map(p => '<img src="assets/img/'+p+'.jpg" alt="Expérience de voyage" loading="lazy">').join('');
+})();
 
 // Mobile menu toggle (basic)
 function toggleMenu() {
