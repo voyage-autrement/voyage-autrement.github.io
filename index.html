@@ -1732,8 +1732,25 @@ footer {
 @media (max-width: 900px) {
   nav { padding: 18px 24px; }
   nav.scrolled { padding: 12px 24px; }
-  .nav-links, .nav-cta { display: none; }
   .nav-burger { display: flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -24px; right: -24px;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(45,74,62,0.98);
+    backdrop-filter: blur(12px);
+    padding: 8px 0 16px;
+    box-shadow: 0 24px 44px rgba(0,0,0,0.4);
+    max-height: 82vh;
+    overflow-y: auto;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { width: 100%; }
+  .nav-links a { display: block; padding: 15px 28px; font-size: 12px; letter-spacing: 2px; }
+  .nav-cta { display: block; margin: 12px 24px 0; text-align: center; padding: 14px; }
 
   .hero { grid-template-columns: 1fr; }
   .hero-right { display: none; }
@@ -1793,8 +1810,7 @@ footer {
 <div class="hero-mobile" id="heroMobile">
   <img src="assets/img/hero-1.jpg" class="active" alt="Expérience de voyage">
   <img src="assets/img/hero-2.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hero-3.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hero-4.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hero-6.jpg" alt="Expérience de voyage">
   <img src="assets/img/hero-5.jpg" alt="Expérience de voyage">
   <span class="hero-mobile-tag">✦ Voyager Autrement · en images</span>
 </div>
@@ -1828,8 +1844,7 @@ footer {
     <div class="hero-carousel" id="heroCarousel">
       <img src="assets/img/hero-1.jpg" class="active" alt="Expérience de voyage">
       <img src="assets/img/hero-2.jpg" alt="Expérience de voyage">
-      <img src="assets/img/hero-3.jpg" alt="Expérience de voyage">
-      <img src="assets/img/hero-4.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hero-6.jpg" alt="Expérience de voyage">
       <img src="assets/img/hero-5.jpg" alt="Expérience de voyage">
     </div>
   </div>
@@ -2639,13 +2654,18 @@ async function handleSubmit() {
   reel.querySelectorAll('video').forEach(v => { v.muted = true; const p = v.play(); if (p) p.catch(()=>{}); });
 })();
 
-// Mobile menu toggle (basic)
+// Mobile menu toggle
 function toggleMenu() {
   const links = document.querySelector('.nav-links');
-  if (links) {
-    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-  }
+  if (links) links.classList.toggle('open');
 }
+// Ferme le menu après un clic sur un onglet
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (links) links.classList.remove('open');
+  });
+});
 </script>
 
 <!-- ─── CARTE INTERACTIVE (Leaflet) ─── -->
