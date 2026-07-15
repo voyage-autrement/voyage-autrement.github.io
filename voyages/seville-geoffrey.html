@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Le Passeport · Geoffrey · Séville</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
 :root {
   --cream: #FAF7F2;
@@ -534,7 +535,6 @@ body {
   top: 0;
   z-index: 20;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-  overflow-x: auto;
 }
 
 .tab-btn {
@@ -553,7 +553,6 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  white-space: nowrap;
 }
 
 .tab-btn:hover { color: rgba(250,247,242,0.7); }
@@ -567,7 +566,7 @@ body {
 }
 
 .tab-panel { display: none; }
-.tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
+.tab-panel.active { display: block; }
 
 /* ─── SECTION HEADINGS ─── */
 .pp-section-title {
@@ -588,14 +587,6 @@ body {
   flex: 1;
   height: 1px;
   background: linear-gradient(to right, var(--sand), transparent);
-}
-
-.pp-intro {
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.8;
-  margin-bottom: 32px;
-  max-width: 680px;
 }
 
 /* ─── RESTO CARDS ─── */
@@ -823,36 +814,6 @@ body {
   line-height: 1;
 }
 
-.carnet-sign {
-  display: block;
-  margin-top: 20px;
-  font-size: 22px;
-  color: var(--terra-dark);
-  text-align: right;
-}
-
-/* ─── KM BADGE (standard pages client) ─── */
-.pp-km {
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--terra-dark);
-  font-weight: 500;
-  letter-spacing: .3px;
-}
-.pp-km .arr { color: var(--gold); }
-
-/* ─── MAP ─── */
-#pp-map { height: 460px; width: 100%; border: 1px solid var(--sand); background: #dbeafe; }
-.leaflet-popup-content-wrapper { border-radius: 0; }
-.pop b { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--forest); display: block; margin-bottom: 2px; }
-.pop small { color: var(--muted); font-size: 11px; letter-spacing: .5px; text-transform: uppercase; display: block; margin-bottom: 10px; }
-.pop-btns { display: flex; gap: 8px; }
-.pop-btns a { flex: 1; text-align: center; font-size: 11px; font-weight: 600; letter-spacing: .5px; text-decoration: none; padding: 9px 8px; border-radius: 4px; }
-.pop-btns .gm { background: #1a73e8; color: #fff; }
-.pop-btns .wz { background: #33ccff; color: #062a3a; }
-.map-note { background: var(--sand); border-left: 3px solid var(--terra); padding: 14px 18px; font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 18px; }
-.map-note b { color: var(--forest); }
-
 /* ─── FOOTER OF PASSPORT PAGE ─── */
 .pp-footer {
   background: var(--ink);
@@ -891,9 +852,24 @@ body {
   .pp-destination { font-size: 52px; }
   .pp-emblem { font-size: 48px; }
   .resto-grid, .exclusif-grid { grid-template-columns: 1fr; }
-  .pp-meta { flex-wrap: wrap; gap: 18px; }
   #pp-map { height: 360px; }
 }
+
+/* ─── Standard client : distances + carte ─── */
+.pp-tabs { overflow-x: auto; }
+.pp-km { margin-top: 10px; font-size: 12px; color: var(--terra-dark); font-weight: 500; letter-spacing: .3px; }
+.pp-km .arr { color: var(--gold); }
+#pp-map { height: 460px; width: 100%; border: 1px solid var(--sand); background: #dbeafe; }
+.pp-intro { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 28px; max-width: 680px; }
+.leaflet-popup-content-wrapper { border-radius: 0; }
+.pop b { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--forest); display: block; margin-bottom: 2px; }
+.pop small { color: var(--muted); font-size: 11px; letter-spacing: .5px; text-transform: uppercase; display: block; margin-bottom: 10px; }
+.pop-btns { display: flex; gap: 8px; }
+.pop-btns a { flex: 1; text-align: center; font-size: 11px; font-weight: 600; letter-spacing: .5px; text-decoration: none; padding: 9px 8px; border-radius: 4px; }
+.pop-btns .gm { background: #1a73e8; color: #fff; }
+.pop-btns .wz { background: #33ccff; color: #062a3a; }
+.map-note { background: var(--sand); border-left: 3px solid var(--terra); padding: 14px 18px; font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 18px; }
+.map-note b { color: var(--forest); }
 </style>
 </head>
 <body>
@@ -930,16 +906,16 @@ body {
 <div id="passport-page">
 
   <!-- HEADER -->
-  <header class="pp-header">
+  <div class="pp-header">
     <div class="pp-topbar">
       <div class="pp-brand">Voyager <span>Autrement</span></div>
-      <div class="pp-badge">✦ Le Passeport</div>
+      <div class="pp-badge">✦ Le Passeport · Exclusif</div>
     </div>
     <div class="pp-hero">
       <div class="pp-emblem">🌸</div>
       <div class="pp-title-group">
-        <span class="pp-eyebrow">Andalousie · Espagne</span>
-        <h1 class="pp-destination">Sé<em>ville</em></h1>
+        <span class="pp-eyebrow">Votre guide personnalisé</span>
+        <div class="pp-destination">Séville</div>
         <div class="pp-meta">
           <div class="pp-meta-item">
             <span class="pp-meta-label">Voyageur</span>
@@ -947,279 +923,405 @@ body {
           </div>
           <div class="pp-meta-sep"></div>
           <div class="pp-meta-item">
-            <span class="pp-meta-label">Dates</span>
+            <span class="pp-meta-label">Séjour</span>
             <span class="pp-meta-value">14 – 21 Juin 2026</span>
           </div>
           <div class="pp-meta-sep"></div>
           <div class="pp-meta-item">
             <span class="pp-meta-label">Durée</span>
-            <span class="pp-meta-value">7 jours</span>
+            <span class="pp-meta-value">7 nuits</span>
+          </div>
+          <div class="pp-meta-sep"></div>
+          <div class="pp-meta-item">
+            <span class="pp-meta-label">Style</span>
+            <span class="pp-meta-value">Immersion & Gastronomie</span>
           </div>
         </div>
       </div>
     </div>
-  </header>
+  </div>
 
   <!-- TABS -->
-  <nav class="pp-tabs">
-    <button class="tab-btn active" onclick="showTab(this,'t-restos')">🍽️ Restos &amp; Tapas</button>
-    <button class="tab-btn" onclick="showTab(this,'t-visites')">🏛️ Visites</button>
-    <button class="tab-btn" onclick="showTab(this,'t-carte')">🗺️ Carte</button>
-    <button class="tab-btn" onclick="showTab(this,'t-exclusif')">✦ Exclusif</button>
-    <button class="tab-btn" onclick="showTab(this,'t-infos')">ℹ️ Infos</button>
-    <button class="tab-btn" onclick="showTab(this,'t-carnet')">✍️ Le mot de Renaud</button>
-  </nav>
+  <div class="pp-tabs">
+    <button class="tab-btn active" onclick="showTab('restos', this)">🍽️ Restaurants</button>
+    <button class="tab-btn" onclick="showTab('visites', this)">🏛️ Visites</button>
+    <button class="tab-btn" onclick="showTab('carte', this)">🗺️ Carte</button>
+    <button class="tab-btn" onclick="showTab('activites', this)">🎶 Activités</button>
+    <button class="tab-btn" onclick="showTab('exclusif', this)">✦ Exclusif</button>
+    <button class="tab-btn" onclick="showTab('pratique', this)">🗺️ Pratique</button>
+  </div>
 
+  <!-- BODY -->
   <div class="pp-body">
 
-    <!-- RESTOS -->
-    <section class="tab-panel active" id="t-restos">
-      <h2 class="pp-section-title">Où manger</h2>
-      <p class="pp-intro">Séville se vit une tapa à la main. Voici mes adresses de cœur, du bar historique à la table créative — réservées et confirmées pour votre séjour.</p>
+    <!-- ─── RESTAURANTS ─── -->
+    <div class="tab-panel active" id="tab-restos">
+      <h2 class="pp-section-title">Restaurants & Tables</h2>
+
       <div class="resto-grid">
         <div class="resto-card highlight">
-          <span class="resto-emoji">🫒</span>
-          <div class="resto-name">El Rinconcillo</div>
-          <div class="resto-type">Tapas · depuis 1670</div>
-          <p class="resto-desc">Le plus vieux bar à tapas de Séville. Jambon suspendu, addition à la craie sur le comptoir : l'âme andalouse intacte.</p>
-          <div class="resto-tags"><span class="tag gold">Historique</span><span class="tag">Tapas</span></div>
+          <span class="resto-emoji">🥘</span>
+          <div class="resto-name">El Rincón de Anita</div>
+          <div class="resto-type">Taverne andalouse · Centro</div>
+          <p class="resto-desc">Une institution cachée dans une ruelle du Barrio Santa Cruz. La mère d'Anita cuisine encore les recettes familiales. L'espadon au pil-pil est une révélation.</p>
+          <div class="resto-tags">
+            <span class="tag gold">Réservation recommandée</span>
+            <span class="tag">~30€/pers.</span>
+            <span class="tag">Local</span>
+          </div>
         </div>
-        <div class="resto-card highlight">
-          <span class="resto-emoji">🍤</span>
-          <div class="resto-name">La Brunilda</div>
-          <div class="resto-type">Tapas créatives</div>
-          <p class="resto-desc">Petites assiettes modernes et généreuses. Toujours plein — on y file dès l'ouverture (ou on réserve pour vous).</p>
-          <div class="resto-tags"><span class="tag gold">Incontournable</span><span class="tag">Moderne</span></div>
-        </div>
+
         <div class="resto-card">
           <span class="resto-emoji">🍷</span>
-          <div class="resto-name">Bodega Santa Cruz «&nbsp;Las Columnas&nbsp;»</div>
-          <div class="resto-type">Tapas de rue</div>
-          <p class="resto-desc">On mange debout, dehors, au cœur de Santa Cruz. Montaditos et bière fraîche dans l'ambiance des ruelles.</p>
-          <div class="resto-tags"><span class="tag">Ambiance</span><span class="tag">Petit prix</span></div>
+          <div class="resto-name">La Bodega del Aljarafe</div>
+          <div class="resto-type">Bar à vins · Triana</div>
+          <p class="resto-desc">Amontillado servi au tonneau, jamón ibérico suspendu au plafond. Arrive avant 20h ou attends debout. Ça vaut la peine.</p>
+          <div class="resto-tags">
+            <span class="tag">Tapas</span>
+            <span class="tag">~15€/pers.</span>
+            <span class="tag">Vin naturel</span>
+          </div>
         </div>
+
         <div class="resto-card">
-          <span class="resto-emoji">🥚</span>
+          <span class="resto-emoji">🦐</span>
+          <div class="resto-name">Mercado de Triana</div>
+          <div class="resto-type">Marché couvert · Triana</div>
+          <p class="resto-desc">Le matin, commande des gambas al ajillo et un manzanilla frais aux bars du marché. Touristique mais incontournable pour une raison.</p>
+          <div class="resto-tags">
+            <span class="tag">Matin</span>
+            <span class="tag">~12€/pers.</span>
+            <span class="tag">Fruits de mer</span>
+          </div>
+        </div>
+
+        <div class="resto-card">
+          <span class="resto-emoji">🌙</span>
           <div class="resto-name">Eslava</div>
-          <div class="resto-type">Tapas primées</div>
-          <p class="resto-desc">Le fameux «&nbsp;œuf sur biscuit au miel&nbsp;» et des tapas récompensées. Une valeur sûre du quartier San Lorenzo.</p>
-          <div class="resto-tags"><span class="tag">Créatif</span></div>
+          <div class="resto-type">Gastro-bar · San Lorenzo</div>
+          <p class="resto-desc">Élu meilleur tapas d'Espagne plusieurs années de suite. La torrija caramelisada au soir est leur signature. Prévoir une file, ça en vaut l'attente.</p>
+          <div class="resto-tags">
+            <span class="tag gold">Meilleur tapas d'Espagne</span>
+            <span class="tag">~35€/pers.</span>
+          </div>
         </div>
+
         <div class="resto-card">
-          <span class="resto-emoji">🍫</span>
-          <div class="resto-name">Bar El Comercio</div>
-          <div class="resto-type">Petit-déjeuner</div>
-          <p class="resto-desc">Churros et chocolat épais du matin, comme les Sévillans. L'arrêt gourmand avant les visites.</p>
-          <div class="resto-tags"><span class="tag">Petit-déj</span></div>
+          <span class="resto-emoji">☀️</span>
+          <div class="resto-name">Café de Indias</div>
+          <div class="resto-type">Terrasse · Alameda</div>
+          <p class="resto-desc">Pour le petit-déjeuner sévillan : mollete con mantequilla, zumo de naranja fraîche et café con leche. Vue sur la promenade de l'Alameda.</p>
+          <div class="resto-tags">
+            <span class="tag">Petit-déjeuner</span>
+            <span class="tag">~8€/pers.</span>
+          </div>
         </div>
+
         <div class="resto-card">
-          <span class="resto-emoji">🍶</span>
-          <div class="resto-name">Casa Morales</div>
-          <div class="resto-type">Bodega centenaire</div>
-          <p class="resto-desc">Vin servi au fût dans de grandes jarres, tapas simples et vraies. Une capsule de temps depuis 1850.</p>
-          <div class="resto-tags"><span class="tag gold">Authentique</span><span class="tag">Vin</span></div>
+          <span class="resto-emoji">🎭</span>
+          <div class="resto-name">Taberna del Alabardero</div>
+          <div class="resto-type">Restaurant gastronomique · Centro</div>
+          <p class="resto-desc">Dans un palais du XVIIIe siècle. Le soir parfait pour une occasion spéciale. Le menu dégustation andalou raconte l'Espagne en 8 services.</p>
+          <div class="resto-tags">
+            <span class="tag gold">Occasion spéciale</span>
+            <span class="tag">~80€/pers.</span>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- VISITES -->
-    <section class="tab-panel" id="t-visites">
-      <h2 class="pp-section-title">À voir &amp; à vivre</h2>
-      <p class="pp-intro">Un fil conducteur pensé pour éviter les files et la chaleur : le matin pour les monuments, la fin de journée pour les points de vue.</p>
+      <div class="carnet-box">
+        Geoffrey, la règle d'or à Séville : ne mange jamais avant 21h. Le dîner commence vraiment à 22h. Va avec le rythme de la ville et elle te donnera tout.
+      </div>
+    </div>
+
+    <!-- ─── VISITES ─── -->
+    <div class="tab-panel" id="tab-visites">
+      <h2 class="pp-section-title">Visites & Patrimoine</h2>
+
       <div class="visite-list">
         <div class="visite-item">
           <div class="visite-num">1</div>
           <div class="visite-content">
-            <div class="visite-name">Real Alcázar &amp; ses jardins</div>
-            <div class="visite-time">Matin · coupe-file inclus</div>
-            <p class="visite-desc">Palais royal mudéjar, patios et jardins luxuriants (décor de Game of Thrones). Le joyau absolu de Séville.</p>
-            <div class="pp-km">🚶 <b>~5 min</b> <span class="arr">→</span> vers la Cathédrale</div>
+            <div class="visite-name">Real Alcázar de Sevilla</div>
+            <div class="visite-time">Réserver tôt le matin · 2–3h</div>
+            <p class="visite-desc">Le palais le plus ancien d'Europe encore habité. Les jardins sont magiques en juin, quand les orangers en fleur parfument tout. Prends le billet coupe-file via l'app officielle la veille.</p>
+            <div class="pp-km">🚶 <b>~3 min</b> <span class="arr">→</span> vers la Cathédrale</div>
           </div>
         </div>
+
         <div class="visite-item">
           <div class="visite-num">2</div>
           <div class="visite-content">
-            <div class="visite-name">Cathédrale &amp; Giralda</div>
-            <div class="visite-time">Matin</div>
-            <p class="visite-desc">La plus grande cathédrale gothique du monde, le tombeau de Colomb, et la montée à la Giralda pour la vue.</p>
-            <div class="pp-km">🚶 <b>~8 min</b> <span class="arr">→</span> vers Santa Cruz</div>
+            <div class="visite-name">Catedral & Giralda</div>
+            <div class="visite-time">Après-midi · 1h30</div>
+            <p class="visite-desc">Monte la Giralda — une rampe, pas d'escaliers — pour le coucher de soleil sur Séville. La plus belle vue de la ville. À 19h, la lumière est dorée et parfaite.</p>
+            <div class="pp-km">🚶 <b>~5 min</b> <span class="arr">→</span> vers le Barrio Santa Cruz</div>
           </div>
         </div>
+
         <div class="visite-item">
           <div class="visite-num">3</div>
           <div class="visite-content">
             <div class="visite-name">Barrio Santa Cruz</div>
-            <div class="visite-time">Fin d'après-midi</div>
-            <p class="visite-desc">L'ancien quartier juif : patios fleuris, ruelles blanches, orangers. Se perdre est le meilleur plan.</p>
-            <div class="pp-km">🚶 <b>~12 min</b> <span class="arr">→</span> vers la Plaza de España</div>
+            <div class="visite-time">Se perdre · Sans horaire</div>
+            <p class="visite-desc">N'utilise pas Google Maps ici. Perds-toi dans les ruelles blanches. Laisse-toi guider par les sons de guitare et les odeurs de jasmin. C'est là que Séville se révèle vraiment.</p>
+            <div class="pp-km">🚶 <b>~12 min</b> <span class="arr">→</span> vers Las Setas</div>
           </div>
         </div>
+
         <div class="visite-item">
           <div class="visite-num">4</div>
           <div class="visite-content">
-            <div class="visite-name">Plaza de España</div>
-            <div class="visite-time">Golden hour</div>
-            <p class="visite-desc">Chef-d'œuvre de 1929, azulejos des provinces, petite barque sur le canal. Magique au coucher du soleil.</p>
-            <div class="pp-km">🚗 <b>~10 min</b> <span class="arr">→</span> vers Triana</div>
+            <div class="visite-name">Metropol Parasol · Las Setas</div>
+            <div class="visite-time">Coucher de soleil · 1h</div>
+            <p class="visite-desc">Structure de bois contemporaine au cœur de la vieille ville. La terrasse panoramique à 18h30 offre un spectacle unique sur les toits d'Andalousie.</p>
+            <div class="pp-km">🚶 <b>~10 min</b> <span class="arr">→</span> vers le Museo de Bellas Artes</div>
           </div>
         </div>
+
         <div class="visite-item">
           <div class="visite-num">5</div>
           <div class="visite-content">
-            <div class="visite-name">Triana</div>
-            <div class="visite-time">Soirée</div>
-            <p class="visite-desc">Le quartier de la céramique et du flamenco, le marché, les bars au bord du Guadalquivir. L'âme populaire de la ville.</p>
-            <div class="pp-km">🚶 <b>~15 min</b> <span class="arr">→</span> vers Las Setas</div>
+            <div class="visite-name">Museo de Bellas Artes</div>
+            <div class="visite-time">Matin calme · 1h</div>
+            <p class="visite-desc">Le second plus beau musée d'Espagne après le Prado — et presque vide. Les toiles de Murillo dans la salle principale valent à elles seules le déplacement.</p>
+            <div class="pp-km">🚶 <b>~18 min</b> <span class="arr">→</span> vers Triana (par le pont)</div>
           </div>
         </div>
+
         <div class="visite-item">
           <div class="visite-num">6</div>
           <div class="visite-content">
-            <div class="visite-name">Metropol Parasol «&nbsp;Las Setas&nbsp;»</div>
-            <div class="visite-time">Coucher de soleil</div>
-            <p class="visite-desc">La plus grande structure en bois du monde. Passerelle panoramique au sommet, sublime à l'heure dorée.</p>
-            <div class="pp-km">✦ <span class="arr">→</span> Fin du parcours</div>
+            <div class="visite-name">Triana — l'autre rive</div>
+            <div class="visite-time">Après-midi · 2–3h</div>
+            <p class="visite-desc">Traverse le pont Isabel II. Triana, c'est l'âme flamenca et populaire de Séville. Les céramiques, les azulejos, et les bars où les gitans chantent encore le soir venu.</p>
+            <div class="pp-km">✦ <span class="arr">→</span> Fin du parcours · retour tranquille</div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- CARTE -->
-    <section class="tab-panel" id="t-carte">
+    <!-- ─── CARTE ─── -->
+    <div class="tab-panel" id="tab-carte">
       <h2 class="pp-section-title">La carte du séjour</h2>
-      <p class="pp-intro">Tous vos lieux à Séville. <b>Touchez un point</b> pour ouvrir l'itinéraire dans <b>Google Maps</b> ou <b>Waze</b>.</p>
+      <p class="pp-intro">Tous vos lieux à Séville. <strong>Touchez un point</strong> pour lancer l'itinéraire dans <strong>Google Maps</strong> ou <strong>Waze</strong> depuis votre position.</p>
       <div id="pp-map"></div>
-      <div class="map-note">🧭 <b>Astuce :</b> touchez un lieu, puis « Google Maps » ou « Waze » pour lancer la navigation depuis votre position.</div>
-    </section>
+      <div class="map-note">🧭 <b>Astuce :</b> touchez un lieu, puis choisissez « Google Maps » ou « Waze » — la navigation démarre directement.</div>
+    </div>
 
-    <!-- EXCLUSIF -->
-    <section class="tab-panel" id="t-exclusif">
-      <h2 class="pp-section-title">Vos exclusivités</h2>
-      <p class="pp-intro">Les petits plus négociés rien que pour vous — c'est tout l'esprit de la formule L'Exclusif.</p>
+    <!-- ─── ACTIVITES ─── -->
+    <div class="tab-panel" id="tab-activites">
+      <h2 class="pp-section-title">Activités & Expériences</h2>
+
+      <div class="resto-grid">
+        <div class="resto-card highlight">
+          <span class="resto-emoji">💃</span>
+          <div class="resto-name">Tablao Flamenco El Arenal</div>
+          <div class="resto-type">Spectacle · Centro</div>
+          <p class="resto-desc">Le vrai flamenco, celui qui fait dresser les poils. Spectacle intime de 80 personnes, sans fioritures touristiques. Dernière séance à 22h — la meilleure atmosphère.</p>
+          <div class="resto-tags">
+            <span class="tag gold">Expérience unique</span>
+            <span class="tag">~45€/pers.</span>
+            <span class="tag">Réserver</span>
+          </div>
+        </div>
+
+        <div class="resto-card">
+          <span class="resto-emoji">🚴</span>
+          <div class="resto-name">Vélo au lever du soleil</div>
+          <div class="resto-type">Activité · Bords du Guadalquivir</div>
+          <p class="resto-desc">À 7h, Séville est vide et fraîche. Loue un vélo et remonte le Guadalquivir jusqu'au Parque de María Luisa. La ville t'appartient entièrement.</p>
+          <div class="resto-tags">
+            <span class="tag">Matin</span>
+            <span class="tag">~10€</span>
+            <span class="tag">Liberté</span>
+          </div>
+        </div>
+
+        <div class="resto-card">
+          <span class="resto-emoji">🏊</span>
+          <div class="resto-name">Bain de soleil & terrasse</div>
+          <div class="resto-type">Détente · Hôtel EME</div>
+          <p class="resto-desc">La piscine rooftop de l'EME Catedral Hotel avec vue directe sur la Giralda. Même non-résident, on peut accéder à la terrasse pour un cocktail en fin d'après-midi.</p>
+          <div class="resto-tags">
+            <span class="tag gold">Adresse secrète</span>
+            <span class="tag">~20€ conso</span>
+          </div>
+        </div>
+
+        <div class="resto-card">
+          <span class="resto-emoji">🎨</span>
+          <div class="resto-name">Atelier céramiques Triana</div>
+          <div class="resto-type">Artisanat · Triana</div>
+          <p class="resto-desc">Visite d'un atelier céramiste traditionnel dans le quartier de Triana. Les azulejos sévillans peints à la main sont une tradition millénaire. Possibilité de ramener une pièce.</p>
+          <div class="resto-tags">
+            <span class="tag">Culture</span>
+            <span class="tag">~15€</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── EXCLUSIF ─── -->
+    <div class="tab-panel" id="tab-exclusif">
+      <h2 class="pp-section-title">✦ Avantages Exclusifs</h2>
+
       <div class="exclusif-grid">
         <div class="exclusif-card">
-          <span class="excl-icon">🎟️</span>
-          <div class="excl-name">Coupe-file Alcázar</div>
-          <p class="excl-desc">Entrée réservée au Real Alcázar : vous entrez pendant que les autres patientent au soleil.</p>
-          <span class="excl-value">Inclus · réservé pour vous</span>
-        </div>
-        <div class="exclusif-card">
           <span class="excl-icon">🍷</span>
-          <div class="excl-name">Fino offert</div>
-          <p class="excl-desc">Un verre de vin de Xérès offert dans une bodega partenaire de Santa Cruz.</p>
-          <span class="excl-value">Cadeau partenaire</span>
+          <div class="excl-name">2 verres de vin offerts</div>
+          <p class="excl-desc">Chez La Bodega del Aljarafe à Triana — mentionne simplement "Voyager Autrement" en arrivant. Valable tout le séjour.</p>
+          <span class="excl-value">Valeur · 14€</span>
         </div>
+
+        <div class="exclusif-card">
+          <span class="excl-icon">🏨</span>
+          <div class="excl-name">−15% hôtel Casas de Santa Cruz</div>
+          <p class="excl-desc">Code partenaire : VA-SEV26 à utiliser lors de la réservation. Boutique hôtel en plein Barrio Santa Cruz.</p>
+          <span class="excl-value">Économie · jusqu'à 60€</span>
+        </div>
+
         <div class="exclusif-card">
           <span class="excl-icon">💃</span>
-          <div class="excl-name">Flamenco intimiste</div>
-          <p class="excl-desc">Un tablao authentique à Triana, loin des spectacles à touristes — le vrai duende.</p>
-          <span class="excl-value">Adresse confidentielle</span>
+          <div class="excl-name">Entrée prioritaire Tablao El Arenal</div>
+          <p class="excl-desc">File d'attente évitée + places en première rangée sur présentation du passeport numérique à la caisse.</p>
+          <span class="excl-value">Privilège exclusif</span>
         </div>
-        <div class="exclusif-card">
-          <span class="excl-icon">⛵</span>
-          <div class="excl-name">Barque au coucher du soleil</div>
-          <p class="excl-desc">Une balade sur le Guadalquivir à l'heure dorée, entre Triana et la Torre del Oro.</p>
-          <span class="excl-value">Moment romantique</span>
-        </div>
-        <div class="exclusif-card">
-          <span class="excl-icon">🌅</span>
-          <div class="excl-name">Rooftop secret</div>
-          <p class="excl-desc">L'adresse d'un toit-terrasse peu connu pour l'apéro face à la Giralda.</p>
-          <span class="excl-value">Insider · vue Giralda</span>
-        </div>
-        <div class="exclusif-card">
-          <span class="excl-icon">📞</span>
-          <div class="excl-name">Créneau dédié</div>
-          <p class="excl-desc">Un créneau de 30 min avec moi (visio ou téléphone) pour caler les derniers détails avant le départ.</p>
-          <span class="excl-value">Sur rendez-vous</span>
-        </div>
-      </div>
-    </section>
 
-    <!-- INFOS -->
-    <section class="tab-panel" id="t-infos">
-      <h2 class="pp-section-title">Infos pratiques</h2>
-      <div class="info-box">
-        <div class="info-box-title">☀️ En juin</div>
-        <p>Séville est brûlante l'après-midi (35 °C et plus). On calque le rythme local : visites le matin, sieste ou piscine à l'heure chaude, sorties en soirée quand la ville revit.</p>
-      </div>
-      <div class="info-box">
-        <div class="info-box-title">🚶 Se déplacer</div>
-        <p>Le centre se fait à pied. Tram T1 pratique entre Plaza Nueva et San Bernardo, et vélos en libre-service (Sevici) le long du fleuve.</p>
-      </div>
-      <div class="info-box">
-        <div class="info-box-title">💃 Flamenco</div>
-        <p>Pour du vrai : Triana et les tablaos intimistes plutôt que les grandes salles. Votre adresse exclusive est dans l'onglet « Exclusif ».</p>
-      </div>
-      <div class="info-box">
-        <div class="info-box-title">💶 Bon à savoir</div>
-        <p>Les tapas se paient souvent en cash dans les petites bodegas. Le dîner se prend tard (21h-22h) — faites comme les Sévillans&nbsp;!</p>
-      </div>
-    </section>
+        <div class="exclusif-card">
+          <span class="excl-icon">🌙</span>
+          <div class="excl-name">Ballade nocturne secrète</div>
+          <p class="excl-desc">Itinéraire exclusif pour une soirée dans les ruelles du Santa Cruz après 23h, quand les touristes sont partis. Les bars cachés que seuls les locaux connaissent.</p>
+          <span class="excl-value">Itinéraire PDF inclus</span>
+        </div>
 
-    <!-- CARNET -->
-    <section class="tab-panel" id="t-carnet">
-      <h2 class="pp-section-title">Le mot de Renaud</h2>
-      <div class="carnet-box">
-        Geoffrey, Séville ne se visite pas, elle se ressent. Prends le temps de flâner sans montre dans Santa Cruz, de t'asseoir à une terrasse à l'ombre d'un oranger, d'écouter une guitare au détour d'une ruelle. J'ai glissé dans ce carnet mes adresses préférées et quelques secrets — mais le plus beau souvenir, c'est celui que tu ne prévoiras pas. Bon voyage, l'ami. Olé&nbsp;!
-        <span class="carnet-sign">— Renaud</span>
-      </div>
-    </section>
+        <div class="exclusif-card">
+          <span class="excl-icon">📸</span>
+          <div class="excl-name">Spot photo confidentiel</div>
+          <p class="excl-desc">L'angle sur la Giralda que vous ne trouverez sur aucun blog. Un toit-terrasse privé accessible sur demande — coordonnées GPS dans ce guide.</p>
+          <span class="excl-value">Coordonnées GPS · 37.3860°N</span>
+        </div>
 
+        <div class="exclusif-card">
+          <span class="excl-icon">🎭</span>
+          <div class="excl-name">Rencontre avec un artiste flamenco</div>
+          <p class="excl-desc">Après le spectacle El Arenal, possibilité de rencontrer l'artiste en coulisses. Une expérience humaine authentique, arrangée en amont pour vous.</p>
+          <span class="excl-value">Sur arrangement · Inclus</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PRATIQUE ─── -->
+    <div class="tab-panel" id="tab-pratique">
+      <h2 class="pp-section-title">Infos Pratiques</h2>
+
+      <div class="info-box">
+        <div class="info-box-title">🌡️ Météo Juin</div>
+        <p>Températures entre 28°C et 38°C. Séville en juin est chaude — très chaude. Planifie les visites extérieures avant 12h et après 18h. Sieste obligatoire entre 14h et 17h (comme les Sévillans).</p>
+      </div>
+
+      <div class="info-box">
+        <div class="info-box-title">💶 Budget indicatif</div>
+        <p>Séville reste abordable. Compte 15–25€ pour une session tapas complète avec boissons. Un bon dîner dans un restaurant mid-range : 30–50€. Les transports en commun coûtent 1,40€ le trajet.</p>
+      </div>
+
+      <div class="info-box">
+        <div class="info-box-title">🚌 Se déplacer</div>
+        <p>Centro, Santa Cruz, Triana et Alameda se font à pied — c'est la force de Séville. Pour El Corte Inglés ou Parque María Luisa, prends un Bolt/Cabify (moins cher qu'Uber).</p>
+      </div>
+
+      <div class="info-box">
+        <div class="info-box-title">📱 Apps utiles</div>
+        <p><strong>Alcázar :</strong> app officielle pour les billets coupe-file. <strong>Bolt</strong> pour les taxis. <strong>Duolingo</strong> pour 5 phrases en espagnol — les Sévillans adorent quand tu essaies. <strong>Google Maps</strong> hors ligne téléchargé à l'avance.</p>
+      </div>
+
+      <div class="info-box">
+        <div class="info-box-title">🗣️ Quelques mots</div>
+        <p><strong>Venga</strong> (d'accord / allez !), <strong>Guapo/Guapa</strong> (beau/belle, utilisé comme "hey!"), <strong>Una caña por favor</strong> (une bière pression SVP), <strong>¿Cuánto es?</strong> (c'est combien?). Tu verras, ça change tout.</p>
+      </div>
+
+      <div class="info-box">
+        <div class="info-box-title">✉️ Contact Renaud</div>
+        <p>Une question pendant le voyage ? ypdt.info@gmail.com — je réponds en général sous 2h. WhatsApp disponible pour les urgences : +1 778 325 4204</p>
+      </div>
+    </div>
+
+  </div><!-- end pp-body -->
+
+  <!-- FOOTER -->
+  <div class="pp-footer">
+    <div class="pp-footer-brand">Voyager <span>Autrement</span></div>
+    <div class="pp-footer-copy">Guide personnalisé · Geoffrey Marchand · Séville 2026</div>
   </div>
 
-  <footer class="pp-footer">
-    <div class="pp-footer-brand">Voyager <span>Autrement</span></div>
-    <div class="pp-footer-copy">Passeport personnel de Geoffrey · Séville · Juin 2026</div>
-  </footer>
+</div><!-- end passport-page -->
 
-</div>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
-let mapReady = false;
-
-function openBook(){
+/* ══════════════════════════════════
+   OPEN BOOK — sequence
+══════════════════════════════════ */
+function openBook() {
   const wrap = document.getElementById('notebook-wrap');
-  if (wrap.classList.contains('opening')) return;
-  wrap.classList.add('opening');
   const blackout = document.getElementById('blackout');
-  setTimeout(() => blackout.classList.add('active'), 900);
+  const passport = document.getElementById('passport-page');
+  const scene = document.getElementById('scene');
+
+  // Prevent double-click
+  wrap.onclick = null;
+
+  // Step 1 — zoom into book
+  wrap.classList.add('opening');
+
+  // Step 2 — fade to black at peak zoom
   setTimeout(() => {
-    document.getElementById('scene').style.opacity = '0';
-    document.getElementById('scene').style.pointerEvents = 'none';
-    document.getElementById('passport-page').classList.add('revealed');
-    setTimeout(() => blackout.classList.remove('active'), 300);
+    blackout.classList.add('active');
+  }, 900);
+
+  // Step 3 — reveal passport page
+  setTimeout(() => {
+    scene.style.display = 'none';
+    passport.style.pointerEvents = 'all';
+
+    // Small delay then fade in passport
+    setTimeout(() => {
+      blackout.style.transition = 'opacity 0.6s ease';
+      blackout.classList.remove('active');
+      passport.classList.add('revealed');
+    }, 80);
   }, 1300);
 }
 
-function showTab(btn, id){
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+/* ══════════════════════════════════
+   TABS
+══════════════════════════════════ */
+function showTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
-  document.getElementById(id).classList.add('active');
-  document.getElementById('passport-page').scrollTo({ top: 0, behavior: 'smooth' });
-  if (id === 't-carte') initMap();
+  if (id === 'carte') initMap();
 }
 
-// ─── Carte Séville ───
+/* ══════════════════════════════════
+   CARTE — Séville (Google Maps / Waze)
+══════════════════════════════════ */
 const spots = [
-  {n:'Real Alcázar', s:'Palais &amp; jardins', c:[37.3831,-5.9905]},
-  {n:'Cathédrale &amp; Giralda', s:'Monument', c:[37.3859,-5.9932]},
+  {n:'Real Alcázar', s:'Palais & jardins', c:[37.3831,-5.9905]},
+  {n:'Cathédrale & Giralda', s:'Monument', c:[37.3859,-5.9932]},
   {n:'Barrio Santa Cruz', s:'Quartier', c:[37.3851,-5.9895]},
-  {n:'Plaza de España', s:'Incontournable', c:[37.3776,-5.9869]},
-  {n:'Triana', s:'Flamenco &amp; céramique', c:[37.3833,-6.0025]},
   {n:'Metropol Parasol (Las Setas)', s:'Vue panoramique', c:[37.3934,-5.9924]},
-  {n:'El Rinconcillo', s:'Tapas depuis 1670', c:[37.3925,-5.9887]},
-  {n:'La Brunilda', s:'Tapas créatives', c:[37.3894,-5.9976]}
+  {n:'Museo de Bellas Artes', s:'Musée', c:[37.3928,-5.9974]},
+  {n:'Triana', s:'Flamenco & céramique', c:[37.3833,-6.0025]},
+  {n:'Eslava', s:'Tapas primées', c:[37.3968,-5.9950]},
+  {n:'Mercado de Triana', s:'Marché', c:[37.3860,-6.0020]},
+  {n:'Tablao El Arenal', s:'Flamenco', c:[37.3862,-5.9975]}
 ];
 
 let mapObj = null;
 function initMap(){
-  if (mapReady) { setTimeout(() => mapObj.invalidateSize(), 100); return; }
-  mapReady = true;
-  mapObj = L.map('pp-map', { scrollWheelZoom:false }).setView([37.386,-5.992], 14);
+  if (mapObj) { setTimeout(() => mapObj.invalidateSize(), 100); return; }
+  mapObj = L.map('pp-map', { scrollWheelZoom:false }).setView([37.386,-5.995], 14);
   mapObj.on('click', () => mapObj.scrollWheelZoom.enable());
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
     { attribution:'&copy; OpenStreetMap &copy; CARTO', maxZoom:19 }).addTo(mapObj);
@@ -1238,9 +1340,7 @@ function initMap(){
   mapObj.fitBounds(bounds, { padding:[40,40] });
   setTimeout(() => mapObj.invalidateSize(), 200);
 }
-
-// Ouverture au clavier / si l'utilisateur préfère aller vite
-document.addEventListener('keydown', e => { if (e.key === 'Enter') openBook(); });
 </script>
+
 </body>
 </html>
