@@ -1571,6 +1571,22 @@ footer {
   gap: 8px;
 }
 
+/* ─── EXEMPLES DE VOYAGES ─── */
+.exemples { padding: 120px 64px; max-width: 1300px; margin: 0 auto; }
+.ex-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.ex-card { display: block; background: var(--warm-white); border: 1px solid var(--sand); text-decoration: none; overflow: hidden; transition: transform .3s ease, box-shadow .3s ease; }
+.ex-card:hover { transform: translateY(-6px); box-shadow: 0 28px 60px rgba(45,74,62,.12); }
+.ex-thumb { height: 180px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.ex-thumb .ex-emoji { font-size: 50px; opacity: .9; }
+.ex-city { position: absolute; bottom: 12px; left: 18px; color: var(--cream); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; }
+.ex-body { padding: 26px 26px 30px; }
+.ex-tier { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--terra); display: block; margin-bottom: 8px; }
+.ex-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--forest); margin-bottom: 8px; }
+.ex-body p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+.ex-link { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--forest); }
+.ex-card:hover .ex-link { color: var(--terra); }
+@media (max-width: 900px) { .exemples { padding: 80px 24px; } .ex-grid { grid-template-columns: 1fr; } }
+
 /* ─── MES EXPÉRIENCES (défilé de photos) ─── */
 .exp-block { margin-top: 64px; }
 .exp-title {
@@ -1591,10 +1607,16 @@ footer {
 .exp-reel-mask::after { right: 0; background: linear-gradient(to left, var(--warm-white), transparent); }
 .exp-reel { display: flex; gap: 14px; width: max-content; animation: reel 45s linear infinite; }
 .exp-reel:hover { animation-play-state: paused; }
+.exp-reel .exp-item { position: relative; flex: 0 0 auto; }
 .exp-reel img, .exp-reel video {
-  height: 240px; width: 330px; object-fit: cover;
-  border: 1px solid var(--sand); flex: 0 0 auto;
-  background: var(--forest);
+  display: block; height: 240px; width: 330px; object-fit: cover;
+  border: 1px solid var(--sand); background: var(--forest);
+}
+.exp-cap {
+  position: absolute; left: 8px; bottom: 8px; z-index: 1;
+  background: rgba(45,74,62,.72); color: var(--cream);
+  font-size: 11px; letter-spacing: .3px; padding: 4px 9px;
+  backdrop-filter: blur(3px); max-width: calc(100% - 16px);
 }
 @keyframes reel { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (max-width: 600px) { .exp-reel img, .exp-reel video { height: 180px; width: 250px; } }
@@ -1716,9 +1738,10 @@ footer {
   .hero { grid-template-columns: 1fr; }
   .hero-right { display: none; }
   .hero-left { padding: 100px 28px 60px; }
-  .hero-mobile { display: block; position: relative; height: 300px; overflow: hidden; }
+  .hero-mobile { display: block; position: relative; height: 62vh; min-height: 340px; overflow: hidden; background: var(--forest); }
   .hero-mobile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
   .hero-mobile img.active { opacity: 1; }
+  .hero-mobile::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 90px; background: linear-gradient(to bottom, rgba(45,74,62,0.65), transparent); z-index: 1; }
 
   .about { grid-template-columns: 1fr; padding: 80px 28px; }
   .about-img-wrap { display: none; }
@@ -1758,13 +1781,23 @@ footer {
     <li><a href="#services">Services &amp; Offres</a></li>
     <li><a href="#accompagnement">Accompagnement</a></li>
     <li><a href="#carte">Mes voyages</a></li>
-    <li><a href="#avis">On en parle ?</a></li>
+    <li><a href="#exemples">On en parle ?</a></li>
     <li><a href="#formulaire" class="nav-cta">Commencer</a></li>
   </ul>
   <div class="nav-burger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </div>
 </nav>
+
+<!-- ─── PHOTOS (mobile uniquement, en premier) ─── -->
+<div class="hero-mobile" id="heroMobile">
+  <img src="assets/img/hero-1.jpg" class="active" alt="Expérience de voyage">
+  <img src="assets/img/hero-2.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hero-3.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hero-4.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hero-5.jpg" alt="Expérience de voyage">
+  <span class="hero-mobile-tag">✦ Voyager Autrement · en images</span>
+</div>
 
 <!-- ─── HERO ─── -->
 <section class="hero" id="home">
@@ -1805,16 +1838,6 @@ footer {
     <span class="scroll-text">Découvrir</span>
   </div>
 </section>
-
-<!-- ─── PHOTOS (mobile uniquement) ─── -->
-<div class="hero-mobile" id="heroMobile">
-  <img src="assets/img/hero-1.jpg" class="active" alt="Expérience de voyage">
-  <img src="assets/img/hero-2.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hero-3.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hero-4.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hero-5.jpg" alt="Expérience de voyage">
-  <span class="hero-mobile-tag">✦ Expériences de voyage</span>
-</div>
 
 <!-- ─── TICKER ─── -->
 <div class="ticker">
@@ -2207,6 +2230,41 @@ footer {
   </div>
 </section>
 
+<!-- ─── EXEMPLES DE VOYAGES ─── -->
+<section class="exemples" id="exemples">
+  <div class="avis-header reveal">
+    <span class="section-tag">Ce que vous recevez</span>
+    <h2 class="section-title">Exemples de <em>voyages</em></h2>
+    <p class="section-desc">De vraies pages personnalisées, créées pour mes voyageurs — un aperçu du carnet sur mesure qui vous attend.</p>
+  </div>
+  <div class="ex-grid">
+    <a class="ex-card reveal" href="voyages/pouilles-leandro.html" target="_blank" rel="noopener">
+      <div class="ex-thumb" style="background:linear-gradient(140deg,var(--forest),var(--terra-dark));">
+        <span class="ex-emoji">🇮🇹</span>
+        <span class="ex-city">Les Pouilles</span>
+      </div>
+      <div class="ex-body">
+        <span class="ex-tier">✦ L'Exclusif · 10 jours</span>
+        <h3>Les Pouilles à deux</h3>
+        <p>Une escapade romantique en Italie du Sud : trulli, criques secrètes, parenthèse spa &amp; jacuzzi, croisière privée et dîner aux chandelles.</p>
+        <span class="ex-link">Voir l'exemple →</span>
+      </div>
+    </a>
+    <a class="ex-card reveal" href="#formulaire">
+      <div class="ex-thumb" style="background:linear-gradient(140deg,var(--terra-dark),var(--gold));">
+        <span class="ex-emoji">✨</span>
+        <span class="ex-city">Votre voyage</span>
+      </div>
+      <div class="ex-body">
+        <span class="ex-tier">Sur mesure</span>
+        <h3>Et vous, où partez-vous ?</h3>
+        <p>Racontez-moi votre projet : je vous compose une page et un guide personnalisés, rien que pour vous deux.</p>
+        <span class="ex-link">Commencer →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
 <!-- ─── AVIS CLIENTS ─── -->
 <section class="avis" id="avis">
   <div class="avis-header reveal">
@@ -2544,19 +2602,34 @@ async function handleSubmit() {
 (function(){
   const reel = document.getElementById('expReel');
   if (!reel) return;
+  // loc = lieu affiché sur la photo (à compléter/corriger au fil de l'eau)
   const media = [
-    {t:'i',s:'exp-1'},{t:'i',s:'exp-2'},{t:'i',s:'exp-3'},{t:'i',s:'exp-4'},
-    {t:'i',s:'exp-5'},{t:'i',s:'exp-6'},{t:'i',s:'exp-7'},{t:'i',s:'exp-9'},
-    {t:'i',s:'exp-10'},{t:'i',s:'exp-11'},{t:'i',s:'exp-12'},{t:'i',s:'exp-13'},
-    {t:'i',s:'exp-14'},{t:'i',s:'exp-15'},
-    {t:'v',s:'exp-vid-1'},{t:'v',s:'exp-vid-2'}
+    {t:'i',s:'exp-1',loc:''},
+    {t:'i',s:'exp-2',loc:'Requins-baleines, Philippines'},
+    {t:'i',s:'exp-3',loc:'Requins-baleines, Philippines'},
+    {t:'i',s:'exp-4',loc:''},
+    {t:'i',s:'exp-5',loc:'Épave d’Edro III, Chypre'},
+    {t:'i',s:'exp-6',loc:'Piton de la Fournaise, La Réunion'},
+    {t:'i',s:'exp-7',loc:''},
+    {t:'i',s:'exp-9',loc:'Kratié, Cambodge'},
+    {t:'i',s:'exp-10',loc:''},
+    {t:'i',s:'exp-11',loc:''},
+    {t:'i',s:'exp-12',loc:''},
+    {t:'i',s:'exp-13',loc:''},
+    {t:'i',s:'exp-14',loc:''},
+    {t:'i',s:'exp-15',loc:''},
+    {t:'v',s:'exp-vid-1',loc:''},
+    {t:'v',s:'exp-vid-2',loc:''}
   ];
   for (let i = media.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [media[i],media[j]] = [media[j],media[i]]; }
   const seq = [...media, ...media]; // doublé pour une boucle fluide
-  reel.innerHTML = seq.map(m => m.t === 'v'
-    ? '<video src="assets/img/'+m.s+'.mp4" muted autoplay loop playsinline preload="metadata"></video>'
-    : '<img src="assets/img/'+m.s+'.jpg" alt="Expérience de voyage" loading="lazy">'
-  ).join('');
+  reel.innerHTML = seq.map(m => {
+    const inner = m.t === 'v'
+      ? '<video src="assets/img/'+m.s+'.mp4" muted autoplay loop playsinline preload="metadata"></video>'
+      : '<img src="assets/img/'+m.s+'.jpg" alt="Expérience de voyage" loading="lazy">';
+    const cap = m.loc ? '<span class="exp-cap">📍 '+m.loc+'</span>' : '';
+    return '<figure class="exp-item">'+inner+cap+'</figure>';
+  }).join('');
   reel.querySelectorAll('video').forEach(v => { v.muted = true; const p = v.play(); if (p) p.catch(()=>{}); });
 })();
 
