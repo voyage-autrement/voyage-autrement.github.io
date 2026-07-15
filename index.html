@@ -1751,6 +1751,9 @@ footer {
   .nav-links li { width: 100%; }
   .nav-links a { display: block; padding: 15px 28px; font-size: 12px; letter-spacing: 2px; }
   .nav-cta { display: block; margin: 12px 24px 0; text-align: center; padding: 14px; }
+  .nav-burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-burger.open span:nth-child(2) { opacity: 0; }
+  .nav-burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
   .hero { grid-template-columns: 1fr; }
   .hero-right { display: none; }
@@ -1808,11 +1811,25 @@ footer {
 
 <!-- ─── PHOTOS (mobile uniquement, en premier) ─── -->
 <div class="hero-mobile" id="heroMobile">
-  <img src="assets/img/hero-1.jpg" class="active" alt="Expérience de voyage">
-  <img src="assets/img/hero-2.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hero-4.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hero-6.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hero-5.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-1.jpg" class="active" alt="Expérience de voyage">
+  <img src="assets/img/hp-2.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-3.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-4.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-5.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-6.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-7.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-8.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-9.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-10.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-11.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-12.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-13.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-14.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-15.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-16.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-17.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-18.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-19.jpg" alt="Expérience de voyage">
   <span class="hero-mobile-tag">✦ Voyager Autrement · en images</span>
 </div>
 
@@ -1843,11 +1860,25 @@ footer {
   </div>
   <div class="hero-right">
     <div class="hero-carousel" id="heroCarousel">
-      <img src="assets/img/hero-1.jpg" class="active" alt="Expérience de voyage">
-      <img src="assets/img/hero-2.jpg" alt="Expérience de voyage">
-      <img src="assets/img/hero-4.jpg" alt="Expérience de voyage">
-      <img src="assets/img/hero-6.jpg" alt="Expérience de voyage">
-      <img src="assets/img/hero-5.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-1.jpg" class="active" alt="Expérience de voyage">
+      <img src="assets/img/hp-2.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-3.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-4.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-5.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-6.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-7.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-8.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-9.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-10.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-11.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-12.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-13.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-14.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-15.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-16.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-17.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-18.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-19.jpg" alt="Expérience de voyage">
     </div>
   </div>
   <div class="scroll-indicator">
@@ -2659,7 +2690,9 @@ async function handleSubmit() {
 // Mobile menu toggle
 function toggleMenu() {
   const links = document.querySelector('.nav-links');
+  const burger = document.querySelector('.nav-burger');
   if (links) links.classList.toggle('open');
+  if (burger) burger.classList.toggle('open');
 }
 // Ferme le menu après un clic sur un onglet
 document.querySelectorAll('.nav-links a').forEach(a => {
