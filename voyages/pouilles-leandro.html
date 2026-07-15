@@ -119,9 +119,60 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
 .map-note b{color:var(--forest);}
 
 @media(max-width:600px){.feat{grid-template-columns:1fr;}main{padding:36px 16px 64px;}#tripmap{height:420px;}}
+/* ═══ CARNET D'OUVERTURE (comme Séville, cover photo Pouilles) ═══ */
+#scene{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse 80% 60% at 50% 60%,#1a1208 0%,#0a0a08 70%);z-index:1000;transition:opacity .8s ease;}
+#notebook-wrap{position:relative;transform:scale(.55) translateY(40px);opacity:0;animation:cameraApproach 2.2s cubic-bezier(.22,1,.36,1) forwards .5s;cursor:pointer;transition:filter .3s ease;}
+#notebook-wrap:hover{filter:brightness(1.08);}
+@keyframes cameraApproach{0%{transform:scale(.45) translateY(60px);opacity:0;}60%{opacity:1;}100%{transform:scale(1) translateY(0);opacity:1;}}
+#notebook{position:relative;width:340px;height:460px;border-radius:4px 18px 18px 4px;background:linear-gradient(145deg,#9B5A30 0%,#5C2E12 35%,#3B1F0E 70%,#261208 100%);box-shadow:0 0 0 1px rgba(0,0,0,.8),-6px 0 0 0 #261208,-8px 0 0 0 #1a0d05,8px 24px 80px rgba(0,0,0,.9),inset 0 1px 0 rgba(200,140,80,.15);}
+#notebook::after{content:'';position:absolute;left:28px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.7) 50%,transparent);}
+.cover-photo{position:absolute;inset:16px 16px 16px 40px;border-radius:2px;background:linear-gradient(145deg,var(--forest),var(--terra-d));background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(201,169,110,.35),inset 0 0 40px rgba(0,0,0,.5);overflow:hidden;}
+.cover-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,12,6,.25) 0%,rgba(20,12,6,.35) 45%,rgba(20,12,6,.82) 100%);}
+.ribbon{position:absolute;top:-12px;right:60px;width:18px;height:120px;background:linear-gradient(to bottom,#8B1A1A,#6B1212);box-shadow:1px 0 4px rgba(0,0,0,.5);z-index:5;}
+.ribbon::after{content:'';position:absolute;bottom:0;left:0;right:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:16px solid #6B1212;}
+.strap{position:absolute;top:50%;left:-10px;right:-10px;height:22px;transform:translateY(-50%);z-index:6;background:linear-gradient(to bottom,rgba(0,0,0,.1),#1a0f06 20%,#2a1a0a 50%,#1a0f06 80%,rgba(0,0,0,.1));border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.7);}
+.strap::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:22px;background:linear-gradient(to bottom,#3a2510,#2a1808);border:1px solid rgba(201,169,110,.2);border-radius:2px;}
+.cover-content{position:absolute;inset:16px 16px 16px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;z-index:4;opacity:0;animation:coverIn .8s ease forwards 2.3s;}
+@keyframes coverIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.cover-emblem{font-size:30px;margin-bottom:14px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7));}
+.cover-destination{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;font-style:italic;color:var(--gold);line-height:1;text-shadow:0 2px 20px rgba(0,0,0,.9);margin-bottom:6px;}
+.cover-country{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:24px;}
+.cover-divider{width:40px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:0 auto 24px;}
+.cover-name{font-family:'Cormorant Garamond',serif;font-size:23px;color:rgba(255,255,255,.95);letter-spacing:2px;margin-bottom:9px;text-shadow:0 1px 12px rgba(0,0,0,.9);}
+.cover-dates{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.6);}
+.open-hint{position:absolute;bottom:-52px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(201,169,110,.6);white-space:nowrap;opacity:0;animation:pulseHint 2s ease-in-out infinite 3.3s,coverIn .6s ease forwards 3.1s;}
+.open-hint::before{content:'↑ ';display:inline-block;animation:bounce 1.5s ease-in-out infinite;}
+@keyframes pulseHint{0%,100%{opacity:.55;}50%{opacity:.95;}}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+#notebook-wrap.opening{animation:zoomIntoBook 1.4s cubic-bezier(.4,0,.2,1) forwards;}
+@keyframes zoomIntoBook{0%{transform:scale(1);opacity:1;}40%{transform:scale(1.1) translateY(-10px);opacity:1;}70%{transform:scale(2.5);opacity:1;}100%{transform:scale(8);opacity:0;}}
+#blackout{position:fixed;inset:0;background:#000;z-index:1001;opacity:0;pointer-events:none;transition:opacity .4s ease;}
+#blackout.active{opacity:1;}
+@media(max-width:700px){#notebook-wrap{transform:scale(.72);}}
 </style>
 </head>
 <body>
+
+<!-- ═══ CARNET (intro) ═══ -->
+<div id="scene">
+  <div id="notebook-wrap" onclick="openBook()">
+    <div id="notebook">
+      <div class="cover-photo" id="coverPhoto"></div>
+      <div class="ribbon"></div>
+      <div class="strap"></div>
+      <div class="cover-content">
+        <span class="cover-emblem">🏖️</span>
+        <div class="cover-destination">Les Pouilles</div>
+        <div class="cover-country">Italie du Sud</div>
+        <div class="cover-divider"></div>
+        <div class="cover-name">Leandro</div>
+        <div class="cover-dates">12 – 21 Septembre 2026</div>
+      </div>
+    </div>
+    <div class="open-hint">Ouvrir le carnet</div>
+  </div>
+</div>
+<div id="blackout"></div>
 
 <header class="hero">
   <div class="hero-inner">
@@ -308,6 +359,15 @@ footer b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:ita
       <p>Le clou de la parenthèse : une table dressée <b>face à la mer</b>, menu dégustation de produits locaux et vin des Pouilles (Primitivo, Negroamaro), dans une ambiance aux chandelles. Organisé et confirmé à l'avance pour que la surprise soit parfaite.</p>
     </div>
 
+    <div class="romance-hero" style="margin-top:24px;">
+      <h3>✦ Vos avantages exclusifs</h3>
+      <p>Parce que vous avez choisi L'Exclusif, deux attentions rien que pour vous&nbsp;:</p>
+      <div class="feat">
+        <div><span>💆</span> <b>−30&nbsp;%</b> sur le massage en duo au spa</div>
+        <div><span>🍷</span> <b>2 verres de vin offerts</b> à votre arrivée à la Cava di Bauxite</div>
+      </div>
+    </div>
+
     <div class="note">🤍 <b>Discrétion garantie :</b> tous les détails de la surprise (dîner, attentions, timing) sont coordonnés avec vous en amont — votre moitié n'aura qu'à se laisser porter.</div>
   </section>
 
@@ -461,6 +521,36 @@ stops.forEach(st=>{
 });
 map.fitBounds(bounds,{padding:[30,30]});
 window._tripmap=map;
+</script>
+
+<script>
+// ─── Carnet d'ouverture ───
+document.body.style.overflow = 'hidden';
+// Image typique des Pouilles (trulli d'Alberobello) via Wikimedia, côté navigateur
+fetch('https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=1000&titles=Alberobello')
+  .then(r => r.json())
+  .then(d => {
+    const p = d && d.query && d.query.pages && Object.values(d.query.pages)[0];
+    const src = p && p.thumbnail && p.thumbnail.source;
+    if (src) { const c = document.getElementById('coverPhoto'); if (c) c.style.backgroundImage = 'url(' + src + ')'; }
+  })
+  .catch(() => {});
+
+function openBook(){
+  const wrap = document.getElementById('notebook-wrap');
+  if (wrap.classList.contains('opening')) return;
+  wrap.classList.add('opening');
+  const blackout = document.getElementById('blackout');
+  setTimeout(() => blackout.classList.add('active'), 900);
+  setTimeout(() => {
+    const scene = document.getElementById('scene');
+    scene.style.opacity = '0';
+    scene.style.pointerEvents = 'none';
+    document.body.style.overflow = '';
+    setTimeout(() => { scene.style.display = 'none'; blackout.classList.remove('active'); }, 350);
+  }, 1300);
+}
+document.addEventListener('keydown', e => { if (e.key === 'Enter') openBook(); });
 </script>
 </body>
 </html>
