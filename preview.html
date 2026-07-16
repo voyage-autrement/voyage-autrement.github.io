@@ -1793,7 +1793,9 @@ footer {
 <style id="preview-css">
 /* Navigation par pages distinctes */
 .page { display: none; }
-.page.active { display: block; }
+.page.active { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; box-sizing: border-box; }
+/* La page Accueil garde le hero plein écran, pas de centrage forcé */
+.page.active#pg-accueil { justify-content: flex-start; }
 .reveal { opacity: 1 !important; transform: none !important; }
 #navbar { background: rgba(45,74,62,0.97); backdrop-filter: blur(12px); box-shadow: 0 4px 30px rgba(0,0,0,0.15); }
 .nav-links a.current { color: var(--gold); }
@@ -1813,11 +1815,8 @@ footer {
     <li><a href="#" data-page="pg-offres">Offres &amp; Accompagnement</a></li>
     <li><a href="#" data-page="pg-recevrez">Ce que vous recevrez</a></li>
     <li><a href="#" data-page="pg-projet">Votre projet</a></li>
-    <li><a href="#" data-page="pg-avis">Avis</a></li>
-    <li><a href="#" data-page="pg-histoire">Mon histoire</a></li>
-    <li><a href="#" data-page="pg-faq">FAQ</a></li>
-    <li><a href="#" data-page="pg-experiences">Mes expériences</a></li>
-    <li><a href="#" data-page="pg-contact">Contact</a></li>
+    <li><a href="#" data-page="pg-univers">Mon univers</a></li>
+    <li><a href="#" data-page="pg-parlons">On en parle</a></li>
   </ul>
   <div class="nav-burger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -1841,7 +1840,7 @@ footer {
   <img src="assets/img/hp-13.jpg" alt="Expérience de voyage">
   <img src="assets/img/hp-14.jpg" alt="Expérience de voyage">
   <img src="assets/img/hp-15.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hp-16.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-16.jpg" style="object-position:center 20%" alt="Expérience de voyage">
   <img src="assets/img/hp-17.jpg" alt="Expérience de voyage">
   <img src="assets/img/hp-18.jpg" alt="Expérience de voyage">
   <img src="assets/img/hp-19.jpg" alt="Expérience de voyage">
@@ -1889,7 +1888,7 @@ footer {
       <img src="assets/img/hp-13.jpg" alt="Expérience de voyage">
       <img src="assets/img/hp-14.jpg" alt="Expérience de voyage">
       <img src="assets/img/hp-15.jpg" alt="Expérience de voyage">
-      <img src="assets/img/hp-16.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-16.jpg" style="object-position:center 20%" alt="Expérience de voyage">
       <img src="assets/img/hp-17.jpg" alt="Expérience de voyage">
       <img src="assets/img/hp-18.jpg" alt="Expérience de voyage">
       <img src="assets/img/hp-19.jpg" alt="Expérience de voyage">
@@ -2307,7 +2306,48 @@ footer {
 
 
 </div>
-<div class="page" id="pg-avis">
+<div class="page" id="pg-univers">
+<!-- ─── ABOUT ─── -->
+<section class="about" id="about">
+  <div class="about-img-wrap reveal">
+    <div class="about-deco-line"></div>
+    <div class="about-img-frame">
+      <div class="about-img-inner">
+        <span class="about-initials">RL</span>
+      </div>
+    </div>
+    <div class="about-tag-photo">
+      <p>Fondateur<br>Voyager Autrement</p>
+    </div>
+  </div>
+  <div class="about-content reveal">
+    <span class="section-tag">Mon histoire</span>
+    <h2 class="section-title">Né d'une passion,<br><em>guidé par l'envie.</em></h2>
+    <p class="about-text">Je suis <strong>Renaud Lauret</strong>, fondateur de Voyager Autrement. J'ai toujours voyagé depuis tout petit. Je me souviens encore de ces trains traversant la France jusqu'en Bretagne, de l'île de la Réunion, et de cette adrénaline du matin quand on prenait les bagages.</p>
+    <p class="about-text">Ce que je ressentais alors — cette <strong>excitation pure, sans la charge de l'organisation</strong> — c'est exactement ce que je veux vous offrir. Des guides qui vous permettent de ne vivre que la magie du voyage, sans vous perdre dans des centaines de sites à comparer.</p>
+    <p class="about-text">Surtout, j'ai <strong>vécu dans la plupart des pays que je vous fais découvrir</strong>. J'y ai travaillé, posé mes valises et vécu <strong>comme un local</strong> — ce ne sont pas des destinations que je survole, mais des endroits que je connais de l'intérieur, avec leurs habitants, leurs habitudes et leurs secrets.</p>
+    <p class="about-text">Voyager Autrement, c'est une invitation à explorer le monde <strong>différemment, authentiquement</strong>, avec les bonnes adresses et les vrais moments. À découvrir des <strong>lieux inoubliables</strong> que vous n'auriez jamais trouvés seul — grâce à mes guides ou à mon accompagnement.</p>
+    <div class="about-signature">
+      <div>
+        <div class="sig-name">Renaud Lauret</div>
+        <div class="sig-role">Fondateur · Concepteur de voyages · Toulouse</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="voyages">
+<div class="exp-block reveal">
+    <h3 class="exp-title">Mes <em>expériences</em> en images</h3>
+    <p class="exp-sub">Des instants vécus aux quatre coins du monde — ils défilent au hasard.</p>
+    <div class="exp-reel-mask">
+      <div class="exp-reel" id="expReel"></div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="page" id="pg-parlons">
 <!-- ─── AVIS CLIENTS ─── -->
 <section class="avis" id="avis">
   <div class="avis-header reveal">
@@ -2369,40 +2409,6 @@ footer {
 </section>
 
 
-</div>
-<div class="page" id="pg-histoire">
-<!-- ─── ABOUT ─── -->
-<section class="about" id="about">
-  <div class="about-img-wrap reveal">
-    <div class="about-deco-line"></div>
-    <div class="about-img-frame">
-      <div class="about-img-inner">
-        <span class="about-initials">RL</span>
-      </div>
-    </div>
-    <div class="about-tag-photo">
-      <p>Fondateur<br>Voyager Autrement</p>
-    </div>
-  </div>
-  <div class="about-content reveal">
-    <span class="section-tag">Mon histoire</span>
-    <h2 class="section-title">Né d'une passion,<br><em>guidé par l'envie.</em></h2>
-    <p class="about-text">Je suis <strong>Renaud Lauret</strong>, fondateur de Voyager Autrement. J'ai toujours voyagé depuis tout petit. Je me souviens encore de ces trains traversant la France jusqu'en Bretagne, de l'île de la Réunion, et de cette adrénaline du matin quand on prenait les bagages.</p>
-    <p class="about-text">Ce que je ressentais alors — cette <strong>excitation pure, sans la charge de l'organisation</strong> — c'est exactement ce que je veux vous offrir. Des guides qui vous permettent de ne vivre que la magie du voyage, sans vous perdre dans des centaines de sites à comparer.</p>
-    <p class="about-text">Surtout, j'ai <strong>vécu dans la plupart des pays que je vous fais découvrir</strong>. J'y ai travaillé, posé mes valises et vécu <strong>comme un local</strong> — ce ne sont pas des destinations que je survole, mais des endroits que je connais de l'intérieur, avec leurs habitants, leurs habitudes et leurs secrets.</p>
-    <p class="about-text">Voyager Autrement, c'est une invitation à explorer le monde <strong>différemment, authentiquement</strong>, avec les bonnes adresses et les vrais moments. À découvrir des <strong>lieux inoubliables</strong> que vous n'auriez jamais trouvés seul — grâce à mes guides ou à mon accompagnement.</p>
-    <div class="about-signature">
-      <div>
-        <div class="sig-name">Renaud Lauret</div>
-        <div class="sig-role">Fondateur · Concepteur de voyages · Toulouse</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-</div>
-<div class="page" id="pg-faq">
 <!-- ─── FAQ ─── -->
 <section class="faq-section" id="faq">
   <div class="faq-inner">
@@ -2495,19 +2501,6 @@ footer {
 </section>
 
 
-</div>
-<div class="page" id="pg-experiences">
-<section class="voyages">
-<div class="exp-block reveal">
-    <h3 class="exp-title">Mes <em>expériences</em> en images</h3>
-    <p class="exp-sub">Des instants vécus aux quatre coins du monde — ils défilent au hasard.</p>
-    <div class="exp-reel-mask">
-      <div class="exp-reel" id="expReel"></div>
-    </div>
-  </div>
-</section>
-</div>
-<div class="page" id="pg-contact">
 <!-- ─── CONTACT ─── -->
 <section id="contact">
   <div class="contact">
