@@ -1790,25 +1790,41 @@ footer {
   .scroll-indicator { left: 28px; }
 }
 </style>
+<style id="preview-css">
+/* Navigation par pages distinctes */
+.page { display: none; }
+.page.active { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; box-sizing: border-box; }
+/* La page Accueil garde le hero plein écran, pas de centrage forcé */
+.page.active#pg-accueil { justify-content: flex-start; }
+.reveal { opacity: 1 !important; transform: none !important; }
+#navbar { background: rgba(45,74,62,0.97); backdrop-filter: blur(12px); box-shadow: 0 4px 30px rgba(0,0,0,0.15); }
+.nav-links a.current { color: var(--gold); }
+@media (min-width: 901px) {
+  .nav-links { gap: 20px; }
+  .nav-links a { font-size: 10px; letter-spacing: 1.5px; }
+}
+</style>
 </head>
 <body>
-
 <!-- ─── NAV ─── -->
 <nav id="navbar">
-  <a href="#" class="nav-logo">Voyager <span>Autrement</span></a>
+  <a href="#" class="nav-logo" data-page="pg-accueil">Voyager <span>Autrement</span></a>
   <ul class="nav-links">
-    <li><a href="#about">Mon histoire</a></li>
-    <li><a href="#services">Services &amp; Offres</a></li>
-    <li><a href="#accompagnement">Accompagnement</a></li>
-    <li><a href="#carte">Mes voyages</a></li>
-    <li><a href="#exemples">On en parle ?</a></li>
-    <li><a href="#formulaire" class="nav-cta">Commencer</a></li>
+    <li><a href="#" data-page="pg-accueil" class="current">Accueil</a></li>
+    <li><a href="#" data-page="pg-carnet">Carnet de voyage</a></li>
+    <li><a href="#" data-page="pg-offres">Offres &amp; Accompagnement</a></li>
+    <li><a href="#" data-page="pg-recevrez">Ce que vous recevrez</a></li>
+    <li><a href="#" data-page="pg-projet">Votre projet</a></li>
+    <li><a href="#" data-page="pg-univers">Mon univers</a></li>
+    <li><a href="#" data-page="pg-parlons">On en parle</a></li>
   </ul>
   <div class="nav-burger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </div>
 </nav>
 
+
+<div class="page active" id="pg-accueil">
 <!-- ─── PHOTOS (mobile uniquement, en premier) ─── -->
 <div class="hero-mobile" id="heroMobile">
   <img src="assets/img/hp-1.jpg" class="active" alt="Expérience de voyage">
@@ -1824,12 +1840,13 @@ footer {
   <img src="assets/img/hp-13.jpg" alt="Expérience de voyage">
   <img src="assets/img/hp-14.jpg" alt="Expérience de voyage">
   <img src="assets/img/hp-15.jpg" alt="Expérience de voyage">
-  <img src="assets/img/hp-16.jpg" alt="Expérience de voyage">
+  <img src="assets/img/hp-16.jpg" style="object-position:center 20%" alt="Expérience de voyage">
   <img src="assets/img/hp-17.jpg" alt="Expérience de voyage">
   <img src="assets/img/hp-18.jpg" alt="Expérience de voyage">
   <img src="assets/img/hp-19.jpg" alt="Expérience de voyage">
   <span class="hero-mobile-tag">✦ Voyager Autrement · en images</span>
 </div>
+
 
 <!-- ─── HERO ─── -->
 <section class="hero" id="home">
@@ -1871,7 +1888,7 @@ footer {
       <img src="assets/img/hp-13.jpg" alt="Expérience de voyage">
       <img src="assets/img/hp-14.jpg" alt="Expérience de voyage">
       <img src="assets/img/hp-15.jpg" alt="Expérience de voyage">
-      <img src="assets/img/hp-16.jpg" alt="Expérience de voyage">
+      <img src="assets/img/hp-16.jpg" style="object-position:center 20%" alt="Expérience de voyage">
       <img src="assets/img/hp-17.jpg" alt="Expérience de voyage">
       <img src="assets/img/hp-18.jpg" alt="Expérience de voyage">
       <img src="assets/img/hp-19.jpg" alt="Expérience de voyage">
@@ -1882,6 +1899,7 @@ footer {
     <span class="scroll-text">Découvrir</span>
   </div>
 </section>
+
 
 <!-- ─── TICKER ─── -->
 <div class="ticker">
@@ -1910,35 +1928,43 @@ footer {
   </div>
 </div>
 
-<!-- ─── ABOUT ─── -->
-<section class="about" id="about">
-  <div class="about-img-wrap reveal">
-    <div class="about-deco-line"></div>
-    <div class="about-img-frame">
-      <div class="about-img-inner">
-        <span class="about-initials">RL</span>
-      </div>
-    </div>
-    <div class="about-tag-photo">
-      <p>Fondateur<br>Voyager Autrement</p>
+
+</div>
+<div class="page" id="pg-carnet">
+<!-- ─── MES VOYAGES / CARTE INTERACTIVE ─── -->
+<section class="voyages" id="carte">
+  <div class="voyages-header reveal">
+    <span class="section-tag">Carnet de voyages</span>
+    <h2 class="section-title">Les pays que <em>j'ai explorés</em></h2>
+    <p class="section-desc">Chaque destination de cette carte, je l'ai vécue de l'intérieur. Cliquez sur un point pour découvrir le pays en images — et laissez-vous donner l'envie de partir.</p>
+    <div class="voyages-stats">
+      <div><span class="vs-num" id="statPays">0</span><span class="vs-label">Pays visités</span></div>
+      <div><span class="vs-num">5</span><span class="vs-label">Continents</span></div>
+      <div><span class="vs-num">∞</span><span class="vs-label">Souvenirs</span></div>
     </div>
   </div>
-  <div class="about-content reveal">
-    <span class="section-tag">Mon histoire</span>
-    <h2 class="section-title">Né d'une passion,<br><em>guidé par l'envie.</em></h2>
-    <p class="about-text">Je suis <strong>Renaud Lauret</strong>, fondateur de Voyager Autrement. J'ai toujours voyagé depuis tout petit. Je me souviens encore de ces trains traversant la France jusqu'en Bretagne, de l'île de la Réunion, et de cette adrénaline du matin quand on prenait les bagages.</p>
-    <p class="about-text">Ce que je ressentais alors — cette <strong>excitation pure, sans la charge de l'organisation</strong> — c'est exactement ce que je veux vous offrir. Des guides qui vous permettent de ne vivre que la magie du voyage, sans vous perdre dans des centaines de sites à comparer.</p>
-    <p class="about-text">Surtout, j'ai <strong>vécu dans la plupart des pays que je vous fais découvrir</strong>. J'y ai travaillé, posé mes valises et vécu <strong>comme un local</strong> — ce ne sont pas des destinations que je survole, mais des endroits que je connais de l'intérieur, avec leurs habitants, leurs habitudes et leurs secrets.</p>
-    <p class="about-text">Voyager Autrement, c'est une invitation à explorer le monde <strong>différemment, authentiquement</strong>, avec les bonnes adresses et les vrais moments. À découvrir des <strong>lieux inoubliables</strong> que vous n'auriez jamais trouvés seul — grâce à mes guides ou à mon accompagnement.</p>
-    <div class="about-signature">
-      <div>
-        <div class="sig-name">Renaud Lauret</div>
-        <div class="sig-role">Fondateur · Concepteur de voyages · Toulouse</div>
+  <div class="voyages-layout reveal">
+    <div id="worldmap"></div>
+    <aside class="country-panel" id="countryPanel">
+      <div class="cp-media" id="cpMedia">
+        <div class="cp-media-placeholder">
+          <span class="cp-emoji">🌍</span>
+          <p>Sélectionnez un pays sur la carte pour découvrir ses photos et sa vidéo.</p>
+        </div>
       </div>
-    </div>
+      <div class="cp-gallery" id="cpGallery"></div>
+      <div class="cp-body">
+        <span class="cp-region" id="cpRegion">Partout dans le monde</span>
+        <h3 class="cp-name" id="cpName">Mon <em>tour du monde</em></h3>
+        <p class="cp-text" id="cpText">De l'Europe à l'Océanie, en passant par l'Amérique latine, l'Afrique et l'Asie — voici les terres qui ont façonné ma vision du voyage. Choisissez-en une pour en savoir plus.</p>
+        <div class="cp-hint" id="cpHint">👆 Cliquez sur un point doré de la carte</div>
+      </div>
+    </aside>
   </div>
 </section>
 
+</div>
+<div class="page" id="pg-offres">
 <!-- ─── SERVICES ─── -->
 <section class="services" id="services">
   <div class="services-inner">
@@ -1970,6 +1996,7 @@ footer {
     </div>
   </div>
 </section>
+
 
 <!-- ─── OFFERS ─── -->
 <section class="offers" id="offres">
@@ -2048,6 +2075,110 @@ footer {
 </section>
 
 
+
+<!-- ─── ACCOMPAGNEMENT ─── -->
+<section class="accompagnement" id="accompagnement">
+  <div class="accomp-inner">
+    <div class="accomp-content reveal">
+      <span class="section-tag">Nouveau</span>
+      <h2 class="section-title">Votre voyage<br><em>en accompagnement</em></h2>
+      <p class="accomp-text">Vous rêvez d'un voyage parfait, sans avoir à vous soucier d'une seule chose ? C'est exactement ce que je propose avec l'<strong>accompagnement personnalisé</strong> — une formule rare où je m'occupe de tout, de A à Z, pendant toute la durée de votre séjour.</p>
+      <p class="accomp-text">Je suis votre <strong>organisateur de voyage dédié</strong> : trajets, réservations, timing, imprévus, bonnes surprises… Vous n'avez qu'une seule mission — <strong>profiter</strong>.</p>
+      <ul class="accomp-features">
+        <li>
+          <span class="af-icon">🗓️</span>
+          <div>Organisation complète du séjour avant le départ — programme heure par heure, réservations confirmées, accès exclusifs négociés.</div>
+        </li>
+        <li>
+          <span class="af-icon">📍</span>
+          <div>Coordination de tous les trajets : transferts, transports locaux, logistique entre chaque étape.</div>
+        </li>
+        <li>
+          <span class="af-icon">📞</span>
+          <div>Contact direct avec moi disponible <strong>9h à 18h</strong> tout au long de votre voyage — je réponds, j'anticipe, je gère.</div>
+        </li>
+        <li>
+          <span class="af-icon">✨</span>
+          <div>Vérification de chaque réservation, gestion des imprévus, et ajustements en temps réel si nécessaire.</div>
+        </li>
+        <li>
+          <span class="af-icon">🎁</span>
+          <div>Surprises et attentions personnalisées intégrées au parcours — parce que les meilleurs voyages ont toujours une part d'inattendu.</div>
+        </li>
+      </ul>
+      <a href="#formulaire" class="btn-primary" style="display:inline-flex;">Me contacter pour un devis</a>
+    </div>
+
+    <div class="accomp-visual reveal">
+      <div class="accomp-card">
+        <span class="accomp-price-label">Tarification sur mesure</span>
+        <div class="accomp-price">Sur devis</div>
+        <div class="accomp-price-sub">Selon la destination, la durée & le groupe</div>
+        <div class="accomp-steps">
+          <div class="accomp-step">
+            <span class="accomp-step-num">1</span>
+            <span>Vous m'envoyez votre projet & vos envies</span>
+          </div>
+          <div class="accomp-step">
+            <span class="accomp-step-num">2</span>
+            <span>Je construis un programme complet & personnalisé</span>
+          </div>
+          <div class="accomp-step">
+            <span class="accomp-step-num">3</span>
+            <span>Je coordonne tout — avant et pendant le voyage</span>
+          </div>
+          <div class="accomp-step">
+            <span class="accomp-step-num">4</span>
+            <span>Vous vivez une expérience inoubliable, sans effort</span>
+          </div>
+        </div>
+        <a href="#formulaire" class="card-btn btn-solid" style="display:block;text-align:center;">Demander un accompagnement</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+</div>
+<div class="page" id="pg-recevrez">
+<!-- ─── EXEMPLES DE VOYAGES ─── -->
+<section class="exemples" id="exemples">
+  <div class="avis-header reveal">
+    <span class="section-tag">Ce que vous recevez</span>
+    <h2 class="section-title">Exemples de <em>voyages</em></h2>
+    <p class="section-desc">De vraies pages personnalisées, créées pour mes voyageurs — un aperçu du carnet sur mesure qui vous attend.</p>
+  </div>
+  <div class="ex-grid">
+    <a class="ex-card reveal" href="voyages/pouilles-leandro.html" target="_blank" rel="noopener">
+      <div class="ex-thumb" style="background:linear-gradient(140deg,var(--forest),var(--terra-dark));">
+        <span class="ex-emoji">🇮🇹</span>
+        <span class="ex-city">Les Pouilles</span>
+      </div>
+      <div class="ex-body">
+        <span class="ex-tier">✦ L'Exclusif · 10 jours</span>
+        <h3>Les Pouilles à deux</h3>
+        <p>Une escapade romantique en Italie du Sud : trulli, criques secrètes, parenthèse spa &amp; jacuzzi, croisière privée et dîner aux chandelles.</p>
+        <span class="ex-link">Voir l'exemple →</span>
+      </div>
+    </a>
+    <a class="ex-card reveal" href="voyages/seville-geoffrey.html" target="_blank" rel="noopener">
+      <div class="ex-thumb" style="background:linear-gradient(140deg,var(--terra-dark),var(--gold));">
+        <span class="ex-emoji">🌸</span>
+        <span class="ex-city">Séville</span>
+      </div>
+      <div class="ex-body">
+        <span class="ex-tier">✦ Le Passeport · 7 jours</span>
+        <h3>Séville, l'Andalousie</h3>
+        <p>Un carnet qui s'ouvre comme un vrai passeport : tapas secrètes, Alcázar coupe-file, flamenco intimiste à Triana et avantages exclusifs.</p>
+        <span class="ex-link">Voir l'exemple →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+
+</div>
+<div class="page" id="pg-projet">
 <!-- ─── FORM ─── -->
 <section class="form-section" id="formulaire">
   <div class="form-inner">
@@ -2173,100 +2304,41 @@ footer {
   </div>
 </section>
 
-<!-- ─── ACCOMPAGNEMENT ─── -->
-<section class="accompagnement" id="accompagnement">
-  <div class="accomp-inner">
-    <div class="accomp-content reveal">
-      <span class="section-tag">Nouveau</span>
-      <h2 class="section-title">Votre voyage<br><em>en accompagnement</em></h2>
-      <p class="accomp-text">Vous rêvez d'un voyage parfait, sans avoir à vous soucier d'une seule chose ? C'est exactement ce que je propose avec l'<strong>accompagnement personnalisé</strong> — une formule rare où je m'occupe de tout, de A à Z, pendant toute la durée de votre séjour.</p>
-      <p class="accomp-text">Je suis votre <strong>organisateur de voyage dédié</strong> : trajets, réservations, timing, imprévus, bonnes surprises… Vous n'avez qu'une seule mission — <strong>profiter</strong>.</p>
-      <ul class="accomp-features">
-        <li>
-          <span class="af-icon">🗓️</span>
-          <div>Organisation complète du séjour avant le départ — programme heure par heure, réservations confirmées, accès exclusifs négociés.</div>
-        </li>
-        <li>
-          <span class="af-icon">📍</span>
-          <div>Coordination de tous les trajets : transferts, transports locaux, logistique entre chaque étape.</div>
-        </li>
-        <li>
-          <span class="af-icon">📞</span>
-          <div>Contact direct avec moi disponible <strong>9h à 18h</strong> tout au long de votre voyage — je réponds, j'anticipe, je gère.</div>
-        </li>
-        <li>
-          <span class="af-icon">✨</span>
-          <div>Vérification de chaque réservation, gestion des imprévus, et ajustements en temps réel si nécessaire.</div>
-        </li>
-        <li>
-          <span class="af-icon">🎁</span>
-          <div>Surprises et attentions personnalisées intégrées au parcours — parce que les meilleurs voyages ont toujours une part d'inattendu.</div>
-        </li>
-      </ul>
-      <a href="#formulaire" class="btn-primary" style="display:inline-flex;">Me contacter pour un devis</a>
-    </div>
 
-    <div class="accomp-visual reveal">
-      <div class="accomp-card">
-        <span class="accomp-price-label">Tarification sur mesure</span>
-        <div class="accomp-price">Sur devis</div>
-        <div class="accomp-price-sub">Selon la destination, la durée & le groupe</div>
-        <div class="accomp-steps">
-          <div class="accomp-step">
-            <span class="accomp-step-num">1</span>
-            <span>Vous m'envoyez votre projet & vos envies</span>
-          </div>
-          <div class="accomp-step">
-            <span class="accomp-step-num">2</span>
-            <span>Je construis un programme complet & personnalisé</span>
-          </div>
-          <div class="accomp-step">
-            <span class="accomp-step-num">3</span>
-            <span>Je coordonne tout — avant et pendant le voyage</span>
-          </div>
-          <div class="accomp-step">
-            <span class="accomp-step-num">4</span>
-            <span>Vous vivez une expérience inoubliable, sans effort</span>
-          </div>
-        </div>
-        <a href="#formulaire" class="card-btn btn-solid" style="display:block;text-align:center;">Demander un accompagnement</a>
+</div>
+<div class="page" id="pg-univers">
+<!-- ─── ABOUT ─── -->
+<section class="about" id="about">
+  <div class="about-img-wrap reveal">
+    <div class="about-deco-line"></div>
+    <div class="about-img-frame">
+      <div class="about-img-inner">
+        <span class="about-initials">RL</span>
+      </div>
+    </div>
+    <div class="about-tag-photo">
+      <p>Fondateur<br>Voyager Autrement</p>
+    </div>
+  </div>
+  <div class="about-content reveal">
+    <span class="section-tag">Mon histoire</span>
+    <h2 class="section-title">Né d'une passion,<br><em>guidé par l'envie.</em></h2>
+    <p class="about-text">Je suis <strong>Renaud Lauret</strong>, fondateur de Voyager Autrement. J'ai toujours voyagé depuis tout petit. Je me souviens encore de ces trains traversant la France jusqu'en Bretagne, de l'île de la Réunion, et de cette adrénaline du matin quand on prenait les bagages.</p>
+    <p class="about-text">Ce que je ressentais alors — cette <strong>excitation pure, sans la charge de l'organisation</strong> — c'est exactement ce que je veux vous offrir. Des guides qui vous permettent de ne vivre que la magie du voyage, sans vous perdre dans des centaines de sites à comparer.</p>
+    <p class="about-text">Surtout, j'ai <strong>vécu dans la plupart des pays que je vous fais découvrir</strong>. J'y ai travaillé, posé mes valises et vécu <strong>comme un local</strong> — ce ne sont pas des destinations que je survole, mais des endroits que je connais de l'intérieur, avec leurs habitants, leurs habitudes et leurs secrets.</p>
+    <p class="about-text">Voyager Autrement, c'est une invitation à explorer le monde <strong>différemment, authentiquement</strong>, avec les bonnes adresses et les vrais moments. À découvrir des <strong>lieux inoubliables</strong> que vous n'auriez jamais trouvés seul — grâce à mes guides ou à mon accompagnement.</p>
+    <div class="about-signature">
+      <div>
+        <div class="sig-name">Renaud Lauret</div>
+        <div class="sig-role">Fondateur · Concepteur de voyages · Toulouse</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── MES VOYAGES / CARTE INTERACTIVE ─── -->
-<section class="voyages" id="carte">
-  <div class="voyages-header reveal">
-    <span class="section-tag">Carnet de voyages</span>
-    <h2 class="section-title">Les pays que <em>j'ai explorés</em></h2>
-    <p class="section-desc">Chaque destination de cette carte, je l'ai vécue de l'intérieur. Cliquez sur un point pour découvrir le pays en images — et laissez-vous donner l'envie de partir.</p>
-    <div class="voyages-stats">
-      <div><span class="vs-num" id="statPays">0</span><span class="vs-label">Pays visités</span></div>
-      <div><span class="vs-num">5</span><span class="vs-label">Continents</span></div>
-      <div><span class="vs-num">∞</span><span class="vs-label">Souvenirs</span></div>
-    </div>
-  </div>
-  <div class="voyages-layout reveal">
-    <div id="worldmap"></div>
-    <aside class="country-panel" id="countryPanel">
-      <div class="cp-media" id="cpMedia">
-        <div class="cp-media-placeholder">
-          <span class="cp-emoji">🌍</span>
-          <p>Sélectionnez un pays sur la carte pour découvrir ses photos et sa vidéo.</p>
-        </div>
-      </div>
-      <div class="cp-gallery" id="cpGallery"></div>
-      <div class="cp-body">
-        <span class="cp-region" id="cpRegion">Partout dans le monde</span>
-        <h3 class="cp-name" id="cpName">Mon <em>tour du monde</em></h3>
-        <p class="cp-text" id="cpText">De l'Europe à l'Océanie, en passant par l'Amérique latine, l'Afrique et l'Asie — voici les terres qui ont façonné ma vision du voyage. Choisissez-en une pour en savoir plus.</p>
-        <div class="cp-hint" id="cpHint">👆 Cliquez sur un point doré de la carte</div>
-      </div>
-    </aside>
-  </div>
 
-  <div class="exp-block reveal">
+<section class="voyages">
+<div class="exp-block reveal">
     <h3 class="exp-title">Mes <em>expériences</em> en images</h3>
     <p class="exp-sub">Des instants vécus aux quatre coins du monde — ils défilent au hasard.</p>
     <div class="exp-reel-mask">
@@ -2274,42 +2346,8 @@ footer {
     </div>
   </div>
 </section>
-
-<!-- ─── EXEMPLES DE VOYAGES ─── -->
-<section class="exemples" id="exemples">
-  <div class="avis-header reveal">
-    <span class="section-tag">Ce que vous recevez</span>
-    <h2 class="section-title">Exemples de <em>voyages</em></h2>
-    <p class="section-desc">De vraies pages personnalisées, créées pour mes voyageurs — un aperçu du carnet sur mesure qui vous attend.</p>
-  </div>
-  <div class="ex-grid">
-    <a class="ex-card reveal" href="voyages/pouilles-leandro.html" target="_blank" rel="noopener">
-      <div class="ex-thumb" style="background:linear-gradient(140deg,var(--forest),var(--terra-dark));">
-        <span class="ex-emoji">🇮🇹</span>
-        <span class="ex-city">Les Pouilles</span>
-      </div>
-      <div class="ex-body">
-        <span class="ex-tier">✦ L'Exclusif · 10 jours</span>
-        <h3>Les Pouilles à deux</h3>
-        <p>Une escapade romantique en Italie du Sud : trulli, criques secrètes, parenthèse spa &amp; jacuzzi, croisière privée et dîner aux chandelles.</p>
-        <span class="ex-link">Voir l'exemple →</span>
-      </div>
-    </a>
-    <a class="ex-card reveal" href="voyages/seville-geoffrey.html" target="_blank" rel="noopener">
-      <div class="ex-thumb" style="background:linear-gradient(140deg,var(--terra-dark),var(--gold));">
-        <span class="ex-emoji">🌸</span>
-        <span class="ex-city">Séville</span>
-      </div>
-      <div class="ex-body">
-        <span class="ex-tier">✦ Le Passeport · 7 jours</span>
-        <h3>Séville, l'Andalousie</h3>
-        <p>Un carnet qui s'ouvre comme un vrai passeport : tapas secrètes, Alcázar coupe-file, flamenco intimiste à Triana et avantages exclusifs.</p>
-        <span class="ex-link">Voir l'exemple →</span>
-      </div>
-    </a>
-  </div>
-</section>
-
+</div>
+<div class="page" id="pg-parlons">
 <!-- ─── AVIS CLIENTS ─── -->
 <section class="avis" id="avis">
   <div class="avis-header reveal">
@@ -2369,6 +2407,7 @@ footer {
 
   </div>
 </section>
+
 
 <!-- ─── FAQ ─── -->
 <section class="faq-section" id="faq">
@@ -2461,6 +2500,7 @@ footer {
   </div>
 </section>
 
+
 <!-- ─── CONTACT ─── -->
 <section id="contact">
   <div class="contact">
@@ -2479,7 +2519,6 @@ footer {
         <div class="social-links">
           <a href="https://www.facebook.com/ypdtVoyage" target="_blank" class="social-link">f</a>
           <a href="https://www.instagram.com/ypdt.voyageparfait/" target="_blank" class="social-link">ig</a>
-          <a href="https://twitter.com/YpdtVoyage" target="_blank" class="social-link">tw</a>
         </div>
       </div>
     </div>
@@ -2493,6 +2532,9 @@ footer {
   </div>
 </section>
 
+
+</div>
+
 <!-- ─── FOOTER ─── -->
 <footer>
   <div class="footer-logo">Voyager <span>Autrement</span></div>
@@ -2504,19 +2546,35 @@ footer {
   </ul>
 </footer>
 
+
 <script>
 // NAV scroll effect
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const el = document.querySelector(a.getAttribute('href'));
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+// ─── Navigation par pages ───
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById(id);
+  if (pg) pg.classList.add('active');
+  document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+    a.classList.toggle('current', a.getAttribute('data-page') === id);
   });
+  window.scrollTo({ top: 0 });
+  const links = document.querySelector('.nav-links'); if (links) links.classList.remove('open');
+  const burger = document.querySelector('.nav-burger'); if (burger) burger.classList.remove('open');
+  if (id === 'pg-carnet' && window._map) { setTimeout(() => window._map.invalidateSize(), 60); }
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[data-page], a[href^="#"]');
+  if (!a) return;
+  if (a.dataset.page) { e.preventDefault(); showPage(a.dataset.page); return; }
+  const href = a.getAttribute('href');
+  if (!href || href === '#') return;
+  let target = null; try { target = document.querySelector(href); } catch (_) {}
+  const page = target && target.closest('.page');
+  if (page) { e.preventDefault(); showPage(page.id); }
 });
 
 // Reveal on scroll
@@ -2993,6 +3051,7 @@ const mapObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) map.invalidateSize(); });
 }, { threshold: 0.1 });
 mapObserver.observe(document.getElementById('worldmap'));
+window._map = map;
 </script>
 </body>
 </html>
