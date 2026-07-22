@@ -1799,6 +1799,7 @@ footer {
 .reveal { opacity: 1 !important; transform: none !important; }
 #navbar { background: rgba(45,74,62,0.97); backdrop-filter: blur(12px); box-shadow: 0 4px 30px rgba(0,0,0,0.15); }
 .nav-links a.current { color: var(--gold); }
+.page-cta { text-align: center; margin: 50px auto 10px; }
 @media (min-width: 901px) {
   .nav-links { gap: 20px; }
   .nav-links a { font-size: 10px; letter-spacing: 1.5px; }
@@ -1855,8 +1856,8 @@ footer {
     <h1>Voyager<br><em>Autrement.</em></h1>
     <p class="hero-sub">Des guides composés sur mesure pour explorer le monde en profondeur — les vraies adresses, les vraies émotions, loin des sentiers battus.</p>
     <div class="hero-actions">
-      <a href="#offres" class="btn-primary">Découvrir les offres</a>
-      <a href="#about" class="btn-ghost">Mon histoire</a>
+      <a href="#" data-page="pg-projet" class="btn-primary">Commencer votre voyage</a>
+      <a href="#offres" class="btn-ghost">Découvrir les offres</a>
     </div>
     <div class="hero-stats">
       <div>
@@ -1963,6 +1964,10 @@ footer {
   </div>
 </section>
 
+
+<div class="page-cta">
+  <a href="#" data-page="pg-projet" class="btn-primary">Commencer votre voyage</a>
+</div>
 </div>
 <div class="page" id="pg-offres">
 <!-- ─── SERVICES ─── -->
@@ -1978,7 +1983,7 @@ footer {
       <div class="service-item reveal">
         <span class="service-num">01</span>
         <span class="service-icon">📖</span>
-        <h3 class="service-name">Guides PDF composés sur mesure</h3>
+        <h3 class="service-name">Guides composés sur mesure</h3>
         <p class="service-desc">Des guides complets, téléchargeables, construits à partir d'expériences réelles. Restos, visites, bons plans — tout y est, sans le superflu.</p>
       </div>
       <div class="service-item reveal">
@@ -2012,14 +2017,14 @@ footer {
     <div class="card">
       <span class="card-tier">Essentiel</span>
       <h3 class="card-name">Le Guide</h3>
-      <p class="card-tagline">Tout le nécessaire pour préparer votre voyage, au format PDF.</p>
+      <p class="card-tagline">Tout le nécessaire pour préparer votre voyage.</p>
       <div class="card-price">
         <span class="price-currency">€</span>
         <span class="price-amount">100</span>
         <span class="price-note">/ destination</span>
       </div>
       <ul class="features">
-        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Guide PDF complet & téléchargeable</li>
+        <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Guide complet & téléchargeable</li>
         <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Sélection de restos, visites & activités</li>
         <li><svg class="chk" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#C4956A" stroke-width="1"/><path d="M5 9l3 3 5-5" stroke="#C4956A" stroke-width="1.5" stroke-linecap="round"/></svg>Conseils pratiques & bons plans</li>
       </ul>
@@ -2031,7 +2036,7 @@ footer {
       <div class="card-badge">⭐ Le plus populaire</div>
       <span class="card-tier">Expérience</span>
       <h3 class="card-name">Le Passeport</h3>
-      <p class="card-tagline">PDF + une page numérique personnalisée, dédiée à votre voyage.</p>
+      <p class="card-tagline">Le guide + une page numérique personnalisée, dédiée à votre voyage.</p>
       <div class="card-price">
         <span class="price-currency">€</span>
         <span class="price-amount">200</span>
@@ -2139,6 +2144,10 @@ footer {
 </section>
 
 
+
+<div class="page-cta">
+  <a href="#" data-page="pg-projet" class="btn-primary">Commencer votre voyage</a>
+</div>
 </div>
 <div class="page" id="pg-recevrez">
 <!-- ─── EXEMPLES DE VOYAGES ─── -->
@@ -2177,6 +2186,10 @@ footer {
 </section>
 
 
+
+<div class="page-cta">
+  <a href="#" data-page="pg-projet" class="btn-primary">Commencer votre voyage</a>
+</div>
 </div>
 <div class="page" id="pg-projet">
 <!-- ─── FORM ─── -->
@@ -2264,8 +2277,8 @@ footer {
           <label class="form-label">Offre souhaitée</label>
           <select class="form-select" id="foffre">
             <option value="" disabled selected>Choisir une offre...</option>
-            <option>Le Guide – PDF (100€)</option>
-            <option>Le Passeport – PDF & page numérique (200€)</option>
+            <option>Le Guide (100€)</option>
+            <option>Le Passeport – page numérique (200€)</option>
             <option>L'Exclusif – Premium complet (400€)</option>
             <option>Voyage en accompagnement – Sur devis</option>
             <option>Je ne sais pas encore, conseille-moi !</option>
@@ -2346,6 +2359,10 @@ footer {
     </div>
   </div>
 </section>
+
+<div class="page-cta">
+  <a href="#" data-page="pg-projet" class="btn-primary">Commencer votre voyage</a>
+</div>
 </div>
 <div class="page" id="pg-parlons">
 <!-- ─── AVIS CLIENTS ─── -->
@@ -2484,7 +2501,7 @@ footer {
 
     <div class="faq-item reveal">
       <button class="faq-question" onclick="toggleFaq(this)">
-        Mes guides PDF sont-ils protégés ?
+        Mes guides sont-ils protégés ?
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer">
@@ -2533,6 +2550,10 @@ footer {
 </section>
 
 
+
+<div class="page-cta">
+  <a href="#" data-page="pg-projet" class="btn-primary">Commencer votre voyage</a>
+</div>
 </div>
 
 <!-- ─── FOOTER ─── -->
